@@ -1,4 +1,4 @@
-# RTPhone
+﻿# RTPhone
 
 ## Descrição
 Construir o protótipo de um sistema de comunicação de voz sobre a internet utilizando RTP a partir de computadores PC. O sistema consiste de dois módulos software: um módulo cliente e um módulo servidor. A comunicação permitida é apenas um-a-um. O servidor gerencia apenas 10 clientes previamente cadastrados. Funcionamento: Quando um cliente é iniciado em um computador, cadastra-se no servidor para informar que está ativo e o endereço {porta, ip} no qual pode ser encontrado. Periodicamente, o cliente envia mensagem ao servidor indicando que está ativo. O servidor muda o status de um cliente para inativo se não recebe uma mensagem
@@ -14,6 +14,8 @@ após um tempo predeterminado. Quando o ususário1 deseja falar com outro usuár
 ## Protocolo pts (Phone to Server)
 * XML Like
  
-    * <<DADO>> STRING <<DADO>>
+    * <![CDATA[<type>value<type>]]>
 
-            e.g. <USERNAME> DAVID <USERNAME>
+            e.g. 
+                <username>DAVID<username>
+                <log><in>DAVID<in><log>

@@ -14,7 +14,7 @@ public class ThreadTCPServer extends Thread {
 	protected ServerSocket serverSocket;
 	protected boolean isStopped;
 	protected Thread runningThread;
-	protected Vector<WorkerRunnable> workerRunnable;
+	protected Vector<ThreadSingleTCPServer> workerRunnable;
 
 	public ThreadTCPServer(int port) {
 		this.serverPort = port;
@@ -24,7 +24,7 @@ public class ThreadTCPServer extends Thread {
 		this.workerRunnable = new Vector<>();
 	}
 
-	public Vector<WorkerRunnable> getWorkerRunnable() {
+	public Vector<ThreadSingleTCPServer> getWorkerRunnable() {
 		return workerRunnable;
 	}
 
@@ -46,8 +46,8 @@ public class ThreadTCPServer extends Thread {
 						e);
 			}
 			try {
-				WorkerRunnable workerRunnableA;
-				workerRunnableA = new WorkerRunnable(clientSocket);
+				ThreadSingleTCPServer workerRunnableA;
+				workerRunnableA = new ThreadSingleTCPServer(clientSocket);
 				workerRunnableA.start();
 				this.workerRunnable.add(workerRunnableA);
 			} catch (IOException e) {
@@ -55,7 +55,7 @@ public class ThreadTCPServer extends Thread {
 				e.printStackTrace();
 			}
 		}
-		for (WorkerRunnable iterable_element : workerRunnable) {
+		for (ThreadSingleTCPServer iterable_element : workerRunnable) {
 			try {
 				iterable_element.close();
 			} catch (IOException e) {

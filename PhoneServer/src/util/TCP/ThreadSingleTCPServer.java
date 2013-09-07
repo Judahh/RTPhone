@@ -5,13 +5,13 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Vector;
 
-public class WorkerRunnable extends Thread {
+public class ThreadSingleTCPServer extends Thread {
 
 	protected Socket clientSocket;
 	private Receiver receiver;
 	private Sender sender;
 
-	public WorkerRunnable(Socket clientSocket) throws IOException {
+	public ThreadSingleTCPServer(Socket clientSocket) throws IOException {
 		this.clientSocket = clientSocket;
 		this.receiver = new Receiver(clientSocket.getInputStream());
 		this.sender = new Sender(clientSocket.getOutputStream());

@@ -1,42 +1,41 @@
 package util.TCP;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Vector;
 
 public class ClientTCP extends Thread {
 	private Socket serverSocket;
 	private String host;
 	private int port;
-	private Receive receive;
-	private Vector <String> toSend;
+	private Receiver receiver;
+	private Sender sender;
 
 	public ClientTCP(String host, int port) throws UnknownHostException,
 			IOException {
 		this.host = host;
 		this.port = port;// 6789
-		this.toSend = new Vector<>();
 		this.serverSocket = new Socket(host, port);
-		this.receive = new Receive(serverSocket.getInputStream());
+		this.receiver = new Receiver(serverSocket.getInputStream());
+		this.sender = new Sender(serverSocket.getOutputStream());
 	}
 
-	public void send(String string) throws IOException {
-		this.toSend.add(string);
+	public Vector<String> getReceived() {
+		return this.receiver.getReceived();
 	}
 
-	public void send() throws IOException {
-		while (serverSocket.isConnected() && !this.toSend.isEmpty()) {
-			DataOutputStream output = new DataOutputStream(
-					serverSocket.getOutputStream());
-			output.write((this.toSend.get(0) + '\n').getBytes());
-			output.flush();
-			System.out.println((this.toSend.get(0) + '\n'));
-			this.toSend.remove(0);
-		}
+	public void send(String toSend) throws IOException {
+		this.sender.send(toSend);
+	}
 
+	public InetAddress inetAddress() {
+		return this.serverSocket.getInetAddress();
+	}
+
+	public String address() {
+		return this.serverSocket.getInetAddress().toString();
 	}
 
 	public boolean isConnected() {
@@ -57,14 +56,14 @@ public class ClientTCP extends Thread {
 
 	public void run() {
 		try {
-			this.receive.start();
-			while (serverSocket.isConnected()) {
-				send();
-			}
+			this.receiver.start();
+			this.sender.start();
+			while (serverSocket.isConnected());
+			this.sender.stop();
+			this.receiver.stop();
 			close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 }

@@ -1,4 +1,4 @@
-package util;
+package util.TCP;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

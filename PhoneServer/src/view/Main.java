@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import util.ThreadTCPServer;
+import util.TCP.ThreadTCPServer;
 
 public class Main {
 

@@ -14,7 +14,7 @@ após um tempo predeterminado. Quando o ususário1 deseja falar com outro usuár
 ## Protocolo pts (Phone to Server)
 * XML Like
  
-    * <type\>value<type\>
+    * `<type>value<type>`
 
             e.g. 
                 <username>DAVID<username>

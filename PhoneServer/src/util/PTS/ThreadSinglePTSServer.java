@@ -103,7 +103,16 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 																	// é
 																	// repassado
 																	// nestas
-																	// classes: da ThreadSender e ThreadReceiver para ThreadSingleTCPServer e dela para ThreadTCPServer
+																	// classes:
+																	// da
+																	// ThreadSender
+																	// e
+																	// ThreadReceiver
+																	// para
+																	// ThreadSingleTCPServer
+																	// e dela
+																	// para
+																	// ThreadTCPServer
 											this.broadcast = (pts.toString());
 										}
 									break;

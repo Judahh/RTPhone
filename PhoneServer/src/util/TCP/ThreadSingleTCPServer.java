@@ -7,22 +7,22 @@ import java.util.Vector;
 
 public class ThreadSingleTCPServer extends Thread{
 
-	protected Socket	clientSocket;
-	protected Receiver	receiver;
-	protected Sender	sender;
+	protected Socket			clientSocket;
+	protected ThreadReceiver	threadReceiver;
+	protected ThreadSender		threadSender;
 
 	public ThreadSingleTCPServer(Socket clientSocket) throws IOException{
 		this.clientSocket = clientSocket;
-		this.receiver = new Receiver(clientSocket.getInputStream());
-		this.sender = new Sender(clientSocket.getOutputStream());
+		this.threadReceiver = new ThreadReceiver(clientSocket.getInputStream());
+		this.threadSender = new ThreadSender(clientSocket.getOutputStream());
 	}
 
 	public Vector<String> getReceived(){
-		return this.receiver.getReceived();
+		return this.threadReceiver.getReceived();
 	}
 
 	public void send(String toSend) throws IOException{
-		this.sender.send(toSend);
+		this.threadSender.send(toSend);
 	}
 
 	public InetAddress inetAddress(){
@@ -64,11 +64,11 @@ public class ThreadSingleTCPServer extends Thread{
 
 	public void run(){
 		try{
-			this.receiver.start();
-			this.sender.start();
+			this.threadReceiver.start();
+			this.threadSender.start();
 			while(clientSocket.isConnected());
-			this.sender.stop();
-			this.receiver.stop();
+			this.threadSender.stop();
+			this.threadReceiver.stop();
 			close();
 		}catch(IOException e){
 			e.printStackTrace();

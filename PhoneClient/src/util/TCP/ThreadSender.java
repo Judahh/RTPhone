@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Vector;
 
-public class Sender extends Thread{
+public class ThreadSender extends Thread{
 	DataOutputStream		output;
 	private Vector<String>	toSend;
 
-	public Sender(OutputStream output){
+	public ThreadSender(OutputStream output){
 		this.output = new DataOutputStream(output);
 		this.toSend = new Vector<>();
 	}

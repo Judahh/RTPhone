@@ -5,11 +5,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
-public class Receiver extends Thread{
+public class ThreadReceiver extends Thread{
 	BufferedReader			input;
 	private Vector<String>	received;
 
-	public Receiver(InputStream input){
+	public ThreadReceiver(InputStream input){
 		this.input = new BufferedReader(new InputStreamReader(input));
 		this.received = new Vector<>();
 	}

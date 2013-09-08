@@ -46,8 +46,8 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 	@Override
 	public void run(){
 		try{
-			this.receiver.start();
-			this.sender.start();
+			this.threadReceiver.start();
+			this.threadSender.start();
 			while(clientSocket.isConnected()){
 				Vector<String> received = getReceived();
 				for(int index = 0; index < received.size(); index++){
@@ -77,7 +77,7 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 										ptsTemp3.setValue("ok");
 										if(pts.getPts().get(0).getValue()
 												.equals(this.username)){
-											this.sender.send(ptsTemp3
+											this.threadSender.send(ptsTemp3
 													.toString());// TODO:
 																	// Isto
 																	// tem
@@ -103,7 +103,7 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 																	// é
 																	// repassado
 																	// nestas
-																	// classes:
+																	// classes: da ThreadSender e ThreadReceiver para ThreadSingleTCPServer e dela para ThreadTCPServer
 											this.broadcast = (pts.toString());
 										}
 									break;
@@ -118,8 +118,8 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 					}
 				}
 			}
-			this.sender.stop();
-			this.receiver.stop();
+			this.threadSender.stop();
+			this.threadReceiver.stop();
 			close();
 		}catch(IOException e){
 			e.printStackTrace();

@@ -125,4 +125,8 @@ public class PTS {
 		string += "<" + type + ">";
 		return string;
 	}
+
+	public void setType(String type) {
+		this.type=type;
+	}
 }

@@ -8,8 +8,8 @@ import java.util.Vector;
 public class ThreadSingleTCPServer extends Thread {
 
 	protected Socket clientSocket;
-	private Receiver receiver;
-	private Sender sender;
+	protected Receiver receiver;
+	protected Sender sender;
 
 	public ThreadSingleTCPServer(Socket clientSocket) throws IOException {
 		this.clientSocket = clientSocket;
@@ -39,6 +39,27 @@ public class ThreadSingleTCPServer extends Thread {
 
 	public void close() throws IOException {
 		clientSocket.close();
+	}
+	
+	public String getBroadcast() {
+		return new String();
+	}
+
+	public String getToCheck() {
+		return new String();
+	}
+
+	public String getUsername() {
+		return new String();
+	}
+
+	public void setBroadcast(String broadcast) {
+	}
+
+	public void setToCheck(String toCheck) {
+	}
+
+	public void setUsername(String username) {
 	}
 
 	public void run() {

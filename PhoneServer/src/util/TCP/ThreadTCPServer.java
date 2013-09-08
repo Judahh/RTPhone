@@ -1,4 +1,5 @@
 package util.TCP;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
@@ -14,48 +15,52 @@ public class ThreadTCPServer extends Thread {
 	protected ServerSocket serverSocket;
 	protected boolean isStopped;
 	protected Thread runningThread;
-	protected Vector<ThreadSingleTCPServer> workerRunnable;
+	protected Vector<ThreadSingleTCPServer> threadSingleTCPServer;
+	protected Socket newClientConnection;
 
 	public ThreadTCPServer(int port) {
 		this.serverPort = port;
 		this.serverSocket = null;
 		this.isStopped = false;
 		this.runningThread = null;
-		this.workerRunnable = new Vector<>();
+		this.threadSingleTCPServer = new Vector<>();
 	}
 
 	public Vector<ThreadSingleTCPServer> getWorkerRunnable() {
-		return workerRunnable;
+		return threadSingleTCPServer;
 	}
 
-	public void run() {
-		synchronized (this) {
-			this.runningThread = Thread.currentThread();
-		}
-		openServerSocket();
-		while (!isStopped()) {
-			Socket clientSocket = null;
-			try {
-				clientSocket = this.serverSocket.accept();
-			} catch (IOException e) {
-				if (isStopped()) {
-					System.out.println("Server Stopped.");
-					return;
-				}
-				throw new RuntimeException("Error accepting client connection",
-						e);
+	private void acceptConnection() {
+		this.newClientConnection = null;
+		try {
+			this.newClientConnection = this.serverSocket.accept();
+		} catch (IOException e) {
+			if (isStopped()) {
+				System.out.println("Server Stopped.");
+				return;
 			}
-			try {
-				ThreadSingleTCPServer workerRunnableA;
-				workerRunnableA = new ThreadSingleTCPServer(clientSocket);
-				workerRunnableA.start();
-				this.workerRunnable.add(workerRunnableA);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			throw new RuntimeException("Error accepting client connection", e);
 		}
-		for (ThreadSingleTCPServer iterable_element : workerRunnable) {
+		addConnection();
+	}
+	
+	protected void addConnection() {
+		try {
+			ThreadSingleTCPServer threadSingleTCPServerA;
+			threadSingleTCPServerA = new ThreadSingleTCPServer(newClientConnection);
+			threadSingleTCPServerA.start();
+			this.threadSingleTCPServer.add(threadSingleTCPServerA);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	protected void check() {
+	}
+	
+	private void closeConnections() {
+		for (ThreadSingleTCPServer iterable_element : threadSingleTCPServer) {
 			try {
 				iterable_element.close();
 			} catch (IOException e) {
@@ -64,6 +69,18 @@ public class ThreadTCPServer extends Thread {
 			}
 		}
 		System.out.println("Server Stopped.");
+	}
+
+	public void run() {
+		synchronized (this) {
+			this.runningThread = Thread.currentThread();
+		}
+		openServerSocket();
+		while (!isStopped()) {
+			acceptConnection();
+			check();
+		}
+		closeConnections();
 	}
 
 	private synchronized boolean isStopped() {

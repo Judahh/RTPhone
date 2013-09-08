@@ -1,11 +1,7 @@
 package util.PTS;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Vector;
-
-import util.TCP.ThreadSingleTCPServer;
 import util.TCP.ThreadTCPServer;
 
 public class ThreadPTSServer extends ThreadTCPServer {

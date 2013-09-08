@@ -43,6 +43,10 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 		this.username = username;
 	}
 
+	protected void check(){
+		// TODO: Fazer todas as checagens aqui!!!
+	}
+
 	@Override
 	public void run(){
 		try{
@@ -60,24 +64,42 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 									case "in":
 										// TODO: Isto tem que ser feito na
 										// classe In
-										this.toCheck = pts.toString();
+										this.toCheck = pts.toString();// manda
+																		// checar
+																		// se
+																		// existe
+																		// esse
+																		// usuário
+																		// para
+																		// poder
+																		// se
+																		// logar
 									break;
 
 									case "on":
 										// TODO: Isto tem que ser feito na
 										// classe On
-										this.toCheck = pts.toString();
+										this.toCheck = pts.toString();// manda
+																		// checar
+																		// se
+																		// existe
+																		// esse
+																		// usuário
+																		// para
+																		// poder
+																		// se
+																		// registrar
 									break;
 
 									case "off":
 										// TODO: Isto tem que ser feito na
 										// classe Off
-										PTS ptsTemp3 = new PTS();
-										ptsTemp3.setType("log");
-										ptsTemp3.setValue("ok");
+										PTS ptsTemp = new PTS();
+										ptsTemp.setType("log");
+										ptsTemp.setValue("ok");
 										if(pts.getPts().get(0).getValue()
 												.equals(this.username)){
-											this.threadSender.send(ptsTemp3
+											this.threadSender.send(ptsTemp
 													.toString());// TODO:
 																	// Isto
 																	// tem
@@ -113,7 +135,12 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 																	// e dela
 																	// para
 																	// ThreadTCPServer
-											this.broadcast = (pts.toString());
+											this.broadcast = (pts.toString());// envia
+																				// broadcast
+																				// do
+																				// usuário
+																				// que
+																				// saiu;
 										}
 									break;
 
@@ -125,6 +152,7 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 						case "call":
 							// TODO: fazer de forma semelhante ao Log
 					}
+					check();
 				}
 			}
 			this.threadSender.stop();

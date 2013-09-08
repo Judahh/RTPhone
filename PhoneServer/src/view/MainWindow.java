@@ -11,28 +11,28 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTabbedPane;
 import javax.swing.JLayeredPane;
 
-public class MainWindow {
+public class MainWindow{
 
-	public JFrame frame;
-	private JLabel labelIP;
-	private int serverPort;
-	private int port0;
-	private int port1;
+	public JFrame	frame;
+	private JLabel	labelIP;
+	private int		serverPort;
+	private int		port0;
+	private int		port1;
 
 	/**
 	 * Create the application.
 	 */
-	public MainWindow(int serverPort, int port0, int port1) {
-		this.serverPort=serverPort;
-		this.port0=port0;
-		this.port1=port1;
+	public MainWindow(int serverPort, int port0, int port1){
+		this.serverPort = serverPort;
+		this.port0 = port0;
+		this.port1 = port1;
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(){
 		frame = new JFrame();
 		frame.setBounds(100, 100, 200, 200);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,10 +40,10 @@ public class MainWindow {
 		JLabel labelIPLabel = new JLabel("IP:");
 
 		JLabel lblPort_2 = new JLabel("Unknown");
-		try {
+		try{
 			labelIP = new JLabel(Inet4Address.getLocalHost().getHostAddress()
 					.toString());
-		} catch (UnknownHostException e) {
+		}catch(UnknownHostException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

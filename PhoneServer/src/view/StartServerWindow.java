@@ -13,30 +13,30 @@ import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class StartServerWindow {
+public class StartServerWindow{
 
-	public JFrame frame;
-	private JButton btnStart;
-	private JLabel labelServerPort;
-	private JTextField textFieldServerPort;
-	private JLabel labelPort0;
-	private JTextField textFieldPort0;
-	private JLabel lblPort;
-	private JTextField textFieldPort1;
-	private JLabel lblIp;
-	private JLabel lblUnknown;
+	public JFrame		frame;
+	private JButton		btnStart;
+	private JLabel		labelServerPort;
+	private JTextField	textFieldServerPort;
+	private JLabel		labelPort0;
+	private JTextField	textFieldPort0;
+	private JLabel		lblPort;
+	private JTextField	textFieldPort1;
+	private JLabel		lblIp;
+	private JLabel		lblUnknown;
 
 	/**
 	 * Create the application.
 	 */
-	public StartServerWindow() {
+	public StartServerWindow(){
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(){
 		frame = new JFrame();
 		frame.setBounds(100, 100, 200, 200);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,9 +49,12 @@ public class StartServerWindow {
 		frame.getContentPane().add(labelServerPort);
 
 		btnStart = new JButton("Start");
-		btnStart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MainWindow window = new MainWindow(Integer.parseInt(textFieldServerPort.getText()),Integer.parseInt(textFieldPort0.getText()),Integer.parseInt(textFieldPort1.getText()));
+		btnStart.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				MainWindow window = new MainWindow(Integer
+						.parseInt(textFieldServerPort.getText()), Integer
+						.parseInt(textFieldPort0.getText()), Integer
+						.parseInt(textFieldPort1.getText()));
 				window.frame.setVisible(true);
 				frame.setVisible(false);
 			}
@@ -119,10 +122,10 @@ public class StartServerWindow {
 		frame.getContentPane().add(lblIp);
 
 		lblUnknown = new JLabel("Unknown");
-		try {
+		try{
 			lblUnknown = new JLabel(Inet4Address.getLocalHost()
 					.getHostAddress().toString());
-		} catch (UnknownHostException e) {
+		}catch(UnknownHostException e){
 			e.printStackTrace();
 		}
 		springLayout.putConstraint(SpringLayout.NORTH, lblUnknown, 0,

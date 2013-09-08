@@ -6,15 +6,15 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
-public class ClientTCP extends Thread {
-	private Socket serverSocket;
-	private String host;
-	private int port;
-	private Receiver receiver;
-	private Sender sender;
+public class ClientTCP extends Thread{
+	private Socket		serverSocket;
+	private String		host;
+	private int			port;
+	private Receiver	receiver;
+	private Sender		sender;
 
 	public ClientTCP(String host, int port) throws UnknownHostException,
-			IOException {
+			IOException{
 		this.host = host;
 		this.port = port;// 6789
 		this.serverSocket = new Socket(host, port);
@@ -22,47 +22,47 @@ public class ClientTCP extends Thread {
 		this.sender = new Sender(serverSocket.getOutputStream());
 	}
 
-	public Vector<String> getReceived() {
+	public Vector<String> getReceived(){
 		return this.receiver.getReceived();
 	}
 
-	public void send(String toSend) throws IOException {
+	public void send(String toSend) throws IOException{
 		this.sender.send(toSend);
 	}
 
-	public InetAddress inetAddress() {
+	public InetAddress inetAddress(){
 		return this.serverSocket.getInetAddress();
 	}
 
-	public String address() {
+	public String address(){
 		return this.serverSocket.getInetAddress().toString();
 	}
 
-	public boolean isConnected() {
+	public boolean isConnected(){
 		return serverSocket.isConnected();
 	}
 
-	public void close() throws IOException {
+	public void close() throws IOException{
 		serverSocket.close();
 	}
 
-	public String getHost() {
+	public String getHost(){
 		return host;
 	}
 
-	public int getPort() {
+	public int getPort(){
 		return port;
 	}
 
-	public void run() {
-		try {
+	public void run(){
+		try{
 			this.receiver.start();
 			this.sender.start();
-			while (serverSocket.isConnected());
+			while(serverSocket.isConnected());
 			this.sender.stop();
 			this.receiver.stop();
 			close();
-		} catch (IOException e) {
+		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}

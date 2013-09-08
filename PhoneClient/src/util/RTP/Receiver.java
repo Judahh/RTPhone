@@ -1,53 +1,53 @@
 package util.RTP;
 
-public class Receiver implements Runnable {
-	private Thread receiveThread;
-	private AVReceive AVReceive;
-	private int port;
-	private String host;
+public class Receiver implements Runnable{
+	private Thread		receiveThread;
+	private AVReceive	AVReceive;
+	private int			port;
+	private String		host;
 
-	public Receiver(String host,int port) {
+	public Receiver(String host, int port){
 		this.receiveThread = new Thread(this, "Audio-Phone");
 		this.receiveThread.start();
-		this.host=host;
-		this.port=port;
+		this.host = host;
+		this.port = port;
 	}
 
-	public void run() {
+	public void run(){
 		String temp = this.host + "/" + this.port;
 		String[] info = new String[1];
 		info[0] = temp;
 
 		AVReceive = new AVReceive(info);
-		if (!AVReceive.initialize()) {
+		if(!AVReceive.initialize()){
 			System.exit(-1);
 		}
 
 		// Check to see if AVReceive is done.
-		try {
-			while (!AVReceive.isDone())
+		try{
+			while(!AVReceive.isDone())
 				Thread.sleep(1000);
-		} catch (Exception e) {
+		}catch(Exception e){
 		}
 	}
 
-	public void stop() {
+	public void stop(){
 		AVReceive.close();
 	}
-	
-	public AVReceive getAVReceive() {
+
+	public AVReceive getAVReceive(){
 		return AVReceive;
 	}
-	
-	public Thread getReceiveThread() {
+
+	public Thread getReceiveThread(){
 		return receiveThread;
 	}
-	
-	public String getHost() {
+
+	public String getHost(){
 		return host;
 	}
-	
-	public int getPort() {
+
+	public int getPort(){
 		return port;
 	}
 }

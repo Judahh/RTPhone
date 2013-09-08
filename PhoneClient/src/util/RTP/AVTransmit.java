@@ -12,436 +12,417 @@ import javax.media.rtp.*;
 import javax.media.rtp.rtcp.*;
 import com.sun.media.rtp.*;
 
-public class AVTransmit {
+public class AVTransmit{
 
-    // Input MediaLocator
-    // Can be a file or http or capture source
-    private MediaLocator mediaLocator;
-    private String host;
-    private int port;
+	// Input MediaLocator
+	// Can be a file or http or capture source
+	private MediaLocator	mediaLocator;
+	private String			host;
+	private int				port;
 
-    private Processor processor = null;
-    private SessionManager rtpMgrs[];
-    private DataSource dataOutput = null;
-    private String temp;
-    
-    public AVTransmit(   MediaLocator mediaLocator,
-                         String host,
-                         int port,
-                         Format format) {
-        
-        this.mediaLocator = mediaLocator;
-        this.host = host;
-        this.port = port;
-    }
+	private Processor		processor	= null;
+	private SessionManager	rtpMgrs[];
+	private DataSource		dataOutput	= null;
+	private String			temp;
 
-    /**
-     * Starts the transmission. Returns null if transmission started ok.
-     * Otherwise it returns a string with the reason why the setup failed.
-     */
-    public synchronized String start() {
-        String result;
+	public AVTransmit(MediaLocator mediaLocator, String host, int port,
+			Format format){
 
-        // Create a processor for the specified media locator
-        // and program it to output JPEG/RTP
-        result = createProcessor();
-        if (result != null)
-            return result;
+		this.mediaLocator = mediaLocator;
+		this.host = host;
+		this.port = port;
+	}
 
-        // Create an RTP session to transmit the output of the
-        // processor to the specified IP address and port no.
-        result = createTransmitter();
-        if (result != null) {
-            processor.close();
-            processor = null;
-            return result;
-        }
+	/**
+	 * Starts the transmission. Returns null if transmission started ok.
+	 * Otherwise it returns a string with the reason why the setup failed.
+	 */
+	public synchronized String start(){
+		String result;
 
-        // Start the transmission
-        processor.start();
-        
-        return null;
-    }
+		// Create a processor for the specified media locator
+		// and program it to output JPEG/RTP
+		result = createProcessor();
+		if(result != null)
+			return result;
 
-    /**
-     * Stops the transmission if already started
-     */
-    public void stop() {
-        synchronized (this) {
-            if (processor != null) {
-                processor.stop();
-                processor.close();
-                processor = null;
-                for (int i = 0; i < rtpMgrs.length; i++)
-                    rtpMgrs[i].closeSession("Session ended");
-            }
-        }
-    }
+		// Create an RTP session to transmit the output of the
+		// processor to the specified IP address and port no.
+		result = createTransmitter();
+		if(result != null){
+			processor.close();
+			processor = null;
+			return result;
+		}
 
-    private String createProcessor() {
-        if (mediaLocator == null)
-            return "Locator is null";
+		// Start the transmission
+		processor.start();
 
-        DataSource ds;
-        DataSource clone;
+		return null;
+	}
 
-        try {
-            ds = javax.media.Manager.createDataSource(mediaLocator);
-        } catch (Exception e) {
-            return "Couldn't create DataSource";
-        }
+	/**
+	 * Stops the transmission if already started
+	 */
+	public void stop(){
+		synchronized(this){
+			if(processor != null){
+				processor.stop();
+				processor.close();
+				processor = null;
+				for(int i = 0; i < rtpMgrs.length; i++)
+					rtpMgrs[i].closeSession("Session ended");
+			}
+		}
+	}
 
-        // Try to create a processor to handle the input media locator
-        try {
-            processor = javax.media.Manager.createProcessor(ds);
-        } catch (NoProcessorException npe) {
-            return "Couldn't create processor";
-        } catch (IOException ioe) {
-            return "IOException creating processor";
-        } 
+	private String createProcessor(){
+		if(mediaLocator == null)
+			return "Locator is null";
 
-        // Wait for it to configure
-        boolean result = waitForState(processor, Processor.Configured);
-        if (result == false)
-            return "Couldn't configure processor";
+		DataSource ds;
+		DataSource clone;
 
-        // Get the tracks from the processor
-        TrackControl [] tracks = processor.getTrackControls();
+		try{
+			ds = javax.media.Manager.createDataSource(mediaLocator);
+		}catch(Exception e){
+			return "Couldn't create DataSource";
+		}
 
-        // Do we have atleast one track?
-        if (tracks == null || tracks.length < 1)
-            return "Couldn't find tracks in processor";
+		// Try to create a processor to handle the input media locator
+		try{
+			processor = javax.media.Manager.createProcessor(ds);
+		}catch(NoProcessorException npe){
+			return "Couldn't create processor";
+		}catch(IOException ioe){
+			return "IOException creating processor";
+		}
 
-        // Set the output content descriptor to RAW_RTP
-        // This will limit the supported formats reported from
-        // Track.getSupportedFormats to only valid RTP formats.
-        ContentDescriptor cd = new ContentDescriptor(ContentDescriptor.RAW_RTP);
-        processor.setContentDescriptor(cd);
+		// Wait for it to configure
+		boolean result = waitForState(processor, Processor.Configured);
+		if(result == false)
+			return "Couldn't configure processor";
 
-        Format supported[];
-        Format chosen;
-        boolean atLeastOneTrack = false;
+		// Get the tracks from the processor
+		TrackControl[] tracks = processor.getTrackControls();
 
-        // Program the tracks.
-        for (int i = 0; i < tracks.length; i++) {
-            Format format = tracks[i].getFormat();
-            if (tracks[i].isEnabled()) {
+		// Do we have atleast one track?
+		if(tracks == null || tracks.length < 1)
+			return "Couldn't find tracks in processor";
 
-                supported = tracks[i].getSupportedFormats();
+		// Set the output content descriptor to RAW_RTP
+		// This will limit the supported formats reported from
+		// Track.getSupportedFormats to only valid RTP formats.
+		ContentDescriptor cd = new ContentDescriptor(ContentDescriptor.RAW_RTP);
+		processor.setContentDescriptor(cd);
 
-                // We've set the output content to the RAW_RTP.
-                // So all the supported formats should work with RTP.
-                // We'll just pick the first one.
+		Format supported[];
+		Format chosen;
+		boolean atLeastOneTrack = false;
 
-                if (supported.length > 0) {
-                    if (supported[0] instanceof VideoFormat) {
-                        // For video formats, we should double check the
-                        // sizes since not all formats work in all sizes.
-                        chosen = checkForVideoSizes(tracks[i].getFormat(), 
-                                                        supported[0]);
-                    } else
-                        chosen = supported[0];
-                    tracks[i].setFormat(chosen);
-                    temp = "Track  " +i + "is set to transmit as  " + chosen + "\n";
-                    System.out.println(temp);
-                   // System.err.println("Track " + i + " is set to transmit as:");
-                    //System.err.println("  " + chosen);
-                    atLeastOneTrack = true;
-                } else
-                    tracks[i].setEnabled(false);
-            } else
-                tracks[i].setEnabled(false);
-        }
+		// Program the tracks.
+		for(int i = 0; i < tracks.length; i++){
+			Format format = tracks[i].getFormat();
+			if(tracks[i].isEnabled()){
 
-        if (!atLeastOneTrack)
-            return "Couldn't set any of the tracks to a valid RTP format";
+				supported = tracks[i].getSupportedFormats();
 
-        // Realize the processor. This will internally create a flow
-        // graph and attempt to create an output datasource for JPEG/RTP
-        // audio frames.
-        result = waitForState(processor, Controller.Realized);
-        if (result == false)
-            return "Couldn't realize processor";
+				// We've set the output content to the RAW_RTP.
+				// So all the supported formats should work with RTP.
+				// We'll just pick the first one.
 
-        // Set the JPEG quality to .5.
-        setJPEGQuality(processor, 0.5f);
+				if(supported.length > 0){
+					if(supported[0] instanceof VideoFormat){
+						// For video formats, we should double check the
+						// sizes since not all formats work in all sizes.
+						chosen = checkForVideoSizes(tracks[i].getFormat(),
+								supported[0]);
+					}else
+						chosen = supported[0];
+					tracks[i].setFormat(chosen);
+					temp = "Track  " + i + "is set to transmit as  " + chosen
+							+ "\n";
+					System.out.println(temp);
+					// System.err.println("Track " + i +
+					// " is set to transmit as:");
+					// System.err.println("  " + chosen);
+					atLeastOneTrack = true;
+				}else
+					tracks[i].setEnabled(false);
+			}else
+				tracks[i].setEnabled(false);
+		}
 
-        // Get the output data source of the processor
-        dataOutput = processor.getDataOutput();
+		if(!atLeastOneTrack)
+			return "Couldn't set any of the tracks to a valid RTP format";
 
-        return null;
-    }
+		// Realize the processor. This will internally create a flow
+		// graph and attempt to create an output datasource for JPEG/RTP
+		// audio frames.
+		result = waitForState(processor, Controller.Realized);
+		if(result == false)
+			return "Couldn't realize processor";
 
+		// Set the JPEG quality to .5.
+		setJPEGQuality(processor, 0.5f);
 
-    /**
-     * Use the SessionManager API to create sessions for each media 
-     * track of the processor.
-     */
-    private String createTransmitter() {
+		// Get the output data source of the processor
+		dataOutput = processor.getDataOutput();
 
-        // Cheated.  Should have checked the type.
-        PushBufferDataSource pbds = (PushBufferDataSource)dataOutput;
-        PushBufferStream pbss[] = pbds.getStreams();
+		return null;
+	}
 
-        rtpMgrs = new SessionManager[pbss.length];
-        SessionAddress localAddr, destAddr;
-        InetAddress ipAddr;
-        SendStream sendStream;
-        int port;
-        SourceDescription srcDesList[];
+	/**
+	 * Use the SessionManager API to create sessions for each media track of the
+	 * processor.
+	 */
+	private String createTransmitter(){
 
-        for (int i = 0; i < pbss.length; i++) {
-            try {
-                rtpMgrs[i] = new RTPSessionMgr();           
+		// Cheated. Should have checked the type.
+		PushBufferDataSource pbds = (PushBufferDataSource) dataOutput;
+		PushBufferStream pbss[] = pbds.getStreams();
 
-                srcDesList = new SourceDescription[] {
-                    new SourceDescription(
-                                        SourceDescription.SOURCE_DESC_EMAIL,
-                                        "jmf-user@sun.com",
-                                        1,
-                                        false),
-                    new  SourceDescription(SourceDescription.SOURCE_DESC_CNAME,
-                                        rtpMgrs[i].generateCNAME(),
-                                        1,
-                                        false),
-                    new SourceDescription(SourceDescription.SOURCE_DESC_TOOL,
-                                        "JMF RTP Player v2.0",
-                                        1,
-                                        false),
-                };
+		rtpMgrs = new SessionManager[pbss.length];
+		SessionAddress localAddr, destAddr;
+		InetAddress ipAddr;
+		SendStream sendStream;
+		int port;
+		SourceDescription srcDesList[];
 
-                localAddr = new SessionAddress();
-                port = this.port + 2*i;
-                ipAddr = InetAddress.getByName(host);
-                destAddr = new SessionAddress(ipAddr, port, 
-                                                ipAddr, port + 1);
-                rtpMgrs[i].initSession(localAddr, srcDesList, 0.05, 0.25);
-                rtpMgrs[i].startSession(destAddr, 1, null);
-                temp = "Started transmission channel at " + host + " " + port + "\n";
-                System.out.println(temp);
-                //System.err.println("Created RTP session: " + ipAddress + " " + port);
-                sendStream = rtpMgrs[i].createSendStream(dataOutput, i);
-                sendStream.start();
-            } catch (Exception  e) {
-                return e.getMessage();
-            }
-        }
+		for(int i = 0; i < pbss.length; i++){
+			try{
+				rtpMgrs[i] = new RTPSessionMgr();
 
-        return null;
-    }
+				srcDesList = new SourceDescription[]{
+						new SourceDescription(
+								SourceDescription.SOURCE_DESC_EMAIL,
+								"jmf-user@sun.com", 1, false),
+						new SourceDescription(
+								SourceDescription.SOURCE_DESC_CNAME,
+								rtpMgrs[i].generateCNAME(), 1, false),
+						new SourceDescription(
+								SourceDescription.SOURCE_DESC_TOOL,
+								"JMF RTP Player v2.0", 1, false),};
 
+				localAddr = new SessionAddress();
+				port = this.port + 2 * i;
+				ipAddr = InetAddress.getByName(host);
+				destAddr = new SessionAddress(ipAddr, port, ipAddr, port + 1);
+				rtpMgrs[i].initSession(localAddr, srcDesList, 0.05, 0.25);
+				rtpMgrs[i].startSession(destAddr, 1, null);
+				temp = "Started transmission channel at " + host + " " + port
+						+ "\n";
+				System.out.println(temp);
+				// System.err.println("Created RTP session: " + ipAddress + " "
+				// + port);
+				sendStream = rtpMgrs[i].createSendStream(dataOutput, i);
+				sendStream.start();
+			}catch(Exception e){
+				return e.getMessage();
+			}
+		}
 
-    /**
-     * For JPEG and H263, we know that they only work for particular
-     * sizes.  So we'll perform extra checking here to make sure they
-     * are of the right sizes.
-     */
-    Format checkForVideoSizes(Format original, Format supported) {
+		return null;
+	}
 
-        int width, height;
-        Dimension size = ((VideoFormat)original).getSize();
-        Format jpegFmt = new Format(VideoFormat.JPEG_RTP);
-        Format h263Fmt = new Format(VideoFormat.H263_RTP);
+	/**
+	 * For JPEG and H263, we know that they only work for particular sizes. So
+	 * we'll perform extra checking here to make sure they are of the right
+	 * sizes.
+	 */
+	Format checkForVideoSizes(Format original, Format supported){
 
-        if (supported.matches(jpegFmt)) {
-            // For JPEG, make sure width and height are divisible by 8.
-            width = (size.width % 8 == 0 ? size.width :
-                                (int)(size.width / 8) * 8);
-            height = (size.height % 8 == 0 ? size.height :
-                                (int)(size.height / 8) * 8);
-        } else if (supported.matches(h263Fmt)) {
-            // For H.263, we only support some specific sizes.
-            if (size.width < 128) {
-                width = 128;
-                height = 96;
-            } else if (size.width < 176) {
-                width = 176;
-                height = 144;
-            } else {
-                width = 352;
-                height = 288;
-            }
-        } else {
-            // We don't know this particular format.  We'll just
-            // leave it alone then.
-            return supported;
-        }
+		int width, height;
+		Dimension size = ((VideoFormat) original).getSize();
+		Format jpegFmt = new Format(VideoFormat.JPEG_RTP);
+		Format h263Fmt = new Format(VideoFormat.H263_RTP);
 
-        return (new VideoFormat(null, 
-                                new Dimension(width, height), 
-                                Format.NOT_SPECIFIED,
-                                null,
-                                Format.NOT_SPECIFIED)).intersects(supported);
-    }
+		if(supported.matches(jpegFmt)){
+			// For JPEG, make sure width and height are divisible by 8.
+			width = (size.width % 8 == 0
+					? size.width
+					: (int) (size.width / 8) * 8);
+			height = (size.height % 8 == 0
+					? size.height
+					: (int) (size.height / 8) * 8);
+		}else if(supported.matches(h263Fmt)){
+			// For H.263, we only support some specific sizes.
+			if(size.width < 128){
+				width = 128;
+				height = 96;
+			}else if(size.width < 176){
+				width = 176;
+				height = 144;
+			}else{
+				width = 352;
+				height = 288;
+			}
+		}else{
+			// We don't know this particular format. We'll just
+			// leave it alone then.
+			return supported;
+		}
 
+		return (new VideoFormat(null, new Dimension(width, height),
+				Format.NOT_SPECIFIED, null, Format.NOT_SPECIFIED))
+				.intersects(supported);
+	}
 
-    /**
-     * Setting the encoding quality to the specified value on the JPEG encoder.
-     * 0.5 is a good default.
-     */
-    void setJPEGQuality(Player p, float val) {
+	/**
+	 * Setting the encoding quality to the specified value on the JPEG encoder.
+	 * 0.5 is a good default.
+	 */
+	void setJPEGQuality(Player p, float val){
 
-        Control cs[] = p.getControls();
-        QualityControl qc = null;
-        VideoFormat jpegFmt = new VideoFormat(VideoFormat.JPEG);
+		Control cs[] = p.getControls();
+		QualityControl qc = null;
+		VideoFormat jpegFmt = new VideoFormat(VideoFormat.JPEG);
 
-        // Loop through the controls to find the Quality control for
-        // the JPEG encoder.
-        for (int i = 0; i < cs.length; i++) {
+		// Loop through the controls to find the Quality control for
+		// the JPEG encoder.
+		for(int i = 0; i < cs.length; i++){
 
-            if (cs[i] instanceof QualityControl &&
-                cs[i] instanceof Owned) {
-                Object owner = ((Owned)cs[i]).getOwner();
+			if(cs[i] instanceof QualityControl && cs[i] instanceof Owned){
+				Object owner = ((Owned) cs[i]).getOwner();
 
-                // Check to see if the owner is a Codec.
-                // Then check for the output format.
-                if (owner instanceof Codec) {
-                    Format fmts[] = ((Codec)owner).getSupportedOutputFormats(null);
-                    for (int j = 0; j < fmts.length; j++) {
-                        if (fmts[j].matches(jpegFmt)) {
-                            qc = (QualityControl)cs[i];
-                            qc.setQuality(val);
-                            //System.err.println("- Setting quality to " + 
-                              //          val + " on " + qc);
-                            break;
-                        }
-                    }
-                }
-                if (qc != null)
-                    break;
-            }
-        }
-    }
+				// Check to see if the owner is a Codec.
+				// Then check for the output format.
+				if(owner instanceof Codec){
+					Format fmts[] = ((Codec) owner)
+							.getSupportedOutputFormats(null);
+					for(int j = 0; j < fmts.length; j++){
+						if(fmts[j].matches(jpegFmt)){
+							qc = (QualityControl) cs[i];
+							qc.setQuality(val);
+							// System.err.println("- Setting quality to " +
+							// val + " on " + qc);
+							break;
+						}
+					}
+				}
+				if(qc != null)
+					break;
+			}
+		}
+	}
 
+	/****************************************************************
+	 * Convenience methods to handle processor's state changes.
+	 ****************************************************************/
 
-    /****************************************************************
-     * Convenience methods to handle processor's state changes.
-     ****************************************************************/
-    
-    private Integer stateLock = new Integer(0);
-    private boolean failed = false;
-    
-    Integer getStateLock() {
-        return stateLock;
-    }
+	private Integer	stateLock	= new Integer(0);
+	private boolean	failed		= false;
 
-    void setFailed() {
-        failed = true;
-    }
-    
-    private synchronized boolean waitForState(Processor p, int state) {
-        p.addControllerListener(new StateListener());
-        failed = false;
+	Integer getStateLock(){
+		return stateLock;
+	}
 
-        // Call the required method on the processor
-        if (state == Processor.Configured) {
-            p.configure();
-        } else if (state == Processor.Realized) {
-            p.realize();
-        }
-        
-        // Wait until we get an event that confirms the
-        // success of the method, or a failure event.
-        // See StateListener inner class
-        while (p.getState() < state && !failed) {
-            synchronized (getStateLock()) {
-                try {
-                    getStateLock().wait();
-                } catch (InterruptedException ie) {
-                    return false;
-                }
-            }
-        }
+	void setFailed(){
+		failed = true;
+	}
 
-        if (failed)
-            return false;
-        else
-            return true;
-    }
+	private synchronized boolean waitForState(Processor p, int state){
+		p.addControllerListener(new StateListener());
+		failed = false;
 
-    /****************************************************************
-     * Inner Classes
-     ****************************************************************/
+		// Call the required method on the processor
+		if(state == Processor.Configured){
+			p.configure();
+		}else if(state == Processor.Realized){
+			p.realize();
+		}
 
-    class StateListener implements ControllerListener {
+		// Wait until we get an event that confirms the
+		// success of the method, or a failure event.
+		// See StateListener inner class
+		while(p.getState() < state && !failed){
+			synchronized(getStateLock()){
+				try{
+					getStateLock().wait();
+				}catch(InterruptedException ie){
+					return false;
+				}
+			}
+		}
 
-        public void controllerUpdate(ControllerEvent ce) {
+		if(failed)
+			return false;
+		else
+			return true;
+	}
 
-            // If there was an error during configure or
-            // realize, the processor will be closed
-            if (ce instanceof ControllerClosedEvent)
-                setFailed();
+	/****************************************************************
+	 * Inner Classes
+	 ****************************************************************/
 
-            // All controller events, send a notification
-            // to the waiting thread in waitForState method.
-            if (ce instanceof ControllerEvent) {
-                synchronized (getStateLock()) {
-                    getStateLock().notifyAll();
-                }
-            }
-        }
-    }
+	class StateListener implements ControllerListener{
 
+		public void controllerUpdate(ControllerEvent ce){
 
-    /****************************************************************
-     * Sample Usage for AVTransmit class
-     ****************************************************************/
-    
-    /*public static void main(String [] args) {
-        // We need three parameters to do the transmission
-        // For example,
-        //   java AVTransmit file:/C:/media/test.mov  129.130.131.132 42050
-        
-        if (args.length < 3) {
-            prUsage();
-        }
+			// If there was an error during configure or
+			// realize, the processor will be closed
+			if(ce instanceof ControllerClosedEvent)
+				setFailed();
 
-        Format fmt = null;
-        int i = 0;
+			// All controller events, send a notification
+			// to the waiting thread in waitForState method.
+			if(ce instanceof ControllerEvent){
+				synchronized(getStateLock()){
+					getStateLock().notifyAll();
+				}
+			}
+		}
+	}
 
-        // Create a audio transmit object with the specified params.
-        AVTransmit at = new AVTransmit(new MediaLocator(args[i]),
-                                             args[i+1], args[i+2], fmt);
-        // Start the transmission
-        String result = at.start();
+	/****************************************************************
+	 * Sample Usage for AVTransmit class
+	 ****************************************************************/
 
-        // result will be non-null if there was an error. The return
-        // value is a String describing the possible error. Print it.
-        if (result != null) {
-            System.err.println("Error : " + result);
-            System.exit(0);
-        }
-        
-        System.err.println("Start transmission for 60 seconds...");
+	/*
+	 * public static void main(String [] args) { // We need three parameters to
+	 * do the transmission // For example, // java AVTransmit
+	 * file:/C:/media/test.mov 129.130.131.132 42050
+	 * 
+	 * if (args.length < 3) { prUsage(); }
+	 * 
+	 * Format fmt = null; int i = 0;
+	 * 
+	 * // Create a audio transmit object with the specified params. AVTransmit
+	 * at = new AVTransmit(new MediaLocator(args[i]), args[i+1], args[i+2],
+	 * fmt); // Start the transmission String result = at.start();
+	 * 
+	 * // result will be non-null if there was an error. The return // value is
+	 * a String describing the possible error. Print it. if (result != null) {
+	 * System.err.println("Error : " + result); System.exit(0); }
+	 * 
+	 * System.err.println("Start transmission for 60 seconds...");
+	 * 
+	 * // Transmit for 60 seconds and then close the processor // This is a
+	 * safeguard when using a capture data source // so that the capture device
+	 * will be properly released // before quitting. // The right thing to do
+	 * would be to have a GUI with a // "Stop" button that would call stop on
+	 * AVTransmit try { Thread.currentThread().sleep(60000); } catch
+	 * (InterruptedException ie) { }
+	 * 
+	 * // Stop the transmission at.stop();
+	 * 
+	 * System.err.println("...transmission ended.");
+	 * 
+	 * System.exit(0); }
+	 */
 
-        // Transmit for 60 seconds and then close the processor
-        // This is a safeguard when using a capture data source
-        // so that the capture device will be properly released
-        // before quitting.
-        // The right thing to do would be to have a GUI with a
-        // "Stop" button that would call stop on AVTransmit
-        try {
-            Thread.currentThread().sleep(60000);
-        } catch (InterruptedException ie) {
-        }
-
-        // Stop the transmission
-        at.stop();
-        
-        System.err.println("...transmission ended.");
-
-        System.exit(0);
-    }
-*/
-
-    static void prUsage() {
-        System.err.println("Usage: AVTransmit <sourceURL> <destIP> <destPortBase>");
-        System.err.println("     <sourceURL>: input URL or file name");
-        System.err.println("     <destIP>: multicast, broadcast or unicast IP address for the transmission");
-        System.err.println("     <destPortBase>: network port numbers for the transmission.");
-        System.err.println("                     The first track will use the destPortBase.");
-        System.err.println("                     The next track will use destPortBase + 2 and so on.\n");
-        System.exit(0);
-    }
+	static void prUsage(){
+		System.err
+				.println("Usage: AVTransmit <sourceURL> <destIP> <destPortBase>");
+		System.err.println("     <sourceURL>: input URL or file name");
+		System.err
+				.println("     <destIP>: multicast, broadcast or unicast IP address for the transmission");
+		System.err
+				.println("     <destPortBase>: network port numbers for the transmission.");
+		System.err
+				.println("                     The first track will use the destPortBase.");
+		System.err
+				.println("                     The next track will use destPortBase + 2 and so on.\n");
+		System.exit(0);
+	}
 }
-

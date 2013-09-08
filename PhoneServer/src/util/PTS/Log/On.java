@@ -1,5 +1,5 @@
 package util.PTS.Log;
 
-public class On {
+public class On{
 
 }

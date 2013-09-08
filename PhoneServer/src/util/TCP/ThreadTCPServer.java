@@ -9,16 +9,16 @@ import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ThreadTCPServer extends Thread {
+public class ThreadTCPServer extends Thread{
 
-	protected int serverPort;
-	protected ServerSocket serverSocket;
-	protected boolean isStopped;
-	protected Thread runningThread;
-	protected Vector<ThreadSingleTCPServer> threadSingleTCPServer;
-	protected Socket newClientConnection;
+	protected int							serverPort;
+	protected ServerSocket					serverSocket;
+	protected boolean						isStopped;
+	protected Thread						runningThread;
+	protected Vector<ThreadSingleTCPServer>	threadSingleTCPServer;
+	protected Socket						newClientConnection;
 
-	public ThreadTCPServer(int port) {
+	public ThreadTCPServer(int port){
 		this.serverPort = port;
 		this.serverSocket = null;
 		this.isStopped = false;
@@ -26,16 +26,16 @@ public class ThreadTCPServer extends Thread {
 		this.threadSingleTCPServer = new Vector<>();
 	}
 
-	public Vector<ThreadSingleTCPServer> getWorkerRunnable() {
+	public Vector<ThreadSingleTCPServer> getWorkerRunnable(){
 		return threadSingleTCPServer;
 	}
 
-	private void acceptConnection() {
+	private void acceptConnection(){
 		this.newClientConnection = null;
-		try {
+		try{
 			this.newClientConnection = this.serverSocket.accept();
-		} catch (IOException e) {
-			if (isStopped()) {
+		}catch(IOException e){
+			if(isStopped()){
 				System.out.println("Server Stopped.");
 				return;
 			}
@@ -43,27 +43,28 @@ public class ThreadTCPServer extends Thread {
 		}
 		addConnection();
 	}
-	
-	protected void addConnection() {
-		try {
+
+	protected void addConnection(){
+		try{
 			ThreadSingleTCPServer threadSingleTCPServerA;
-			threadSingleTCPServerA = new ThreadSingleTCPServer(newClientConnection);
+			threadSingleTCPServerA = new ThreadSingleTCPServer(
+					newClientConnection);
 			threadSingleTCPServerA.start();
 			this.threadSingleTCPServer.add(threadSingleTCPServerA);
-		} catch (IOException e) {
+		}catch(IOException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	protected void check() {
+
+	protected void check(){
 	}
-	
-	private void closeConnections() {
-		for (ThreadSingleTCPServer iterable_element : threadSingleTCPServer) {
-			try {
+
+	private void closeConnections(){
+		for(ThreadSingleTCPServer iterable_element : threadSingleTCPServer){
+			try{
 				iterable_element.close();
-			} catch (IOException e) {
+			}catch(IOException e){
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -71,26 +72,26 @@ public class ThreadTCPServer extends Thread {
 		System.out.println("Server Stopped.");
 	}
 
-	public void run() {
-		synchronized (this) {
+	public void run(){
+		synchronized(this){
 			this.runningThread = Thread.currentThread();
 		}
 		openServerSocket();
-		while (!isStopped()) {
+		while(!isStopped()){
 			acceptConnection();
 			check();
 		}
 		closeConnections();
 	}
 
-	private synchronized boolean isStopped() {
+	private synchronized boolean isStopped(){
 		return this.isStopped;
 	}
 
-	private void openServerSocket() {
-		try {
+	private void openServerSocket(){
+		try{
 			this.serverSocket = new ServerSocket(this.serverPort);
-		} catch (IOException e) {
+		}catch(IOException e){
 			throw new RuntimeException("Cannot open port 8080", e);
 		}
 	}

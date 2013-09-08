@@ -1,5 +1,5 @@
 package util.PTS.Log;
 
-public class Status {
+public class Status{
 
 }

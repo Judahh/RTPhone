@@ -1,5 +1,5 @@
 package util.PTS;
 
-public class PTSClientManager {
+public class PTSClientManager{
 
 }

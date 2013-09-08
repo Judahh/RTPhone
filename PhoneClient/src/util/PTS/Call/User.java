@@ -1,5 +1,5 @@
 package util.PTS.Call;
 
-public class User {
+public class User{
 
 }

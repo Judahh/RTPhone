@@ -7,40 +7,39 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import util.RTP.*;
 
-
-public class Main {
+public class Main{
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		// Phone phone = new Phone("localhost", 32766, 16384);
 		Phone phone = new Phone("localhost", 16384, 32766);
 		phone.start();
-		
-		try {
+
+		try{
 			// Set System L&F
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (UnsupportedLookAndFeelException e) {
+		}catch(UnsupportedLookAndFeelException e){
 			// handle exception
-		} catch (ClassNotFoundException e) {
+		}catch(ClassNotFoundException e){
 			// handle exception
-		} catch (InstantiationException e) {
+		}catch(InstantiationException e){
 			// handle exception
-		} catch (IllegalAccessException e) {
+		}catch(IllegalAccessException e){
 			// handle exception
 		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+		EventQueue.invokeLater(new Runnable(){
+			public void run(){
+				try{
 					LoginWindow window = new LoginWindow();
 					window.frame.setVisible(true);
-				} catch (Exception e) {
+				}catch(Exception e){
 					e.printStackTrace();
 				}
 			}
 		});
-		for (;;);
+		for(;;);
 	}
 
 }

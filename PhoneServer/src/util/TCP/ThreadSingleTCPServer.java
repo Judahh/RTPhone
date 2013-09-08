@@ -5,72 +5,72 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Vector;
 
-public class ThreadSingleTCPServer extends Thread {
+public class ThreadSingleTCPServer extends Thread{
 
-	protected Socket clientSocket;
-	protected Receiver receiver;
-	protected Sender sender;
+	protected Socket	clientSocket;
+	protected Receiver	receiver;
+	protected Sender	sender;
 
-	public ThreadSingleTCPServer(Socket clientSocket) throws IOException {
+	public ThreadSingleTCPServer(Socket clientSocket) throws IOException{
 		this.clientSocket = clientSocket;
 		this.receiver = new Receiver(clientSocket.getInputStream());
 		this.sender = new Sender(clientSocket.getOutputStream());
 	}
 
-	public Vector<String> getReceived() {
+	public Vector<String> getReceived(){
 		return this.receiver.getReceived();
 	}
-	
-	public void send(String toSend) throws IOException {
+
+	public void send(String toSend) throws IOException{
 		this.sender.send(toSend);
 	}
 
-	public InetAddress inetAddress() {
+	public InetAddress inetAddress(){
 		return this.clientSocket.getInetAddress();
 	}
 
-	public String address() {
+	public String address(){
 		return this.clientSocket.getInetAddress().toString();
 	}
 
-	public boolean isConnected() {
+	public boolean isConnected(){
 		return clientSocket.isConnected();
 	}
 
-	public void close() throws IOException {
+	public void close() throws IOException{
 		clientSocket.close();
 	}
-	
-	public String getBroadcast() {
+
+	public String getBroadcast(){
 		return new String();
 	}
 
-	public String getToCheck() {
+	public String getToCheck(){
 		return new String();
 	}
 
-	public String getUsername() {
+	public String getUsername(){
 		return new String();
 	}
 
-	public void setBroadcast(String broadcast) {
+	public void setBroadcast(String broadcast){
 	}
 
-	public void setToCheck(String toCheck) {
+	public void setToCheck(String toCheck){
 	}
 
-	public void setUsername(String username) {
+	public void setUsername(String username){
 	}
 
-	public void run() {
-		try {
+	public void run(){
+		try{
 			this.receiver.start();
 			this.sender.start();
-			while (clientSocket.isConnected());
+			while(clientSocket.isConnected());
 			this.sender.stop();
 			this.receiver.stop();
 			close();
-		} catch (IOException e) {
+		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}

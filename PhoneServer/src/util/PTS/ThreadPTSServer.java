@@ -4,36 +4,38 @@ import java.io.IOException;
 import java.util.Vector;
 import util.TCP.ThreadTCPServer;
 
-public class ThreadPTSServer extends ThreadTCPServer {
-	private Vector<String> userOn;
-	private Vector<String> userOff;
+public class ThreadPTSServer extends ThreadTCPServer{
+	private Vector<String>	userOn;
+	private Vector<String>	userOff;
 
-	public ThreadPTSServer(int port) {
+	public ThreadPTSServer(int port){
 		super(port);
-		this.userOn=new Vector<>();
-		this.userOff=new Vector<>();
+		this.userOn = new Vector<>();
+		this.userOff = new Vector<>();
 	}
 
-	public ThreadPTSServer() {
+	public ThreadPTSServer(){
 		super(9000);
-		this.userOn=new Vector<>();
-		this.userOff=new Vector<>();
+		this.userOn = new Vector<>();
+		this.userOff = new Vector<>();
 	}
 
 	@Override
-	protected void addConnection() {
-		try {
+	protected void addConnection(){
+		try{
 			ThreadSinglePTSServer ThreadSinglePTSServerA;
-			ThreadSinglePTSServerA = new ThreadSinglePTSServer(newClientConnection);
+			ThreadSinglePTSServerA = new ThreadSinglePTSServer(
+					newClientConnection);
 			ThreadSinglePTSServerA.start();
 			this.threadSingleTCPServer.add(ThreadSinglePTSServerA);
-		} catch (IOException e) {
+		}catch(IOException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
-	protected void check() {
+	protected void check(){
+		//TODO: Fazer todas as checagens e broadcasts aqui!!!
 	}
 }

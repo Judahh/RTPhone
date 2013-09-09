@@ -7,11 +7,11 @@ import java.net.UnknownHostException;
 import java.util.Vector;
 
 public class ClientTCP extends Thread{
-	private Socket			serverSocket;
-	private String			host;
-	private int				port;
-	private ThreadReceiver	threadReceiver;
-	private ThreadSender	threadSender;
+	protected Socket			serverSocket;
+	protected String			host;
+	protected int				port;
+	protected ThreadReceiver	threadReceiver;
+	protected ThreadSender	threadSender;
 
 	public ClientTCP(String host, int port) throws UnknownHostException,
 			IOException{
@@ -53,17 +53,28 @@ public class ClientTCP extends Thread{
 	public int getPort(){
 		return port;
 	}
+	
+	private void startClientTCP(){
+		this.threadReceiver.start();
+		this.threadSender.start();
+	}
 
 	public void run(){
+		startClientTCP();
+		while(serverSocket.isConnected()){
+			check();
+		}
+		this.threadSender.stop();
+		this.threadReceiver.stop();
 		try{
-			this.threadReceiver.start();
-			this.threadSender.start();
-			while(serverSocket.isConnected());
-			this.threadSender.stop();
-			this.threadReceiver.stop();
 			close();
 		}catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+
+	protected void check(){
+		// TODO Auto-generated method stub
+		
 	}
 }

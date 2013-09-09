@@ -1,6 +1,5 @@
 package util.PTS;
 
-import java.util.Iterator;
 import java.util.Vector;
 
 public class PTS{
@@ -125,5 +124,9 @@ public class PTS{
 		}
 		string += "<" + type + ">";
 		return string;
+	}
+
+	public void setType(String type){
+		this.type = type;
 	}
 }

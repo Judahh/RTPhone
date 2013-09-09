@@ -32,10 +32,12 @@ public class ThreadPTSServer extends ThreadTCPServer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// OBS: isso fica num loop que roda no ran da classe ThreadTCPServer
 	}
 
 	@Override
 	protected void check(){
 		//TODO: Fazer todas as checagens e broadcasts aqui!!!
+		// OBS: isso fica num loop que roda no ran da classe ThreadTCPServer
 	}
 }

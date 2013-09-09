@@ -1,7 +1,7 @@
 package view.TCP;
 import java.io.IOException;
 
-import util.TCP.ClientTCP;
+import util.TCP.ThreadTCPClient;
 
 public class Main{
 
@@ -12,7 +12,7 @@ public class Main{
 	 */
 	public static void main(String[] args) throws IOException,
 			InterruptedException{
-		ClientTCP clientTCP = new ClientTCP("localhost", 9000);
+		ThreadTCPClient clientTCP = new ThreadTCPClient("localhost", 9000);
 		clientTCP.start();
 
 		for(int i = 0;; i++){

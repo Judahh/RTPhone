@@ -6,14 +6,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
-public class ClientTCP extends Thread{
+public class ThreadTCPClient extends Thread{
 	protected Socket			serverSocket;
 	protected String			host;
 	protected int				port;
 	protected ThreadReceiver	threadReceiver;
 	protected ThreadSender	threadSender;
 
-	public ClientTCP(String host, int port) throws UnknownHostException,
+	public ThreadTCPClient(String host, int port) throws UnknownHostException,
 			IOException{
 		this.host = host;
 		this.port = port;// 6789

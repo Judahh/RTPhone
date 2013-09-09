@@ -39,5 +39,23 @@ public class ThreadPTSServer extends ThreadTCPServer{
 	protected void check(){
 		//TODO: Fazer todas as checagens e broadcasts aqui!!!
 		// OBS: isso fica num loop que roda no ran da classe ThreadTCPServer
+		checkLogin();
+		checkRegister();
+		checkBroadcast();
+	}
+
+	private void checkBroadcast(){
+		//TODO: Fazer todas as checagens de broadcasts aqui!!!
+		
+	}
+
+	private void checkRegister(){
+		//TODO: Fazer todas as checagens de registros aqui!!!
+		
+	}
+
+	private void checkLogin(){
+		//TODO: Fazer todas as checagens de login aqui!!!
+		
 	}
 }

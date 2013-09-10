@@ -61,6 +61,36 @@ public class ThreadSingleTCPServer extends Thread{
 
 	public void setUsername(String username){
 	}
+	
+	public void clearBroadcast(){
+	}
+
+	public void clearToCheck(){
+	}
+
+	public void clearUsername(){
+	}
+	
+	public void setLogin(boolean login){
+	}
+	
+	public void setRegister(boolean register){
+	}
+	
+	public boolean isLogin(){
+		return false;
+	}
+	
+	public boolean isRegister(){
+		return false;
+	}
+	
+	public void setOn(boolean on){
+	}
+	
+	public boolean isOn(){
+		return false;
+	}
 
 	public void run(){
 		try{

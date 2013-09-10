@@ -3,13 +3,19 @@ package util.PTS;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Vector;
+import java.util.logging.LoggingPermission;
 
+import util.PTS.Call.Call;
+import util.PTS.Log.Log;
 import util.TCP.ThreadSingleTCPServer;
 
 public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 
 	private String	broadcast;
 	private String	toCheck;
+	private boolean	login;
+	private boolean	on;
+	private boolean	register;
 	private String	username;
 
 	public ThreadSinglePTSServer(Socket clientSocket) throws IOException{
@@ -17,6 +23,9 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 		this.broadcast = new String();
 		this.toCheck = new String();
 		this.username = new String();
+		this.login = false;
+		this.register = false;
+		this.on = false;
 	}
 
 	public String getBroadcast(){
@@ -43,8 +52,52 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 		this.username = username;
 	}
 
+	public void clearBroadcast(){
+		this.broadcast = new String();
+	}
+
+	public void clearToCheck(){
+		this.toCheck = new String();
+	}
+
+	public void clearUsername(){
+		this.username = new String();
+	}
+
+	public void setLogin(boolean login){
+		this.login = login;
+	}
+	
+	public void setRegister(boolean register){
+		this.register = register;
+	}
+	
+	public boolean isLogin(){
+		return login;
+	}
+	
+	public boolean isRegister(){
+		return register;
+	}
+	
+	public void setOn(boolean on){
+		this.on = on;
+	}
+	
+	public boolean isOn(){
+		return on;
+	}
+
 	protected void check(){
 		// TODO: Fazer todas as checagens aqui!!!
+		if(this.login){
+			setBroadcast(Log.getLog(username, true));
+			this.on = true;
+		}
+
+		if(this.register){
+			setBroadcast(Log.getLog(username, false));
+		}
 	}
 
 	@Override
@@ -58,99 +111,23 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 					PTS pts = new PTS(received.get(index));
 					switch(pts.getType()){
 						case "log":
-							// TODO: Isto tem que ser feito na classe Log
-							if(!pts.isValue()){
-								switch(pts.getPts().get(0).getType()){
-									case "in":
-										// TODO: Isto tem que ser feito na
-										// classe In
-										this.toCheck = pts.toString();// manda
-																		// checar
-																		// se
-																		// existe
-																		// esse
-																		// usuário
-																		// para
-																		// poder
-																		// se
-																		// logar
-									break;
-
-									case "on":
-										// TODO: Isto tem que ser feito na
-										// classe On
-										this.toCheck = pts.toString();// manda
-																		// checar
-																		// se
-																		// existe
-																		// esse
-																		// usuário
-																		// para
-																		// poder
-																		// se
-																		// registrar
-									break;
-
-									case "off":
-										// TODO: Isto tem que ser feito na
-										// classe Off
-										PTS ptsTemp = new PTS();
-										ptsTemp.setType("log");
-										ptsTemp.setValue("ok");
-										if(pts.getPts().get(0).getValue()
-												.equals(this.username)){
-											this.threadSender.send(ptsTemp
-													.toString());// TODO:
-																	// Isto
-																	// tem
-																	// que
-																	// ser
-																	// feito
-																	// na
-																	// classe
-																	// Off
-																	// repassado
-																	// para
-																	// classe
-																	// Log
-																	// e
-																	// repassado
-																	// para
-																	// esta
-																	// tudo
-																	// de
-																	// forma
-																	// semelhande
-																	// como
-																	// é
-																	// repassado
-																	// nestas
-																	// classes:
-																	// da
-																	// ThreadSender
-																	// e
-																	// ThreadReceiver
-																	// para
-																	// ThreadSingleTCPServer
-																	// e dela
-																	// para
-																	// ThreadTCPServer
-											this.broadcast = (pts.toString());// envia
-																				// broadcast
-																				// do
-																				// usuário
-																				// que
-																				// saiu;
-										}
-									break;
-
-									default:
-									break;
-								}
+							Log log = new Log(pts);
+							setBroadcast(log.getBroadcast());
+							setToCheck(log.getToCheck());
+							if(!log.getUsername().isEmpty()){
+								setUsername(log.getUsername());
+							}
+							if(!log.getToSend().isEmpty()){
+								send(log.getToSend());
 							}
 						break;
 						case "call":
-							// TODO: fazer de forma semelhante ao Log
+							Call call = new Call(pts);
+							setBroadcast(call.getBroadcast());
+							setToCheck(call.getToCheck());
+							if(!call.getToSend().isEmpty()){
+								send(call.getToSend());
+							}
 					}
 					check();
 				}

@@ -11,7 +11,7 @@ public class Off extends Log{
 	protected void start(){
 		if(pts.getPts().get(0).getValue().equals(this.username)){
 			toSend = (Status.getOk());
-			this.broadcast = (pts.toString());
+			this.broadcast.add(pts.toString());
 		}
 	}
 }

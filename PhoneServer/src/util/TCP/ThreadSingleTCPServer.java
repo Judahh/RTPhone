@@ -41,22 +41,22 @@ public class ThreadSingleTCPServer extends Thread{
 		clientSocket.close();
 	}
 
-	public String getBroadcast(){
-		return new String();
+	public Vector<String> getBroadcast(){
+		return new Vector<>();
 	}
 
-	public String getToCheck(){
-		return new String();
+	public Vector<String> getToCheck(){
+		return new Vector<>();
 	}
 
 	public String getUsername(){
 		return new String();
 	}
 
-	public void setBroadcast(String broadcast){
+	public void addBroadcast(String broadcast){
 	}
 
-	public void setToCheck(String toCheck){
+	public void addToCheck(String toCheck){
 	}
 
 	public void setUsername(String username){

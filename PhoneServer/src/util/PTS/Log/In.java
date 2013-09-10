@@ -18,7 +18,8 @@ public class In extends Log{
 	}
 
 	protected void start(){
-		this.toCheck = pts.toString();
-		
+		if(!pts.toString().isEmpty()){
+			this.toCheck.add(pts.toString());
+		}
 	}
 }

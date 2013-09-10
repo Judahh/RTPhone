@@ -11,8 +11,8 @@ import util.TCP.ThreadSingleTCPServer;
 
 public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 
-	private String	broadcast;
-	private String	toCheck;
+	private Vector<String>	broadcast;
+	private Vector<String>	toCheck;
 	private boolean	login;
 	private boolean	on;
 	private boolean	register;
@@ -20,19 +20,19 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 
 	public ThreadSinglePTSServer(Socket clientSocket) throws IOException{
 		super(clientSocket);
-		this.broadcast = new String();
-		this.toCheck = new String();
+		this.broadcast = new Vector<>();
+		this.toCheck = new Vector<>();
 		this.username = new String();
 		this.login = false;
 		this.register = false;
 		this.on = false;
 	}
 
-	public String getBroadcast(){
+	public Vector<String> getBroadcast(){
 		return broadcast;
 	}
 
-	public String getToCheck(){
+	public Vector<String> getToCheck(){
 		return toCheck;
 	}
 
@@ -40,12 +40,20 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 		return username;
 	}
 
-	public void setBroadcast(String broadcast){
-		this.broadcast = broadcast;
+	public void addBroadcast(String broadcast){
+		this.broadcast.add(broadcast);
 	}
 
-	public void setToCheck(String toCheck){
-		this.toCheck = toCheck;
+	public void addToCheck(String toCheck){
+		this.toCheck.add(toCheck);
+	}
+	
+	public void addBroadcast(Vector<String> broadcast){
+		this.broadcast.addAll(broadcast);
+	}
+
+	public void addToCheck(Vector<String> toCheck){
+		this.toCheck.addAll(toCheck);
 	}
 
 	public void setUsername(String username){
@@ -53,11 +61,11 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 	}
 
 	public void clearBroadcast(){
-		this.broadcast = new String();
+		this.broadcast = new Vector<>();
 	}
 
 	public void clearToCheck(){
-		this.toCheck = new String();
+		this.toCheck = new Vector<>();
 	}
 
 	public void clearUsername(){
@@ -91,12 +99,12 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 	protected void check(){
 		// TODO: Fazer todas as checagens aqui!!!
 		if(this.login){
-			setBroadcast(Log.getLog(username, true));
+			addBroadcast(Log.getLog(username, true));
 			this.on = true;
 		}
 
 		if(this.register){
-			setBroadcast(Log.getLog(username, false));
+			addBroadcast(Log.getLog(username, false));
 		}
 	}
 
@@ -112,8 +120,8 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 					switch(pts.getType()){
 						case "log":
 							Log log = new Log(pts);
-							setBroadcast(log.getBroadcast());
-							setToCheck(log.getToCheck());
+							addBroadcast(log.getBroadcast());
+							addToCheck(log.getToCheck());
 							if(!log.getUsername().isEmpty()){
 								setUsername(log.getUsername());
 							}
@@ -123,8 +131,8 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 						break;
 						case "call":
 							Call call = new Call(pts);
-							setBroadcast(call.getBroadcast());
-							setToCheck(call.getToCheck());
+							addBroadcast(call.getBroadcast());
+							addToCheck(call.getToCheck());
 							if(!call.getToSend().isEmpty()){
 								send(call.getToSend());
 							}

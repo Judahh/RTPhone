@@ -18,8 +18,12 @@ public class On extends Log{
 	}
 
 	protected void start(){
-		this.toCheck = pts.toString();
-		this.username = pts.getPts().get(0).getValue();
+		if(!pts.toString().isEmpty()){
+			this.toCheck.add(pts.toString());
+		}
+		if(!pts.getPts().get(0).getValue().isEmpty()){
+			this.username = pts.getPts().get(0).getValue();
+		}
 	}
 	
 	public static PTS getOn(String username,boolean isConnected){

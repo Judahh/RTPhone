@@ -11,19 +11,16 @@ import util.TCP.ThreadSingleTCPServer;
 import util.TCP.ThreadTCPServer;
 
 public class ThreadPTSServer extends ThreadTCPServer{
-	private Vector<String>	userOn;
-	private Vector<String>	userOff;
+	private Vector<String>	resgistered;
 
 	public ThreadPTSServer(int port){
 		super(port);
-		this.userOn = new Vector<>();
-		this.userOff = new Vector<>();
+		this.resgistered = new Vector<>();
 	}
 
 	public ThreadPTSServer(){
 		super(9000);
-		this.userOn = new Vector<>();
-		this.userOff = new Vector<>();
+		this.resgistered = new Vector<>();
 	}
 
 	@Override
@@ -69,37 +66,67 @@ public class ThreadPTSServer extends ThreadTCPServer{
 	private void checkRegister(){
 		// TODO: Fazer todas as checagens de registros aqui!!!
 		for(ThreadSingleTCPServer iterable_element : threadSingleTCPServer){
-			if(new On(new PTS(iterable_element.getToCheck())).isOn()){
-				for(ThreadSingleTCPServer iterable_element2 : threadSingleTCPServer){
-					if(!iterable_element.equals(iterable_element2)){
+
+			for(int index = 0; index < iterable_element.getToCheck().size();){
+				if(new On(new PTS(iterable_element.getToCheck().get(0))).isOn()){
+					boolean ok = true;
+					for(String iterable_element2 : resgistered){
 						if(iterable_element.getUsername().equals(
-								iterable_element2.getUsername())){
+								iterable_element2)){
 							try{
 								iterable_element.send(Status.getError());
+								ok = false;
 								break;
 							}catch(IOException e){
 								e.printStackTrace();
 							}
 						}
 					}
-				}
-				try{
-					iterable_element.send(Status.getOk());
-					PTS ptsTemp=Log.getLog();
-					for(ThreadSingleTCPServer iterable_element2 : threadSingleTCPServer){
-						if(iterable_element2.isConnected()){
-							ptsTemp.addValue(On.getOn(iterable_element2.getUsername(), iterable_element2.isOn()));
-						}else{
-							ptsTemp.addValue(On.getOn(iterable_element2.getUsername(), iterable_element2.isConnected()));
+
+					if(ok){
+						try{
+							resgistered.add(iterable_element.getUsername());
+							iterable_element.send(Status.getOk());
+						}catch(IOException e){
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 					}
-					iterable_element.send(ptsTemp.toString());
-					iterable_element.clearToCheck();
-					iterable_element.setRegister(true);
-				}catch(IOException e){
-					e.printStackTrace();
+
+					try{
+						iterable_element.send(Status.getOk());
+						PTS ptsTemp = Log.getLog();
+						Vector<String> on = new Vector<String>();
+						for(ThreadSingleTCPServer iterable_element2 : threadSingleTCPServer){
+							if(iterable_element2.isConnected()){
+								ptsTemp.addValue(On.getOn(
+										iterable_element2.getUsername(),
+										iterable_element2.isOn()));
+								on.add(iterable_element2.getUsername());
+							}
+						}
+						for(String iterable_element2 : resgistered){
+							ok = true;
+							for(String iterable_element3 : on){
+								if(iterable_element2.equals(iterable_element3)){
+									ok = false;
+									break;
+								}
+							}
+							if(ok){
+								ptsTemp.addValue(On.getOn(iterable_element2,
+										false));
+							}
+						}
+						iterable_element.send(ptsTemp.toString());
+						iterable_element.getToCheck().remove(0);
+						iterable_element.setRegister(true);
+					}catch(IOException e){
+						e.printStackTrace();
+					}
 				}
 			}
+
 		}
 	}
 
@@ -122,12 +149,16 @@ public class ThreadPTSServer extends ThreadTCPServer{
 				}
 				try{
 					iterable_element.send(Status.getOk());
-					PTS ptsTemp=Log.getLog();
+					PTS ptsTemp = Log.getLog();
 					for(ThreadSingleTCPServer iterable_element2 : threadSingleTCPServer){
 						if(iterable_element2.isConnected()){
-							ptsTemp.addValue(On.getOn(iterable_element2.getUsername(), iterable_element2.isOn()));
+							ptsTemp.addValue(On.getOn(
+									iterable_element2.getUsername(),
+									iterable_element2.isOn()));
 						}else{
-							ptsTemp.addValue(On.getOn(iterable_element2.getUsername(), iterable_element2.isConnected()));
+							ptsTemp.addValue(On.getOn(
+									iterable_element2.getUsername(),
+									iterable_element2.isConnected()));
 						}
 					}
 					iterable_element.send(ptsTemp.toString());

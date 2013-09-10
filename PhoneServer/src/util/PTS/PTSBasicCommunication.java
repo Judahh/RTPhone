@@ -1,30 +1,32 @@
 package util.PTS;
 
+import java.util.Vector;
+
 public class PTSBasicCommunication{
 	protected PTS		pts;
-	protected String	broadcast;
-	protected String	toCheck;
+	protected Vector<String>	broadcast;
+	protected Vector<String>	toCheck;
 	protected String	username;
 	protected String	toSend;
 	
 	public PTSBasicCommunication(){
 		this.pts = new PTS();
 		this.toSend = new String();
-		this.broadcast = new String();
-		this.toCheck = new String();
+		this.broadcast = new Vector<>();
+		this.toCheck = new Vector<>();
 		this.username = new String();
 	}
 
 	public PTSBasicCommunication(PTS pts){
 		this.pts = new PTS();
 		this.toSend = new String();
-		this.broadcast = new String();
-		this.toCheck = new String();
+		this.broadcast = new Vector<>();
+		this.toCheck = new Vector<>();
 		this.username = new String();
 		start();
 	}
 
-	public String getBroadcast(){
+	public Vector<String> getBroadcast(){
 		return broadcast;
 	}
 
@@ -32,7 +34,7 @@ public class PTSBasicCommunication{
 		return pts;
 	}
 
-	public String getToCheck(){
+	public Vector<String> getToCheck(){
 		return toCheck;
 	}
 
@@ -44,16 +46,24 @@ public class PTSBasicCommunication{
 		return username;
 	}
 	
-	protected void setBroadcast(String broadcast){
-		this.broadcast = broadcast;
+	protected void addBroadcast(String broadcast){
+		this.broadcast.add(broadcast);
+	}
+	
+	protected void addBroadcast(Vector<String> broadcast){
+		this.broadcast.addAll(broadcast);
 	}
 	
 	protected void setPts(PTS pts){
 		this.pts = pts;
 	}
 	
-	protected void setToCheck(String toCheck){
-		this.toCheck = toCheck;
+	protected void addToCheck(String toCheck){
+		this.toCheck.add(toCheck);
+	}
+	
+	protected void addToCheck(Vector<String> toCheck){
+		this.toCheck.addAll(toCheck);
 	}
 	
 	protected void setToSend(String toSend){

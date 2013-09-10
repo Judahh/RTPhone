@@ -9,6 +9,7 @@ public class On extends Log{
 	}
 
 	public boolean isOn(){
+//		System.out.println("isOn");
 		if(pts.getType().equals("log")){
 			if(pts.getPts().get(0).getType().equals("on")){
 				return true;

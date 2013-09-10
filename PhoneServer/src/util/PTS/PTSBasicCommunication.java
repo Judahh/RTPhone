@@ -18,7 +18,7 @@ public class PTSBasicCommunication{
 	}
 
 	public PTSBasicCommunication(PTS pts){
-		this.pts = new PTS();
+		this.pts = pts;
 		this.toSend = new String();
 		this.broadcast = new Vector<>();
 		this.toCheck = new Vector<>();

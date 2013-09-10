@@ -13,6 +13,7 @@ public class ThreadTCPServer extends Thread{
 	protected Thread						runningThread;
 	protected Vector<ThreadSingleTCPServer>	threadSingleTCPServer;
 	protected Socket						newClientConnection;
+	protected ThreadTCPChecker				threadTCPChecker;
 
 	public ThreadTCPServer(int port){
 		this.serverPort = port;
@@ -20,10 +21,7 @@ public class ThreadTCPServer extends Thread{
 		this.isStopped = false;
 		this.runningThread = null;
 		this.threadSingleTCPServer = new Vector<>();
-	}
-
-	public Vector<ThreadSingleTCPServer> getWorkerRunnable(){
-		return threadSingleTCPServer;
+		this.threadTCPChecker= new ThreadTCPChecker(this);
 	}
 
 	private void acceptConnection(){
@@ -53,8 +51,9 @@ public class ThreadTCPServer extends Thread{
 		}
 	}
 
-	protected void check(){
-	}
+//	protected void check(){
+//
+//	}
 
 	private void closeConnections(){
 		for(ThreadSingleTCPServer iterable_element : threadSingleTCPServer){
@@ -73,14 +72,15 @@ public class ThreadTCPServer extends Thread{
 			this.runningThread = Thread.currentThread();
 		}
 		openServerSocket();
+		this.threadTCPChecker.start();
 		while(!isStopped()){
 			acceptConnection();
-			check();
+//			check();
 		}
 		closeConnections();
 	}
 
-	private synchronized boolean isStopped(){
+	public synchronized boolean isStopped(){
 		return this.isStopped;
 	}
 
@@ -90,5 +90,18 @@ public class ThreadTCPServer extends Thread{
 		}catch(IOException e){
 			throw new RuntimeException("Cannot open port 8080", e);
 		}
+	}
+	
+	public Vector<ThreadSingleTCPServer> getThreadSingleTCPServer(){
+		// TODO Auto-generated method stub
+		return this.threadSingleTCPServer;
+	}
+
+	public Vector<String> getLogged(){
+		return new Vector<>();
+	}
+
+	public Vector<String> getResgistered(){
+		return new Vector<>();
 	}
 }

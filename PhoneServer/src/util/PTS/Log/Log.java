@@ -38,6 +38,7 @@ public class Log extends PTSBasicCommunication{
 
 	protected void start(){
 		if(!pts.isValue()){
+//			System.out.println("received:"+pts.toString());
 			switch(pts.getPts().get(0).getType()){
 				case "in":
 					In in = new In(pts);

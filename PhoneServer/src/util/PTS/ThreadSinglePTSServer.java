@@ -13,10 +13,10 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 
 	private Vector<String>	broadcast;
 	private Vector<String>	toCheck;
-	private boolean	login;
-	private boolean	on;
-	private boolean	register;
-	private String	username;
+	private boolean			login;
+	private boolean			on;
+	private boolean			register;
+	private String			username;
 
 	public ThreadSinglePTSServer(Socket clientSocket) throws IOException{
 		super(clientSocket);
@@ -47,7 +47,7 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 	public void addToCheck(String toCheck){
 		this.toCheck.add(toCheck);
 	}
-	
+
 	public void addBroadcast(Vector<String> broadcast){
 		this.broadcast.addAll(broadcast);
 	}
@@ -75,23 +75,23 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 	public void setLogin(boolean login){
 		this.login = login;
 	}
-	
+
 	public void setRegister(boolean register){
 		this.register = register;
 	}
-	
+
 	public boolean isLogin(){
 		return login;
 	}
-	
+
 	public boolean isRegister(){
 		return register;
 	}
-	
+
 	public void setOn(boolean on){
 		this.on = on;
 	}
-	
+
 	public boolean isOn(){
 		return on;
 	}
@@ -116,26 +116,35 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 			while(clientSocket.isConnected()){
 				Vector<String> received = getReceived();
 				for(int index = 0; index < received.size(); index++){
-					PTS pts = new PTS(received.get(index));
-					switch(pts.getType()){
-						case "log":
-							Log log = new Log(pts);
-							addBroadcast(log.getBroadcast());
-							addToCheck(log.getToCheck());
-							if(!log.getUsername().isEmpty()){
-								setUsername(log.getUsername());
-							}
-							if(!log.getToSend().isEmpty()){
-								send(log.getToSend());
-							}
-						break;
-						case "call":
-							Call call = new Call(pts);
-							addBroadcast(call.getBroadcast());
-							addToCheck(call.getToCheck());
-							if(!call.getToSend().isEmpty()){
-								send(call.getToSend());
-							}
+					if(!received.get(index).isEmpty()){
+						System.out.println("all received:"
+								+ received.get(index) + "fim");
+						PTS pts = new PTS(received.get(index));
+						System.out
+								.println("all received pts:" + pts.toString());
+						switch(pts.getType()){
+							case "log":
+								Log log = new Log(pts);
+								addBroadcast(log.getBroadcast());
+								addToCheck(log.getToCheck());
+								System.out.println("to check:"+log.getToCheck());
+								if(!log.getUsername().isEmpty()){
+									setUsername(log.getUsername());
+								}
+								if(!log.getToSend().isEmpty()){
+									System.out.println("to send:"
+											+ log.getToSend());
+									send(log.getToSend());
+								}
+							break;
+							case "call":
+								Call call = new Call(pts);
+								addBroadcast(call.getBroadcast());
+								addToCheck(call.getToCheck());
+								if(!call.getToSend().isEmpty()){
+									send(call.getToSend());
+								}
+						}
 					}
 					check();
 				}

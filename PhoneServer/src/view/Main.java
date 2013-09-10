@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import util.PTS.ThreadPTSServer;
 import util.TCP.ThreadTCPServer;
 
 public class Main{
@@ -41,19 +42,19 @@ public class Main{
 		// }
 		// });
 
-		ThreadTCPServer server = new ThreadTCPServer(9000);
-		new Thread(server).start();
+		ThreadPTSServer server = new ThreadPTSServer(9000);
+		server.start();
 
-		for(int i = 0;; i++){
+//		for(int i = 0;; i++){
 			// Thread.sleep(1);
-			for(int index = 0; index < server.getWorkerRunnable().size(); index++){
-				Thread.sleep(1);
-				System.out.println("sent from serverMain: Test" + i + " of "
-						+ index + "Thread");
-				server.getWorkerRunnable().get(index)
-						.send("Test" + i + " of " + index + "Thread");
-			}
-		}
+//			for(int index = 0; index < server.getWorkerRunnable().size(); index++){
+//				Thread.sleep(1);
+//				System.out.println("sent from serverMain: Test" + i + " of "
+//						+ index + "Thread");
+//				server.getWorkerRunnable().get(index)
+//						.send("Test" + i + " of " + index + "Thread");
+//			}
+//		}
 	}
 
 }

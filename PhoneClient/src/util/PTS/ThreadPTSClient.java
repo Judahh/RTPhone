@@ -80,6 +80,11 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.threadSender.send(Log.getLogin(username).toString());
 		this.toCheckLogin = true;
 	}
+	
+	public void logoff() throws IOException{
+		this.threadSender.send(Log.getLogoff(username).toString());
+		this.toCheckLogin = false;
+	}
 
 	public void register(String username) throws IOException{
 		this.threadSender.send(Log.getLogon(username).toString());

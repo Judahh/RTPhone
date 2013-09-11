@@ -4,17 +4,20 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
+import util.PTS.Log.In;
 import util.TCP.ThreadTCPClient;
 
 public class PTSClientManager extends ThreadTCPClient{
 	private Vector<String>	userOn;
 	private Vector<String>	userOff;
+	private String			username;
 
 	public PTSClientManager(String host, int port) throws UnknownHostException,
 			IOException{
 		super(host, port);
 		this.userOn = new Vector<>();
 		this.userOff = new Vector<>();
+		this.username = new String();
 	}
 
 	public PTSClientManager(String host) throws UnknownHostException,
@@ -22,19 +25,16 @@ public class PTSClientManager extends ThreadTCPClient{
 		super(host, 9000);
 		this.userOn = new Vector<>();
 		this.userOff = new Vector<>();
+		this.username = new String();
 	}
 
 	public void login(String username) throws IOException{
-		PTS pts = new PTS();// TODO: colocar isto na classe Log
-		pts.setType("log");
-
-		PTS ptsTemp = new PTS();// TODO: colocar isto na classe In que fica
-								// dentro da Log
-		ptsTemp.setType("in");
-		ptsTemp.setValue(username);
-
-		pts.setValue(ptsTemp);
-		this.threadSender.send(pts.toString());
+		this.threadSender.send(In.getLogin(username));
+		this.username = username;
+	}
+	
+	public void login() throws IOException{
+		this.threadSender.send(In.getLogin(username));
 	}
 
 	public void register(String username) throws IOException{
@@ -47,11 +47,12 @@ public class PTSClientManager extends ThreadTCPClient{
 		ptsTemp.setValue(username);
 
 		pts.setValue(ptsTemp);
+		this.username = username;
 		this.threadSender.send(pts.toString());
 	}
 
 	public void call(String username) throws IOException{
-		PTS pts = new PTS();// TODO: colocar isto na classe Log
+		PTS pts = new PTS();// TODO: colocar isto na classe call
 		pts.setType("call");
 
 		PTS ptsTemp = new PTS();// TODO: colocar isto na classe On que fica
@@ -64,7 +65,7 @@ public class PTSClientManager extends ThreadTCPClient{
 	}
 
 	public void call(int index) throws IOException{
-		PTS pts = new PTS();// TODO: colocar isto na classe Log
+		PTS pts = new PTS();// TODO: colocar isto na classe call
 		pts.setType("call");
 
 		PTS ptsTemp = new PTS();// TODO: colocar isto na classe On que fica

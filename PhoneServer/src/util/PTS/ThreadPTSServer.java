@@ -8,7 +8,6 @@ import util.PTS.Log.Log;
 import util.PTS.Log.On;
 import util.PTS.Log.Status;
 import util.TCP.ThreadSingleTCPServer;
-import util.TCP.ThreadTCPChecker;
 import util.TCP.ThreadTCPServer;
 
 public class ThreadPTSServer extends ThreadTCPServer{

@@ -16,6 +16,15 @@ public class In extends Log{
 		}
 		return false;
 	}
+	
+	public static PTS getLogin(String username){
+		PTS ptsTemp = new PTS();// TODO: colocar isto na classe In que fica
+								// dentro da Log
+		ptsTemp.setType("in");
+		ptsTemp.setValue(username);
+
+		return ptsTemp;
+	}
 
 	protected void start(){
 		if(!pts.toString().isEmpty()){

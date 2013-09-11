@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
-import util.PTS.Log.In;
-import util.PTS.Log.On;
-import util.PTS.Log.Status;
+import util.PTS.Call.Call;
+import util.PTS.Log.Log;
 import util.TCP.ThreadTCPClient;
 
 public class ThreadPTSClient extends ThreadTCPClient{
@@ -15,6 +14,7 @@ public class ThreadPTSClient extends ThreadTCPClient{
 	private String			username;
 	private boolean			toCheckLogin;
 	private boolean			toCheckRegister;
+	private boolean			toCheckCall;
 	private boolean			logged;
 	private boolean			registered;
 
@@ -26,6 +26,7 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.username = new String();
 		this.toCheckLogin = false;
 		this.toCheckRegister = false;
+		this.toCheckCall = false;
 		this.logged = false;
 		this.registered = false;
 	}
@@ -66,45 +67,32 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		return toCheckRegister;
 	}
 
+	public boolean isToCheckCall(){
+		return toCheckCall;
+	}
+
 	public void login(String username) throws IOException{
 		this.username = username;
 		login();
 	}
 
 	public void login() throws IOException{
-		this.threadSender.send(In.getLogin(username));
+		this.threadSender.send(Log.getLogin(username).toString());
 		this.toCheckLogin = true;
 	}
 
 	public void register(String username) throws IOException{
-		this.threadSender.send(On.getLogon(username));
+		this.threadSender.send(Log.getLogon(username).toString());
 		this.toCheckRegister = true;
 	}
 
 	public void call(String username) throws IOException{
-		PTS pts = new PTS();// TODO: colocar isto na classe call
-		pts.setType("call");
-
-		PTS ptsTemp = new PTS();// TODO: colocar isto na classe On que fica
-								// dentro da Log
-		ptsTemp.setType("user");
-		ptsTemp.setValue(username);
-
-		pts.setValue(ptsTemp);
-		this.threadSender.send(pts.toString());
+		this.threadSender.send(Call.call(username).toString());
+		this.toCheckCall = true;
 	}
 
 	public void call(int index) throws IOException{
-		PTS pts = new PTS();// TODO: colocar isto na classe call
-		pts.setType("call");
-
-		PTS ptsTemp = new PTS();// TODO: colocar isto na classe On que fica
-								// dentro da Log
-		ptsTemp.setType("user");
-		ptsTemp.setValue(userOn.get(index));
-
-		pts.setValue(ptsTemp);
-		this.threadSender.send(pts.toString());
+		call(userOn.get(index));
 	}
 
 	protected void check(){
@@ -114,42 +102,54 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		Vector<String> received = this.getReceived();
 		for(int index = 0; index < received.size(); index++){
 			if(this.toCheckLogin){
-				if(received.get(index).equals(Status.getOk())){
+				if(received.get(index).equals(Log.getOk())){
 					this.toCheckLogin = false;
 					this.logged = true;
 				}
 
-				if(received.get(index).equals(Status.getError())){
+				if(received.get(index).equals(Log.getError())){
 					this.toCheckLogin = false;
 				}
 			}
 
 			if(this.toCheckRegister){
-				if(received.get(index).equals(Status.getOk())){
+				if(received.get(index).equals(Log.getOk())){
 					this.toCheckRegister = false;
 					this.registered = true;
 				}
 
-				if(received.get(index).equals(Status.getError())){
+				if(received.get(index).equals(Log.getError())){
 					this.toCheckRegister = false;
 				}
 			}
+			
+			if(this.toCheckCall){
+//				if(received.get(index).equals(CallStatus.getOk())){
+//					this.toCheckRegister = false;
+//					this.registered = true;
+//				}
+
+				if(received.get(index).equals(Call.getError())){
+					this.toCheckRegister = false;
+				}
+			}
+
 			PTS tempPts = new PTS(received.get(index));
 			if(tempPts.getType().equals("log")){
 				for(int index2 = 0; index2 < tempPts.getPts().size(); index2++){
 					PTS tempPts2 = tempPts.getPts().get(index2);
 					if(tempPts2.getType().equals("on")){
-						
+
 						if(this.userOn.contains(tempPts2.getValue())){
 							this.userOn.add(tempPts2.getValue());
 						}
-						
+
 					}else if(tempPts2.getType().equals("off")){
-						
+
 						if(this.userOff.contains(tempPts2.getValue())){
 							this.userOff.add(tempPts2.getValue());
 						}
-						
+
 					}
 				}
 			}

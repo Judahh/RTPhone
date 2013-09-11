@@ -9,7 +9,6 @@ public class On extends Log{
 	}
 
 	public boolean isOn(){
-		// System.out.println("isOn");
 		if(pts.getType().equals("log")){
 			if(pts.getPts().get(0).getType().equals("on")){
 				return true;
@@ -27,28 +26,12 @@ public class On extends Log{
 		}
 	}
 
-	public static String getLogon(String username){
-		PTS pts = new PTS();// TODO: colocar isto na classe Log
-		pts.setType("log");
-
+	public static PTS getLogin(String username){
 		PTS ptsTemp = new PTS();// TODO: colocar isto na classe In que fica
 								// dentro da Log
 		ptsTemp.setType("on");
 		ptsTemp.setValue(username);
 
-		pts.setValue(ptsTemp);
-		return pts.toString();
-	}
-
-	public static PTS getOn(String username, boolean isConnected){
-		PTS ptsTemp2 = new PTS();
-		if(isConnected){
-			ptsTemp2.setType("on");
-		}else{
-			ptsTemp2.setType("off");
-		}
-		ptsTemp2.setValue(username);
-
-		return ptsTemp2;
+		return ptsTemp;
 	}
 }

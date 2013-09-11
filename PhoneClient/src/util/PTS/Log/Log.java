@@ -13,21 +13,59 @@ public class Log extends PTSBasicCommunication{
 		super(pts);
 	}
 	
-	public static String getLog(String username,boolean isConnected){
+	public static String getOk(){
+		PTS ptsTemp = new PTS();
+		ptsTemp.setType("log");
+		ptsTemp.setValue(LogStatus.getOk());
+		return (ptsTemp.toString());
+	}
+	
+	public static String getError(){
+		PTS ptsTemp = new PTS();
+		ptsTemp.setType("log");
+		ptsTemp.setValue(LogStatus.getError());
+		return (ptsTemp.toString());
+	}
+	
+	public static PTS getLogon(String username,boolean isConnected){
 		PTS ptsTemp = new PTS();
 		ptsTemp.setType("log");
 		
-		PTS ptsTemp2 = new PTS();
 		if(isConnected){
-			ptsTemp2.setType("on");
+			ptsTemp.setValue(On.getLogon(username));
 		}else{
-			ptsTemp2.setType("off");
+			ptsTemp.setValue(Off.getLogoff(username));
 		}
 		
-		ptsTemp2.setValue(username);
-		
-		ptsTemp.setValue(ptsTemp2);
-		return ptsTemp.toString();
+		return ptsTemp;
+	}
+	
+	public static String getLog(String username,boolean isConnected){
+		return getLog().toString();
+	}
+	
+	public static PTS getLogin(String username){
+		PTS pts = new PTS();// TODO: colocar isto na classe Log
+		pts.setType("log");
+
+		pts.setValue(In.getLogin(username));
+		return pts;
+	}
+	
+	public static PTS getLogon(String username){
+		PTS pts = new PTS();// TODO: colocar isto na classe Log
+		pts.setType("log");
+
+		pts.setValue(On.getLogon(username));
+		return pts;
+	}
+	
+	public static PTS getLogoff(String username){
+		PTS pts = new PTS();// TODO: colocar isto na classe Log
+		pts.setType("log");
+
+		pts.setValue(Off.getLogoff(username));
+		return pts;
 	}
 	
 	public static PTS getLog(){

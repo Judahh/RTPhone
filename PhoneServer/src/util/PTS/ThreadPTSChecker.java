@@ -6,7 +6,6 @@ import java.util.Vector;
 import util.PTS.Log.In;
 import util.PTS.Log.Log;
 import util.PTS.Log.On;
-import util.PTS.Log.Status;
 import util.TCP.ThreadSingleTCPServer;
 import util.TCP.ThreadTCPChecker;
 import util.TCP.ThreadTCPServer;
@@ -69,7 +68,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 						if(iterable_element.getUsername().equals(
 								iterable_element2)){
 							try{
-								iterable_element.send(Status.getError());
+								iterable_element.send(Log.getError());
 								System.out.println("erro");
 								ok = false;
 								break;
@@ -83,7 +82,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 						try{
 							iterable_element.setRegister(true);
 							this.threadTCPServer.getResgistered().add(iterable_element.getUsername());
-							iterable_element.send(Status.getOk());
+							iterable_element.send(Log.getOk());
 							System.out.println("ok");
 						}catch(IOException e){
 							// TODO Auto-generated catch block
@@ -115,7 +114,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 
 					if(!ok){
 						try{
-							iterable_element.send(Status.getError());// não
+							iterable_element.send(Log.getError());// não
 																		// registrado
 						}catch(IOException e){
 							// TODO Auto-generated catch block
@@ -128,7 +127,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 							if(iterable_element.getUsername().equals(
 									iterable_element2)){
 								try{
-									iterable_element.send(Status.getError());// já
+									iterable_element.send(Log.getError());// já
 																				// loggado
 									ok = false;
 									break;
@@ -143,7 +142,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 						try{
 							iterable_element.setLogin(true);
 							this.threadTCPServer.getLogged().add(iterable_element.getUsername());
-							iterable_element.send(Status.getOk());
+							iterable_element.send(Log.getOk());
 						}catch(IOException e){
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -151,12 +150,12 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 					}
 
 					try{
-						iterable_element.send(Status.getOk());
+						iterable_element.send(Log.getOk());
 						PTS ptsTemp = Log.getLog();
 						Vector<String> on = new Vector<String>();
 						for(ThreadSingleTCPServer iterable_element2 : this.threadTCPServer.getThreadSingleTCPServer()){
 							if(iterable_element2.isConnected()){
-								ptsTemp.addValue(On.getOn(
+								ptsTemp.addValue(Log.getLogon(
 										iterable_element2.getUsername(),
 										iterable_element2.isOn()));
 								on.add(iterable_element2.getUsername());
@@ -171,7 +170,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 								}
 							}
 							if(ok){
-								ptsTemp.addValue(On.getOn(iterable_element2,
+								ptsTemp.addValue(Log.getLogon(iterable_element2,
 										false));
 							}
 						}

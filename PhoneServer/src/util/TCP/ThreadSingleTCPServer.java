@@ -17,6 +17,19 @@ public class ThreadSingleTCPServer extends Thread{
 		this.threadSender = new ThreadSender(clientSocket.getOutputStream());
 	}
 
+	public Vector<String> getCall(){
+		return new Vector<>();
+	}
+	
+	public void addCall(Vector<String> call){
+	}
+	
+	public void addCall(String call){
+	}
+	
+	public void clearCall(String call){
+	}
+	
 	public Vector<String> getReceived(){
 		return this.threadReceiver.getReceived();
 	}

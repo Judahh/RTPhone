@@ -17,17 +17,13 @@ public class In extends Log{
 		return false;
 	}
 	
-	public static String getLogin(String username){
-		PTS pts = new PTS();// TODO: colocar isto na classe Log
-		pts.setType("log");
-
+	public static PTS getLogin(String username){
 		PTS ptsTemp = new PTS();// TODO: colocar isto na classe In que fica
 								// dentro da Log
 		ptsTemp.setType("in");
 		ptsTemp.setValue(username);
 
-		pts.setValue(ptsTemp);
-		return pts.toString();
+		return ptsTemp;
 	}
 
 	protected void start(){

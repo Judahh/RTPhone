@@ -3,7 +3,6 @@ package util.PTS;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Vector;
-import java.util.logging.LoggingPermission;
 
 import util.PTS.Call.Call;
 import util.PTS.Log.Log;
@@ -12,6 +11,7 @@ import util.TCP.ThreadSingleTCPServer;
 public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 
 	private Vector<String>	broadcast;
+	private Vector<String>	call;
 	private Vector<String>	toCheck;
 	private boolean			login;
 	private boolean			on;
@@ -22,12 +22,29 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 		super(clientSocket);
 		this.broadcast = new Vector<>();
 		this.toCheck = new Vector<>();
+		this.call=new Vector<>();
 		this.username = new String();
 		this.login = false;
 		this.register = false;
 		this.on = false;
 	}
 
+	public Vector<String> getCall(){
+		return call;
+	}
+	
+	public void addCall(Vector<String> call){
+		this.call.addAll(call);
+	}
+	
+	public void addCall(String call){
+		this.call.add(call);
+	}
+	
+	public void clearCall(String call){
+		this.call=new Vector<>();
+	}
+	
 	public Vector<String> getBroadcast(){
 		return broadcast;
 	}
@@ -139,11 +156,7 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 							break;
 							case "call":
 								Call call = new Call(pts);
-								addBroadcast(call.getBroadcast());
 								addToCheck(call.getToCheck());
-								if(!call.getToSend().isEmpty()){
-									send(call.getToSend());
-								}
 						}
 					}
 					check();

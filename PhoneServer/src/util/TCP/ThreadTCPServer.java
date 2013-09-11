@@ -24,7 +24,7 @@ public class ThreadTCPServer extends Thread{
 		this.threadTCPChecker= new ThreadTCPChecker(this);
 	}
 
-	private void acceptConnection(){
+	synchronized private void acceptConnection(){
 		this.newClientConnection = null;
 		try{
 			this.newClientConnection = this.serverSocket.accept();
@@ -38,7 +38,7 @@ public class ThreadTCPServer extends Thread{
 		addConnection();
 	}
 
-	protected void addConnection(){
+	synchronized protected void addConnection(){
 		try{
 			ThreadSingleTCPServer threadSingleTCPServerA;
 			threadSingleTCPServerA = new ThreadSingleTCPServer(
@@ -55,7 +55,7 @@ public class ThreadTCPServer extends Thread{
 //
 //	}
 
-	private void closeConnections(){
+	synchronized private void closeConnections(){
 		for(ThreadSingleTCPServer iterable_element : threadSingleTCPServer){
 			try{
 				iterable_element.close();

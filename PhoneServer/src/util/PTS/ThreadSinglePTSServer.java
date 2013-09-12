@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Vector;
 
+import util.PTS.Call.Address;
 import util.PTS.Call.Call;
 import util.PTS.Log.Log;
 import util.TCP.ThreadSingleTCPServer;
@@ -22,7 +23,7 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 		super(clientSocket);
 		this.broadcast = new Vector<>();
 		this.toCheck = new Vector<>();
-		this.call=new Vector<>();
+		this.call = new Vector<>();
 		this.username = new String();
 		this.login = false;
 		this.register = false;
@@ -32,19 +33,19 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 	public Vector<String> getCall(){
 		return call;
 	}
-	
+
 	public void addCall(Vector<String> call){
 		this.call.addAll(call);
 	}
-	
+
 	public void addCall(String call){
 		this.call.add(call);
 	}
-	
+
 	public void clearCall(String call){
-		this.call=new Vector<>();
+		this.call = new Vector<>();
 	}
-	
+
 	public Vector<String> getBroadcast(){
 		return broadcast;
 	}
@@ -144,7 +145,8 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 								Log log = new Log(pts);
 								addBroadcast(log.getBroadcast());
 								addToCheck(log.getToCheck());
-								System.out.println("to check:"+log.getToCheck());
+								System.out.println("to check:"
+										+ log.getToCheck());
 								if(!log.getUsername().isEmpty()){
 									setUsername(log.getUsername());
 								}
@@ -155,8 +157,15 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 								}
 							break;
 							case "call":
-								Call call = new Call(pts);
-								addToCheck(call.getToCheck());
+								if(received.get(index).equals(Call.getOk())
+										|| received.get(index).equals(
+												Call.getError())){
+									//TODO: enviar erro pro caller 
+								}else{
+									Call call = new Call(pts, username,
+											new Address(this.getAddress()));
+									addCall(call.getToCheck());
+								}
 						}
 					}
 					check();

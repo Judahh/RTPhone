@@ -17,6 +17,12 @@ public class ThreadSingleTCPServer extends Thread{
 		this.threadSender = new ThreadSender(clientSocket.getOutputStream());
 	}
 
+	public void addBroadcast(Vector<String> broadcast){
+	}
+
+	public void addToCheck(Vector<String> toCheck){
+	}
+	
 	public Vector<String> getCall(){
 		return new Vector<>();
 	}
@@ -42,7 +48,7 @@ public class ThreadSingleTCPServer extends Thread{
 		return this.clientSocket.getInetAddress();
 	}
 
-	public String address(){
+	public String getAddress(){
 		return this.clientSocket.getInetAddress().toString();
 	}
 

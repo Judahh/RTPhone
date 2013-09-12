@@ -8,7 +8,6 @@ import util.PTS.Call.Address;
 import util.PTS.Call.Call;
 import util.PTS.Call.User;
 import util.PTS.Log.Log;
-import util.PTS.Log.On;
 import util.RTP.Phone;
 import util.TCP.ThreadTCPClient;
 
@@ -23,6 +22,25 @@ public class ThreadPTSClient extends ThreadTCPClient{
 	private boolean			registered;
 	private Phone			phone;
 	private String			caller;
+	private int				port0;
+	private int				port1;
+
+	public ThreadPTSClient(String host, int port, int port0, int port1)
+			throws UnknownHostException, IOException{
+		super(host, port);
+		this.userOn = new Vector<>();
+		this.userOff = new Vector<>();
+		this.username = new String();
+		this.toCheckLogin = false;
+		this.toCheckRegister = false;
+		this.toCheckCall = false;
+		this.logged = false;
+		this.registered = false;
+		this.phone = null;
+		this.caller = null;
+		this.port0 = port0;
+		this.port1 = port1;
+	}
 
 	public ThreadPTSClient(String host, int port) throws UnknownHostException,
 			IOException{
@@ -37,6 +55,8 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.registered = false;
 		this.phone = null;
 		this.caller = null;
+		this.port0 = 16384;
+		this.port1 = 32766;
 	}
 
 	public ThreadPTSClient(String host) throws UnknownHostException,
@@ -51,12 +71,14 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.registered = false;
 		this.phone = null;
 		this.caller = null;
+		this.port0 = 16384;
+		this.port1 = 32766;
 	}
 
 	public String getCaller(){
 		return caller;
 	}
-	
+
 	public Phone getPhone(){
 		return phone;
 	}
@@ -163,7 +185,7 @@ public class ThreadPTSClient extends ThreadTCPClient{
 					this.toCheckRegister = false;
 					this.registered = true;
 					this.phone = new Phone(pts.getPts().get(0).getValue(),
-							16384, 32766);
+							this.port0, this.port1);
 					this.phone.start();
 				}
 
@@ -179,7 +201,7 @@ public class ThreadPTSClient extends ThreadTCPClient{
 						// ok atender
 						this.caller = pts.getPts().get(0).getValue();
 						this.phone = new Phone(pts.getPts().get(1).getValue(),
-								32766, 16384);
+								this.port1, this.port0);
 						this.phone.start();
 						this.threadSender.send(Call.getOk());
 					}else{

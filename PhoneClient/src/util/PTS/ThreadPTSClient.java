@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
+import util.PTS.Call.Address;
 import util.PTS.Call.Call;
+import util.PTS.Call.User;
 import util.PTS.Log.Log;
+import util.PTS.Log.On;
+import util.RTP.Phone;
 import util.TCP.ThreadTCPClient;
 
 public class ThreadPTSClient extends ThreadTCPClient{
@@ -17,6 +21,8 @@ public class ThreadPTSClient extends ThreadTCPClient{
 	private boolean			toCheckCall;
 	private boolean			logged;
 	private boolean			registered;
+	private Phone			phone;
+	private String			caller;
 
 	public ThreadPTSClient(String host, int port) throws UnknownHostException,
 			IOException{
@@ -29,6 +35,8 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.toCheckCall = false;
 		this.logged = false;
 		this.registered = false;
+		this.phone = null;
+		this.caller = null;
 	}
 
 	public ThreadPTSClient(String host) throws UnknownHostException,
@@ -41,6 +49,25 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.toCheckRegister = false;
 		this.logged = false;
 		this.registered = false;
+		this.phone = null;
+		this.caller = null;
+	}
+
+	public String getCaller(){
+		return caller;
+	}
+	
+	public Phone getPhone(){
+		return phone;
+	}
+
+	public void setPhone(Phone phone){
+		this.phone = phone;
+	}
+
+	public void hangUp(){
+		this.phone.stop();
+		this.phone = null;
 	}
 
 	public Vector<String> getUserOff(){
@@ -80,7 +107,7 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.threadSender.send(Log.getLogin(username).toString());
 		this.toCheckLogin = true;
 	}
-	
+
 	public void logoff() throws IOException{
 		this.threadSender.send(Log.getLogoff(username).toString());
 		this.toCheckLogin = false;
@@ -106,6 +133,8 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		// OBS: isso fica num loop que roda no ran da classe ThreadClientTCP
 		Vector<String> received = this.getReceived();
 		for(int index = 0; index < received.size(); index++){
+			PTS pts = new PTS(received.get(index));
+
 			if(this.toCheckLogin){
 				if(received.get(index).equals(Log.getOk())){
 					this.toCheckLogin = false;
@@ -127,15 +156,36 @@ public class ThreadPTSClient extends ThreadTCPClient{
 					this.toCheckRegister = false;
 				}
 			}
-			
+
 			if(this.toCheckCall){
-//				if(received.get(index).equals(CallStatus.getOk())){
-//					this.toCheckRegister = false;
-//					this.registered = true;
-//				}
+
+				if(new Address(pts).isAddress()){
+					this.toCheckRegister = false;
+					this.registered = true;
+					this.phone = new Phone(pts.getPts().get(0).getValue(),
+							16384, 32766);
+					this.phone.start();
+				}
 
 				if(received.get(index).equals(Call.getError())){
 					this.toCheckRegister = false;
+					// TODO: mostrar erro
+				}
+			}
+
+			if(new Address(pts).isAddress()){
+				if(new User(pts).isAddressUser()){
+					if(this.phone == null){
+						// ok atender
+						this.caller = pts.getPts().get(0).getValue();
+						this.phone = new Phone(pts.getPts().get(1).getValue(),
+								32766, 16384);
+						this.phone.start();
+						this.threadSender.send(Call.getOk());
+					}else{
+						// erro
+						this.threadSender.send(Call.getError());
+					}
 				}
 			}
 

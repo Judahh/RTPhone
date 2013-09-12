@@ -8,4 +8,8 @@ public class CallStatus extends Call{
 	public static String getError(){
 		return "busy";
 	}
+	
+	public static String getOk(){
+		return "ok";
+	}
 }

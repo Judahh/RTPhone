@@ -17,4 +17,13 @@ public class User extends Call{
 		tempPTS.setValue(user);
 		return tempPTS;
 	}
+	
+	public boolean isAddressUser(){
+		if(pts.getType().equals("log")){
+			if(pts.getPts().get(1).getType().equals("user")){
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -19,6 +19,13 @@ public class Call extends PTSBasicCommunication{
 		return (ptsTemp.toString());
 	}
 	
+	public static String getOk(){
+		PTS ptsTemp = new PTS();
+		ptsTemp.setType("call");
+		ptsTemp.setValue(CallStatus.getOk());
+		return (ptsTemp.toString());
+	}
+	
 	static public PTS call(String user){
 		PTS tempPTS= new PTS();
 		tempPTS.setType("call");

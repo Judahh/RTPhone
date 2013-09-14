@@ -189,7 +189,7 @@ public class ThreadPTSClient extends ThreadTCPClient{
 					this.phone.start();
 				}
 
-				if(received.get(index).equals(Call.getError())){
+				if(Call.isError(received.get(index))){
 					this.toCheckRegister = false;
 					// TODO: mostrar erro
 				}
@@ -203,10 +203,10 @@ public class ThreadPTSClient extends ThreadTCPClient{
 						this.phone = new Phone(pts.getPts().get(1).getValue(),
 								this.port1, this.port0);
 						this.phone.start();
-						this.threadSender.send(Call.getOk());
+						this.threadSender.send(Call.getOk(this.caller).toString());
 					}else{
-						// erro
-						this.threadSender.send(Call.getError());
+						String tempCaller = pts.getPts().get(0).getValue();
+						this.threadSender.send(Call.getError(tempCaller).toString());
 					}
 				}
 			}

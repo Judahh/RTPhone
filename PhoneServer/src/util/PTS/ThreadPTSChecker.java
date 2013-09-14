@@ -30,13 +30,36 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 		clean();
 	}
 
-	synchronized private void checkCall(){
+	synchronized private void checkCall(){// TODO: testar
 		for(int index = 0; index < this.threadTCPServer
 				.getThreadSingleTCPServer().size(); index++){
-			//TODO:
+			for(int index1 = 0; index1 < this.threadTCPServer
+					.getThreadSingleTCPServer().get(index).getCall().size(); index1++){
+				PTS tempPTS = new PTS(this.threadTCPServer
+						.getThreadSingleTCPServer().get(index).getCall()
+						.get(index1));
+				for(int index2 = 0; index2 < this.threadTCPServer
+						.getThreadSingleTCPServer().size(); index2++){
+					if(this.threadTCPServer
+							.getThreadSingleTCPServer()
+							.get(index2)
+							.getUsername()
+							.equals(tempPTS.getPts()
+									.get(tempPTS.getPts().size() - 1)
+									.getValue())){
+						tempPTS.getPts().remove(tempPTS.getPts().size() - 1);
+						try{
+							this.threadTCPServer.getThreadSingleTCPServer()
+									.get(index2).send(tempPTS.toString());
+						}catch(IOException e){
+							e.printStackTrace();
+						}
+					}
+				}
+
+			}
 		}
 	}
-
 	synchronized private void clean(){
 		for(int index = 0; index < this.threadTCPServer
 				.getThreadSingleTCPServer().size(); index++){

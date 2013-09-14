@@ -2,9 +2,6 @@ package util.PTS.Call;
 
 import util.PTS.PTS;
 import util.PTS.PTSBasicCommunication;
-import util.PTS.Log.In;
-import util.PTS.Log.Off;
-import util.PTS.Log.On;
 
 public class Call extends PTSBasicCommunication{
 	private Address	address;
@@ -30,18 +27,58 @@ public class Call extends PTSBasicCommunication{
 		}
 	}
 
-	public static String getError(){
+	public static PTS getError(){
 		PTS ptsTemp = new PTS();
 		ptsTemp.setType("call");
 		ptsTemp.setValue(CallStatus.getError());
-		return(ptsTemp.toString());
+		return ptsTemp;
 	}
 
-	public static String getOk(){
+	public static PTS getOk(){
 		PTS ptsTemp = new PTS();
 		ptsTemp.setType("call");
 		ptsTemp.setValue(CallStatus.getOk());
-		return(ptsTemp.toString());
+		return ptsTemp;
+	}
+	
+	public static boolean isError(String received){
+		PTS ptsTemp = new PTS(received);
+		if(ptsTemp.getType().equals("call")){
+			if(ptsTemp.getPts().get(0).getType().equals("status")){
+				if(ptsTemp.getPts().get(0).getValue().equals("busy")){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean isOk(String received){
+		PTS ptsTemp = new PTS(received);
+		if(ptsTemp.getType().equals("call")){
+			if(ptsTemp.getPts().get(0).getType().equals("status")){
+				if(ptsTemp.getPts().get(0).getValue().equals("ok")){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static PTS getError(String username){
+		PTS ptsTemp = new PTS();
+		ptsTemp.setType("call");
+		ptsTemp.addValue(CallStatus.getError());
+		ptsTemp.addValue(User.user(username));
+		return ptsTemp;
+	}
+
+	public static PTS getOk(String username){
+		PTS ptsTemp = new PTS();
+		ptsTemp.setType("call");
+		ptsTemp.setValue(CallStatus.getOk());
+		ptsTemp.addValue(User.user(username));
+		return ptsTemp;
 	}
 
 	static public PTS call(String user){

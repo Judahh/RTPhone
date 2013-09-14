@@ -11,11 +11,17 @@ public class CallStatus extends Call{
 		super(pts);
 	}
 	
-	public static String getError(){
-		return "busy";
+	public static PTS getError(){
+		PTS ptsTemp = new PTS();
+		ptsTemp.setType("status");
+		ptsTemp.setValue("busy");
+		return ptsTemp;
 	}
 	
-	public static String getOk(){
-		return "ok";
+	public static PTS getOk(){
+		PTS ptsTemp = new PTS();
+		ptsTemp.setType("status");
+		ptsTemp.setValue("ok");
+		return ptsTemp;
 	}
 }

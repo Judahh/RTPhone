@@ -157,10 +157,9 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 								}
 							break;
 							case "call":
-								if(received.get(index).equals(Call.getOk())
-										|| received.get(index).equals(
-												Call.getError())){
-									//TODO: enviar erro pro caller 
+								if((Call.isOk(received.get(index)))
+										|| (Call.isError(received.get(index)))){
+									addCall(received.get(index));
 								}else{
 									Call call = new Call(pts, username,
 											new Address(this.getAddress()));

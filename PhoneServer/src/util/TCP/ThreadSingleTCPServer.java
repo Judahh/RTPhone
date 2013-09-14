@@ -116,8 +116,6 @@ public class ThreadSingleTCPServer extends Thread{
 			this.threadReceiver.start();
 			this.threadSender.start();
 			while(clientSocket.isConnected());
-			this.threadSender.stop();
-			this.threadReceiver.stop();
 			close();
 		}catch(IOException e){
 			e.printStackTrace();

@@ -31,16 +31,16 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 	}
 
 	synchronized private void checkCall(){// TODO: testar
-		for(int index = 0; index < this.threadTCPServer
+		for(int index = 0; index < getThreadTCPServer()
 				.getThreadSingleTCPServer().size(); index++){
-			for(int index1 = 0; index1 < this.threadTCPServer
+			for(int index1 = 0; index1 < getThreadTCPServer()
 					.getThreadSingleTCPServer().get(index).getCall().size(); index1++){
-				PTS tempPTS = new PTS(this.threadTCPServer
+				PTS tempPTS = new PTS(getThreadTCPServer()
 						.getThreadSingleTCPServer().get(index).getCall()
 						.get(index1));
-				for(int index2 = 0; index2 < this.threadTCPServer
+				for(int index2 = 0; index2 < getThreadTCPServer()
 						.getThreadSingleTCPServer().size(); index2++){
-					if(this.threadTCPServer
+					if(getThreadTCPServer()
 							.getThreadSingleTCPServer()
 							.get(index2)
 							.getUsername()
@@ -49,7 +49,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 									.getValue())){
 						tempPTS.getPts().remove(tempPTS.getPts().size() - 1);
 						try{
-							this.threadTCPServer.getThreadSingleTCPServer()
+							getThreadTCPServer().getThreadSingleTCPServer()
 									.get(index2).send(tempPTS.toString());
 						}catch(IOException e){
 							e.printStackTrace();
@@ -61,21 +61,21 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 		}
 	}
 	synchronized private void clean(){
-		for(int index = 0; index < this.threadTCPServer
+		for(int index = 0; index < getThreadTCPServer()
 				.getThreadSingleTCPServer().size(); index++){
-			if(!this.threadTCPServer.getThreadSingleTCPServer().get(index)
+			if(!getThreadTCPServer().getThreadSingleTCPServer().get(index)
 					.isConnected()){
-				this.threadTCPServer.getThreadSingleTCPServer().remove(index);
+				getThreadTCPServer().getThreadSingleTCPServer().remove(index);
 				index = 0;
 			}
 		}
 	}
 
 	synchronized private void checkBroadcast(){
-		for(ThreadSingleTCPServer iterable_element : this.threadTCPServer
+		for(ThreadSingleTCPServer iterable_element : getThreadTCPServer()
 				.getThreadSingleTCPServer()){
 			for(int index = 0; index < iterable_element.getBroadcast().size();){
-				for(ThreadSingleTCPServer iterable_element2 : this.threadTCPServer
+				for(ThreadSingleTCPServer iterable_element2 : getThreadTCPServer()
 						.getThreadSingleTCPServer()){
 					try{
 						iterable_element2.send(iterable_element.getBroadcast()
@@ -92,13 +92,13 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 
 	synchronized private void checkRegister(){
 		// TODO: Fazer todas as checagens de registros aqui!!!
-		for(ThreadSingleTCPServer iterable_element : this.threadTCPServer
+		for(ThreadSingleTCPServer iterable_element : getThreadTCPServer()
 				.getThreadSingleTCPServer()){
 
 			for(int index = 0; index < iterable_element.getToCheck().size();){
 				if(new On(new PTS(iterable_element.getToCheck().get(0))).isOn()){
 					boolean ok = true;
-					for(String iterable_element2 : this.threadTCPServer
+					for(String iterable_element2 : getThreadTCPServer()
 							.getResgistered()){
 						if(iterable_element.getUsername().equals(
 								iterable_element2)){
@@ -116,7 +116,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 					if(ok){
 						try{
 							iterable_element.setRegister(true);
-							this.threadTCPServer.getResgistered().add(
+							getThreadTCPServer().getResgistered().add(
 									iterable_element.getUsername());
 							iterable_element.send(Log.getOk());
 							System.out.println("ok");
@@ -136,13 +136,13 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 
 	synchronized private void checkLogin(){
 		// TODO: Fazer todas as checagens de login aqui!!!
-		for(ThreadSingleTCPServer iterable_element : this.threadTCPServer
+		for(ThreadSingleTCPServer iterable_element : getThreadTCPServer()
 				.getThreadSingleTCPServer()){
 			for(int index = 0; index < iterable_element.getToCheck().size();){
 				if(new In(new PTS(iterable_element.getToCheck().get(0))).isIn()){
 					boolean ok = false;
 
-					for(String iterable_element2 : this.threadTCPServer
+					for(String iterable_element2 : getThreadTCPServer()
 							.getResgistered()){
 						if(iterable_element.getUsername().equals(
 								iterable_element2)){
@@ -160,7 +160,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 						}
 					}
 
-					for(String iterable_element2 : this.threadTCPServer
+					for(String iterable_element2 :getThreadTCPServer()
 							.getLogged()){
 						if(!iterable_element.equals(iterable_element2)){
 							if(iterable_element.getUsername().equals(
@@ -180,7 +180,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 					if(ok){
 						try{
 							iterable_element.setLogin(true);
-							this.threadTCPServer.getLogged().add(
+							getThreadTCPServer().getLogged().add(
 									iterable_element.getUsername());
 							iterable_element.send(Log.getOk());
 						}catch(IOException e){
@@ -193,7 +193,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 						iterable_element.send(Log.getOk());
 						PTS ptsTemp = Log.getLog();
 						Vector<String> on = new Vector<String>();
-						for(ThreadSingleTCPServer iterable_element2 : this.threadTCPServer
+						for(ThreadSingleTCPServer iterable_element2 : getThreadTCPServer()
 								.getThreadSingleTCPServer()){
 							if(iterable_element2.isConnected()){
 								ptsTemp.addValue(Log.getLogon(
@@ -202,7 +202,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 								on.add(iterable_element2.getUsername());
 							}
 						}
-						for(String iterable_element2 : this.threadTCPServer
+						for(String iterable_element2 : getThreadTCPServer()
 								.getResgistered()){
 							ok = true;
 							for(String iterable_element3 : on){

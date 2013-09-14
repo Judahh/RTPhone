@@ -75,81 +75,137 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.port1 = 32766;
 	}
 
-	public String getCaller(){
+	synchronized public String getCaller(){
 		return caller;
 	}
 
-	public Phone getPhone(){
+	synchronized public Phone getPhone(){
 		return phone;
 	}
 
-	public void setPhone(Phone phone){
+	synchronized public void setPhone(Phone phone){
 		this.phone = phone;
 	}
 
-	public void hangUp(){
+	synchronized public void hangUp(){
 		this.phone.stop();
 		this.phone = null;
 	}
 
-	public Vector<String> getUserOff(){
+	synchronized public Vector<String> getUserOff(){
 		return userOff;
 	}
 
-	public Vector<String> getUserOn(){
+	synchronized public Vector<String> getUserOn(){
 		return userOn;
 	}
 
-	public boolean isLogged(){
+	synchronized public boolean isLogged(){
 		return logged;
 	}
 
-	public boolean isRegistered(){
+	synchronized public boolean isRegistered(){
 		return registered;
 	}
 
-	public boolean isToCheckLogin(){
+	synchronized public boolean isToCheckLogin(){
 		return toCheckLogin;
 	}
 
-	public boolean isToCheckRegister(){
+	synchronized public boolean isToCheckRegister(){
 		return toCheckRegister;
 	}
 
-	public boolean isToCheckCall(){
+	synchronized public boolean isToCheckCall(){
 		return toCheckCall;
 	}
 
-	public void login(String username) throws IOException{
+	synchronized public void login(String username) throws IOException{
 		this.username = username;
 		login();
 	}
 
 	public void login() throws IOException{
-		this.threadSender.send(Log.getLogin(username).toString());
+		send(Log.getLogin(username).toString());
 		this.toCheckLogin = true;
 	}
 
-	public void logoff() throws IOException{
-		this.threadSender.send(Log.getLogoff(username).toString());
+	synchronized public void logoff() throws IOException{
+		send(Log.getLogoff(username).toString());
 		this.toCheckLogin = false;
 	}
 
-	public void register(String username) throws IOException{
-		this.threadSender.send(Log.getLogon(username).toString());
+	synchronized public void register(String username) throws IOException{
+		send(Log.getLogon(username).toString());
 		this.toCheckRegister = true;
 	}
 
-	public void call(String username) throws IOException{
-		this.threadSender.send(Call.call(username).toString());
+	synchronized public void call(String username) throws IOException{
+		send(Call.call(username).toString());
 		this.toCheckCall = true;
 	}
 
-	public void call(int index) throws IOException{
+	synchronized public void call(int index) throws IOException{
 		call(userOn.get(index));
 	}
 
-	protected void check(){
+	synchronized public int getPort0(){
+		return port0;
+	}
+
+	synchronized public int getPort1(){
+		return port1;
+	}
+
+	synchronized public String getUsername(){
+		return username;
+	}
+
+	synchronized public void setCaller(String caller){
+		this.caller = caller;
+	}
+	
+	synchronized public void setLogged(boolean logged){
+		this.logged = logged;
+	}
+	
+	synchronized public void setPort0(int port0){
+		this.port0 = port0;
+	}
+	
+	synchronized public void setPort1(int port1){
+		this.port1 = port1;
+	}
+	
+	synchronized public void setRegistered(boolean registered){
+		this.registered = registered;
+	}
+	
+	synchronized public void setToCheckCall(boolean toCheckCall){
+		this.toCheckCall = toCheckCall;
+	}
+	
+	synchronized public void setToCheckLogin(boolean toCheckLogin){
+		this.toCheckLogin = toCheckLogin;
+	}
+	
+	synchronized public void setToCheckRegister(boolean toCheckRegister){
+		this.toCheckRegister = toCheckRegister;
+	}
+	
+	synchronized public void setUsername(String username){
+		this.username = username;
+	}
+	
+	synchronized public void setUserOff(Vector<String> userOff){
+		this.userOff = userOff;
+	}
+	
+	synchronized public void setUserOn(Vector<String> userOn){
+		this.userOn = userOn;
+	}
+
+	synchronized protected void check(){
 		// TODO: checar todas as respostas do servidor aqui usando getReceived()
 		// e atualizar as listas
 		// OBS: isso fica num loop que roda no ran da classe ThreadClientTCP
@@ -157,56 +213,66 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		for(int index = 0; index < received.size(); index++){
 			PTS pts = new PTS(received.get(index));
 
-			if(this.toCheckLogin){
+			if(isToCheckLogin()){
 				if(received.get(index).equals(Log.getOk())){
-					this.toCheckLogin = false;
-					this.logged = true;
+					setToCheckLogin(false);
+					setLogged(true);
 				}
 
 				if(received.get(index).equals(Log.getError())){
-					this.toCheckLogin = false;
+					setToCheckLogin(false);
 				}
 			}
 
-			if(this.toCheckRegister){
+			if(isToCheckRegister()){
 				if(received.get(index).equals(Log.getOk())){
-					this.toCheckRegister = false;
-					this.registered = true;
+					setToCheckRegister(false);
+					setRegistered(true);
 				}
 
 				if(received.get(index).equals(Log.getError())){
-					this.toCheckRegister = false;
+					setToCheckRegister(false);
 				}
 			}
 
-			if(this.toCheckCall){
+			if(isToCheckCall()){
 
 				if(new Address(pts).isAddress()){
-					this.toCheckRegister = false;
-					this.registered = true;
-					this.phone = new Phone(pts.getPts().get(0).getValue(),
-							this.port0, this.port1);
-					this.phone.start();
+					setToCheckRegister(false);
+					setRegistered(true);
+					setPhone(new Phone(pts.getPts().get(0).getValue(),
+							getPort0(), getPort1()));
+					getPhone().start();
 				}
 
 				if(Call.isError(received.get(index))){
-					this.toCheckRegister = false;
+					setToCheckRegister(false);
 					// TODO: mostrar erro
 				}
 			}
 
 			if(new Address(pts).isAddress()){
 				if(new User(pts).isAddressUser()){
-					if(this.phone == null){
+					if(getPhone() == null){
 						// ok atender
-						this.caller = pts.getPts().get(0).getValue();
-						this.phone = new Phone(pts.getPts().get(1).getValue(),
-								this.port1, this.port0);
-						this.phone.start();
-						this.threadSender.send(Call.getOk(this.caller).toString());
+						setCaller(pts.getPts().get(0).getValue());
+						setPhone(new Phone(pts.getPts().get(1).getValue(),
+								getPort1(), getPort0()));
+						getPhone().start();
+						try{
+							send(Call.getOk(getCaller()).toString());
+						}catch(IOException e){
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}else{
 						String tempCaller = pts.getPts().get(0).getValue();
-						this.threadSender.send(Call.getError(tempCaller).toString());
+						try{
+							send(Call.getError(tempCaller).toString());
+						}catch(IOException e){
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -217,14 +283,14 @@ public class ThreadPTSClient extends ThreadTCPClient{
 					PTS tempPts2 = tempPts.getPts().get(index2);
 					if(tempPts2.getType().equals("on")){
 
-						if(this.userOn.contains(tempPts2.getValue())){
-							this.userOn.add(tempPts2.getValue());
+						if(getUserOn().contains(tempPts2.getValue())){
+							getUserOn().add(tempPts2.getValue());
 						}
 
 					}else if(tempPts2.getType().equals("off")){
 
-						if(this.userOff.contains(tempPts2.getValue())){
-							this.userOff.add(tempPts2.getValue());
+						if(getUserOff().contains(tempPts2.getValue())){
+							getUserOff().add(tempPts2.getValue());
 						}
 
 					}

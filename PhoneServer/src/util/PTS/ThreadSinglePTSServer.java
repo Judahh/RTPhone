@@ -170,8 +170,6 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 					check();
 				}
 			}
-			this.threadSender.stop();
-			this.threadReceiver.stop();
 			close();
 		}catch(IOException e){
 			e.printStackTrace();

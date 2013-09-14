@@ -22,39 +22,39 @@ public class ThreadTCPClient extends Thread{
 		this.threadSender = new ThreadSender(serverSocket.getOutputStream());
 	}
 
-	public Vector<String> getReceived(){
+	synchronized public Vector<String> getReceived(){
 		return this.threadReceiver.getReceived();
 	}
 
-	public void send(String toSend) throws IOException{
+	synchronized public void send(String toSend) throws IOException{
 		this.threadSender.send(toSend);
 	}
 
-	public InetAddress inetAddress(){
+	synchronized public InetAddress inetAddress(){
 		return this.serverSocket.getInetAddress();
 	}
 
-	public String address(){
+	synchronized public String address(){
 		return this.serverSocket.getInetAddress().toString();
 	}
 
-	public boolean isConnected(){
+	synchronized public boolean isConnected(){
 		return serverSocket.isConnected();
 	}
 
-	public void close() throws IOException{
+	synchronized public void close() throws IOException{
 		serverSocket.close();
 	}
 
-	public String getHost(){
+	synchronized public String getHost(){
 		return host;
 	}
 
-	public int getPort(){
+	synchronized public int getPort(){
 		return port;
 	}
 	
-	private void startClientTCP(){
+	synchronized private void startClientTCP(){
 		this.threadReceiver.start();
 		this.threadSender.start();
 	}

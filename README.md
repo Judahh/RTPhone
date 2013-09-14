@@ -68,7 +68,9 @@ Construir o protótipo de um sistema de comunicação de voz sobre a internet ut
 		![Alt text](Docs/Call.png "Ligação")
 
 
+
     * OBS.:
+
 	* O array é representado por [], não necessariamente precisa estar organizado por tipo.
 
 	e.g. 

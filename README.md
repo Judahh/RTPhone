@@ -73,9 +73,8 @@ Construir o protótipo de um sistema de comunicação de voz sobre a internet ut
 
 	* O array é representado por [], não necessariamente precisa estar organizado por tipo.
 
-	e.g. 
-		[users on]=<in>user 0<in><in>user 1<in><in>user 2<in><in>user 3<in><in>user 4<in>
 
-	e.g. 
-		[users on],[users off]=<in>user 0<in><off>user 1<off><in>user 2<in><in>user 3<in><off>user 4<off>
+	`[users on]=<in>user 0<in><in>user 1<in><in>user 2<in><in>user 3<in><in>user 4<in>`
+
+	`[users on],[users off]=<in>user 0<in><off>user 1<off><in>user 2<in><in>user 3<in><off>user 4<off>`
 

@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
 import java.util.Vector;
+import java.util.concurrent.Semaphore;
 
 public class ThreadTCPServer extends Thread{
 
@@ -21,7 +22,7 @@ public class ThreadTCPServer extends Thread{
 		this.isStopped = false;
 		this.runningThread = null;
 		this.threadSingleTCPServer = new Vector<>();
-		this.threadTCPChecker= new ThreadTCPChecker(this);
+		this.threadTCPChecker = new ThreadTCPChecker(this);
 	}
 
 	synchronized private void acceptConnection(){
@@ -44,19 +45,19 @@ public class ThreadTCPServer extends Thread{
 			threadSingleTCPServerA = new ThreadSingleTCPServer(
 					newClientConnection);
 			threadSingleTCPServerA.start();
-			this.threadSingleTCPServer.add(threadSingleTCPServerA);
+			getThreadSingleTCPServer().add(threadSingleTCPServerA);
 		}catch(IOException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-//	protected void check(){
-//
-//	}
+	// protected void check(){
+	//
+	// }
 
 	synchronized private void closeConnections(){
-		for(ThreadSingleTCPServer iterable_element : threadSingleTCPServer){
+		for(ThreadSingleTCPServer iterable_element : getThreadSingleTCPServer()){
 			try{
 				iterable_element.close();
 			}catch(IOException e){
@@ -75,7 +76,7 @@ public class ThreadTCPServer extends Thread{
 		this.threadTCPChecker.start();
 		while(!isStopped()){
 			acceptConnection();
-//			check();
+			// check();
 		}
 		closeConnections();
 	}
@@ -91,9 +92,8 @@ public class ThreadTCPServer extends Thread{
 			throw new RuntimeException("Cannot open port 8080", e);
 		}
 	}
-	
-	public Vector<ThreadSingleTCPServer> getThreadSingleTCPServer(){
-		// TODO Auto-generated method stub
+
+	synchronized public Vector<ThreadSingleTCPServer> getThreadSingleTCPServer(){
 		return this.threadSingleTCPServer;
 	}
 

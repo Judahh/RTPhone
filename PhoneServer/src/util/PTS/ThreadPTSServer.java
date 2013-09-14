@@ -28,7 +28,7 @@ public class ThreadPTSServer extends ThreadTCPServer{
 			ThreadSinglePTSServerA = new ThreadSinglePTSServer(
 					newClientConnection);
 			ThreadSinglePTSServerA.start();
-			this.threadSingleTCPServer.add(ThreadSinglePTSServerA);
+			getThreadSingleTCPServer().add(ThreadSinglePTSServerA);
 		}catch(IOException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();

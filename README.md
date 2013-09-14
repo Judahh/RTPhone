@@ -5,18 +5,15 @@ Construir o protótipo de um sistema de comunicação de voz sobre a internet ut
 
 
 ## TODO
-* Integração dos codigos (Judah Holanda)
-* Integração dos interface (Kairo Tavares)
-* Protocolo pts (Phone to Server) (David Araujo)
-* Testes
+* Integração da interface gráfica
 
 ## Protocolo PTS (Phone to Server)
-* XML Like.
+* XML Like:
  
     * `<type>value<type>`
 
             e.g. 
-                <username>DAVID<username>
+                <user>DAVID<user>
                 <log><in>DAVID<in><log>
 
 
@@ -25,10 +22,10 @@ Construir o protótipo de um sistema de comunicação de voz sobre a internet ut
     * `<type><type>value<type><type>`
 
             e.g. 
-                <username><username>DAVID<username><username>
+                <user><user>DAVID<user><user>
 
 
-	* `<type0>value<type1>value<type1><type0>`
+    * `<type0>value<type1>value<type1><type0>`
 
             e.g. 
                 <user>DAVID<IP>10.10.10.10<IP><user>
@@ -40,7 +37,7 @@ Construir o protótipo de um sistema de comunicação de voz sobre a internet ut
 	* `<type>value0<type><type>value1<type>`
 
             e.g. 
-                <username>DAVID<username><username>KAIRO<username>
+                <user>DAVID<user><user>KAIRO<user>
 
 
 	* `<type0><type1>value<type1><type2>value<type2><type0>`
@@ -48,5 +45,24 @@ Construir o protótipo de um sistema de comunicação de voz sobre a internet ut
             e.g. 
                 <user><username>DAVID<username><IP>10.10.10.10<IP><user>
 
+* Diagrama:
+
+    * Registro
 
 
+		![Alt text](Docs/Register.png "Registro")
+    
+    * Login
+
+
+		![Alt text](Docs/Login.png "Login")
+    
+    * Logoff
+
+
+		![Alt text](Docs/Logoff.png "Logoff")
+    
+    * Ligação
+
+
+		![Alt text](Docs/Call.png "Ligação")

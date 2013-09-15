@@ -15,17 +15,11 @@ public class MainWindow{
 
 	public JFrame	frame;
 	private JLabel	labelIP;
-	private int		serverPort;
-	private int		port0;
-	private int		port1;
 
 	/**
 	 * Create the application.
 	 */
-	public MainWindow(int serverPort, int port0, int port1){
-		this.serverPort = serverPort;
-		this.port0 = port0;
-		this.port1 = port1;
+	public MainWindow(){
 		initialize();
 	}
 
@@ -39,7 +33,6 @@ public class MainWindow{
 
 		JLabel labelIPLabel = new JLabel("IP:");
 
-		JLabel lblPort_2 = new JLabel("Unknown");
 		try{
 			labelIP = new JLabel(Inet4Address.getLocalHost().getHostAddress()
 					.toString());

@@ -2,8 +2,6 @@ package view.PTS;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-
-import util.PTS.PTS;
 import util.PTS.ThreadPTSClient;
 
 public class Main{

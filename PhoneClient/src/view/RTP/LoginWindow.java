@@ -5,8 +5,10 @@ import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import util.PTS.ThreadPTSClient;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 public class LoginWindow{
 
@@ -70,6 +72,24 @@ public class LoginWindow{
 		JButton buttonLogin = new JButton("Login");
 		buttonLogin.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
+				if(textFieldHost.getText()==null){
+					textFieldHost.setText("172.31.4.201");
+					
+				}
+				
+				try{
+					Main.clientPTS=new ThreadPTSClient(textFieldHost.getText());
+					Main.clientPTS.start();
+					if(textFieldUserName.getText()==null){
+						textFieldUserName.setText("User");
+					}
+					Main.clientPTS.login(textFieldUserName.getText());
+				}catch(IOException e){
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
 				MainWindow mainwindow = new MainWindow(textFieldUserName
 						.getText(), textFieldHost.getText());
 				mainwindow.frame.setVisible(true);
@@ -83,6 +103,26 @@ public class LoginWindow{
 		frame.getContentPane().add(buttonLogin);
 
 		JButton buttonNewUser = new JButton("New User");
+		buttonNewUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(textFieldHost.getText()==null){
+					textFieldHost.setText("172.31.4.201");
+					
+				}
+				
+				try{
+					Main.clientPTS=new ThreadPTSClient(textFieldHost.getText());
+					Main.clientPTS.start();
+					if(textFieldUserName.getText()==null){
+						textFieldUserName.setText("User");
+					}
+					Main.clientPTS.register(textFieldUserName.getText());
+				}catch(IOException e){
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		springLayout.putConstraint(SpringLayout.EAST, buttonLogin, -6,
 				SpringLayout.WEST, buttonNewUser);
 		springLayout.putConstraint(SpringLayout.NORTH, buttonNewUser, 6,

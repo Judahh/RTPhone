@@ -3,30 +3,37 @@ package view.RTP;
 import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 import javax.swing.JTabbedPane;
-import javax.swing.JLayeredPane;
 import javax.swing.JButton;
+import javax.swing.JList;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 public class MainWindow{
 
 	public JFrame	frame;
-	private String	host;
-	private String	username;
+	public JList<String> loggedUsersList;
+	public JList<String> allUsersList;
+	public JButton btnCall;
 
 	/**
 	 * Create the application.
 	 */
-	public MainWindow(String host, String username){
-		this.host = host;
-		this.username = username;
+	public MainWindow(){
 		initialize();
-	}
-
-	public String getHost(){
-		return host;
-	}
-
-	public String getUsername(){
-		return username;
+		while(Main.clientPTS.isConnected()){
+			loggedUsersList = new JList<>(Main.clientPTS.getUserOn());
+			allUsersList = new JList<>(Main.clientPTS.getUser());
+			if(Main.clientPTS.getPhone()==null){
+				btnCall = new JButton("Call");
+			}else{
+				btnCall = new JButton("Hang up");
+			}
+		}
+		Main.loginWindow = new LoginWindow();
+		Main.loginWindow.frame.setVisible(true);
+		frame.setVisible(false);
 	}
 
 	/**
@@ -50,15 +57,36 @@ public class MainWindow{
 				SpringLayout.EAST, frame.getContentPane());
 		frame.getContentPane().add(tabbedPane);
 
-		JLayeredPane layeredPane = new JLayeredPane();
-		tabbedPane.addTab("Logged Users", null, layeredPane, null);
-
-		JLayeredPane layeredPane_1 = new JLayeredPane();
-		tabbedPane.addTab("All Users", null, layeredPane_1, null);
-
-		JButton btnCall = new JButton("Call");
+		btnCall = new JButton("Call");
+		btnCall.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				switch(btnCall.getText()){
+					case "Call":
+						try{
+							Main.clientPTS.call(loggedUsersList.getSelectedIndex());
+						}catch(IOException e){
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					break;
+					
+					case "Hang up":
+						Main.clientPTS.hangUp();
+					break;
+					
+					default:
+					break;
+				}
+			}
+		});
 		springLayout.putConstraint(SpringLayout.NORTH, btnCall, 6,
 				SpringLayout.SOUTH, tabbedPane);
+		
+		loggedUsersList = new JList<>();
+		tabbedPane.addTab("Logged Users", null, loggedUsersList, null);
+		
+		allUsersList = new JList<>();
+		tabbedPane.addTab("All Users", null, allUsersList, null);
 		springLayout.putConstraint(SpringLayout.WEST, btnCall, 10,
 				SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(btnCall);

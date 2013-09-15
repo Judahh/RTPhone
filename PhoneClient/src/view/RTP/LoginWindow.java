@@ -74,7 +74,6 @@ public class LoginWindow{
 			public void actionPerformed(ActionEvent arg0){
 				if(textFieldHost.getText()==null){
 					textFieldHost.setText("172.31.4.201");
-					
 				}
 				
 				try{
@@ -84,16 +83,17 @@ public class LoginWindow{
 						textFieldUserName.setText("User");
 					}
 					Main.clientPTS.login(textFieldUserName.getText());
+					
+					Main.mainWindow = new MainWindow();
+					Main.mainWindow.frame.setVisible(true);
+					frame.setVisible(false);
 				}catch(IOException e){
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
 				
-				MainWindow mainwindow = new MainWindow(textFieldUserName
-						.getText(), textFieldHost.getText());
-				mainwindow.frame.setVisible(true);
-				frame.setVisible(false);
+				
 			}
 		});
 		springLayout.putConstraint(SpringLayout.NORTH, buttonLogin, 6,
@@ -114,7 +114,7 @@ public class LoginWindow{
 					Main.clientPTS=new ThreadPTSClient(textFieldHost.getText());
 					Main.clientPTS.start();
 					if(textFieldUserName.getText()==null){
-						textFieldUserName.setText("User");
+						textFieldUserName.setText("user");
 					}
 					Main.clientPTS.register(textFieldUserName.getText());
 				}catch(IOException e){

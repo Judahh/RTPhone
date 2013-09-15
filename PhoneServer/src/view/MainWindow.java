@@ -10,17 +10,27 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTabbedPane;
 import javax.swing.JLayeredPane;
+import javax.swing.JList;
 
 public class MainWindow{
 
-	public JFrame	frame;
-	private JLabel	labelIP;
+	public JFrame			frame;
+	private JLabel			labelIP;
+	private JList<String>	loggedUsersList;
+	private JList<String>	allUsersList;
 
 	/**
 	 * Create the application.
 	 */
 	public MainWindow(){
 		initialize();
+		while(!Main.server.isStopped()){
+			loggedUsersList = new JList<>(Main.server.getLogged());
+			allUsersList = new JList<>(Main.server.getResgistered());
+		}
+		Main.startServerWindow = new StartServerWindow();
+		Main.startServerWindow.frame.setVisible(true);
+		frame.setVisible(false);
 	}
 
 	/**
@@ -91,11 +101,11 @@ public class MainWindow{
 										GroupLayout.DEFAULT_SIZE, 220,
 										Short.MAX_VALUE).addContainerGap()));
 
-		JLayeredPane layeredPane = new JLayeredPane();
-		tabbedPane.addTab("All Users", null, layeredPane, null);
+		loggedUsersList = new JList();
+		tabbedPane.addTab("Logged Users", null, loggedUsersList, null);
 
-		JLayeredPane layeredPane_1 = new JLayeredPane();
-		tabbedPane.addTab("Logged Users", null, layeredPane_1, null);
+		allUsersList = new JList();
+		tabbedPane.addTab("All Users", null, allUsersList, null);
 		frame.getContentPane().setLayout(groupLayout);
 	}
 }

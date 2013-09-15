@@ -99,6 +99,12 @@ public class ThreadPTSClient extends ThreadTCPClient{
 	synchronized public Vector<String> getUserOn(){
 		return userOn;
 	}
+	
+	synchronized public Vector<String> getUser(){
+		Vector<String> user=new Vector<>(userOn);
+		user.addAll(userOff);
+		return userOff;
+	}
 
 	synchronized public boolean isLogged(){
 		return logged;

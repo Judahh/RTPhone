@@ -10,7 +10,8 @@ import util.RTP.Phone;
 
 public class Main{
 	public static ThreadPTSClient clientPTS;
-	public static Phone phone;
+	public static LoginWindow loginWindow;
+	public static MainWindow mainWindow;
 	/**
 	 * @param args
 	 */
@@ -34,8 +35,8 @@ public class Main{
 		EventQueue.invokeLater(new Runnable(){
 			public void run(){
 				try{
-					LoginWindow window = new LoginWindow();
-					window.frame.setVisible(true);
+					loginWindow = new LoginWindow();
+					loginWindow.frame.setVisible(true);
 				}catch(Exception e){
 					e.printStackTrace();
 				}

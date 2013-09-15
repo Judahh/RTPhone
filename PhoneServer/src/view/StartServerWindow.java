@@ -21,7 +21,7 @@ public class StartServerWindow{
 	private JLabel		labelServerPort;
 	private JTextField	textFieldServerPort;
 	private JLabel		lblIp;
-	private JLabel lblUnknown_1;
+	private JLabel		lblUnknown_1;
 
 	/**
 	 * Create the application.
@@ -43,24 +43,27 @@ public class StartServerWindow{
 		labelServerPort = new JLabel("Server Port:");
 		springLayout.putConstraint(SpringLayout.NORTH, labelServerPort, 10,
 				SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, labelServerPort, 10, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, labelServerPort, 10,
+				SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(labelServerPort);
 
 		btnStart = new JButton("Start");
-		springLayout.putConstraint(SpringLayout.WEST, btnStart, 0, SpringLayout.WEST, labelServerPort);
+		springLayout.putConstraint(SpringLayout.WEST, btnStart, 0,
+				SpringLayout.WEST, labelServerPort);
 		btnStart.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
-				if(textFieldServerPort.getText()==null){
+
+				if(textFieldServerPort.getText() == null){
 					textFieldServerPort.setText("9000");
-					
+
 				}
-				
-				Main.server=new ThreadPTSServer(Integer.parseInt(textFieldServerPort.getText()));
+
+				Main.server = new ThreadPTSServer(Integer
+						.parseInt(textFieldServerPort.getText()));
 				Main.server.start();
-				
-				MainWindow window = new MainWindow();
-				window.frame.setVisible(true);
+
+				Main.mainWindow = new MainWindow();
+				Main.mainWindow.frame.setVisible(true);
 				frame.setVisible(false);
 			}
 		});
@@ -78,16 +81,21 @@ public class StartServerWindow{
 		textFieldServerPort.setColumns(10);
 
 		lblIp = new JLabel("IP:");
-		springLayout.putConstraint(SpringLayout.NORTH, btnStart, 6, SpringLayout.SOUTH, lblIp);
-		springLayout.putConstraint(SpringLayout.NORTH, lblIp, 6, SpringLayout.SOUTH, labelServerPort);
-		springLayout.putConstraint(SpringLayout.WEST, lblIp, 0, SpringLayout.WEST, labelServerPort);
+		springLayout.putConstraint(SpringLayout.NORTH, btnStart, 6,
+				SpringLayout.SOUTH, lblIp);
+		springLayout.putConstraint(SpringLayout.NORTH, lblIp, 6,
+				SpringLayout.SOUTH, labelServerPort);
+		springLayout.putConstraint(SpringLayout.WEST, lblIp, 0,
+				SpringLayout.WEST, labelServerPort);
 		frame.getContentPane().add(lblIp);
 
 		try{
 			lblUnknown_1 = new JLabel(Inet4Address.getLocalHost()
 					.getHostAddress().toString());
-			springLayout.putConstraint(SpringLayout.NORTH, lblUnknown_1, 0, SpringLayout.NORTH, lblIp);
-			springLayout.putConstraint(SpringLayout.WEST, lblUnknown_1, 6, SpringLayout.EAST, lblIp);
+			springLayout.putConstraint(SpringLayout.NORTH, lblUnknown_1, 0,
+					SpringLayout.NORTH, lblIp);
+			springLayout.putConstraint(SpringLayout.WEST, lblUnknown_1, 6,
+					SpringLayout.EAST, lblIp);
 			springLayout.putConstraint(SpringLayout.EAST, lblUnknown_1, 0,
 					SpringLayout.EAST, textFieldServerPort);
 		}catch(UnknownHostException e){

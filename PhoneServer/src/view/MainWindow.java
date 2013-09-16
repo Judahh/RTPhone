@@ -9,7 +9,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTabbedPane;
-import javax.swing.JLayeredPane;
 import javax.swing.JList;
 
 public class MainWindow{
@@ -24,15 +23,22 @@ public class MainWindow{
 	 */
 	public MainWindow(){
 		initialize();
-		while(!Main.server.isStopped()){
-			loggedUsersList = new JList<>(Main.server.getLogged());
-			allUsersList = new JList<>(Main.server.getResgistered());
-		}
-		Main.startServerWindow = new StartServerWindow();
-		Main.startServerWindow.frame.setVisible(true);
-		frame.setVisible(false);
 	}
-
+	
+	public void run(){
+		new Runnable(){
+			@Override
+			public void run(){
+				while(!Main.server.isStopped()){
+					Main.mainWindow.loggedUsersList = new JList<>(
+							Main.server.getLogged());
+					Main.mainWindow.allUsersList = new JList<>(
+							Main.server.getResgistered());
+				}
+				Main.startStartServerWindow();
+			}
+		};
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -101,10 +107,10 @@ public class MainWindow{
 										GroupLayout.DEFAULT_SIZE, 220,
 										Short.MAX_VALUE).addContainerGap()));
 
-		loggedUsersList = new JList();
+		loggedUsersList = new JList<>();
 		tabbedPane.addTab("Logged Users", null, loggedUsersList, null);
 
-		allUsersList = new JList();
+		allUsersList = new JList<>();
 		tabbedPane.addTab("All Users", null, allUsersList, null);
 		frame.getContentPane().setLayout(groupLayout);
 	}

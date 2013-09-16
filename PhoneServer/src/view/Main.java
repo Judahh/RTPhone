@@ -13,6 +13,21 @@ public class Main{
 	public static MainWindow		mainWindow;
 	public static StartServerWindow	startServerWindow;
 
+	public static void startStartServerWindow(){
+		if(Main.mainWindow != null){
+			Main.mainWindow.frame.setVisible(false);
+		}
+		Main.startServerWindow.frame.setVisible(true);
+	}
+
+	public static void startMainWindow(){
+		if(Main.startServerWindow != null){
+			Main.startServerWindow.frame.setVisible(false);
+		}
+		Main.mainWindow.frame.setVisible(true);
+		Main.mainWindow.run();
+	}
+
 	/**
 	 * @param args
 	 * @throws InterruptedException
@@ -36,8 +51,9 @@ public class Main{
 		EventQueue.invokeLater(new Runnable(){
 			public void run(){
 				try{
-					startServerWindow = new StartServerWindow();
-					startServerWindow.frame.setVisible(true);
+					Main.startServerWindow = new StartServerWindow();
+					Main.mainWindow = new MainWindow();
+					startStartServerWindow();
 				}catch(Exception e){
 					e.printStackTrace();
 				}

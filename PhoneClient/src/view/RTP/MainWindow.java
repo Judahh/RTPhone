@@ -12,28 +12,35 @@ import java.io.IOException;
 
 public class MainWindow{
 
-	public JFrame	frame;
-	public JList<String> loggedUsersList;
-	public JList<String> allUsersList;
-	public JButton btnCall;
+	public JFrame			frame;
+	public JList<String>	loggedUsersList;
+	public JList<String>	allUsersList;
+	public JButton			btnCall;
 
 	/**
 	 * Create the application.
 	 */
 	public MainWindow(){
 		initialize();
-		while(Main.clientPTS.isConnected()){
-			loggedUsersList = new JList<>(Main.clientPTS.getUserOn());
-			allUsersList = new JList<>(Main.clientPTS.getUser());
-			if(Main.clientPTS.getPhone()==null){
-				btnCall = new JButton("Call");
-			}else{
-				btnCall = new JButton("Hang up");
+
+	}
+
+	public void run(){
+		new Runnable(){
+			@Override
+			public void run(){
+				while(Main.clientPTS.isConnected()){
+					loggedUsersList = new JList<>(Main.clientPTS.getUserOn());
+					allUsersList = new JList<>(Main.clientPTS.getUser());
+					if(Main.clientPTS.getPhone() == null){
+						btnCall = new JButton("Call");
+					}else{
+						btnCall = new JButton("Hang up");
+					}
+				}
+				Main.startLoginWindow();
 			}
-		}
-		Main.loginWindow = new LoginWindow();
-		Main.loginWindow.frame.setVisible(true);
-		frame.setVisible(false);
+		};
 	}
 
 	/**
@@ -58,22 +65,23 @@ public class MainWindow{
 		frame.getContentPane().add(tabbedPane);
 
 		btnCall = new JButton("Call");
-		btnCall.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnCall.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
 				switch(btnCall.getText()){
 					case "Call":
 						try{
-							Main.clientPTS.call(loggedUsersList.getSelectedIndex());
+							Main.clientPTS.call(loggedUsersList
+									.getSelectedIndex());
 						}catch(IOException e){
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					break;
-					
+
 					case "Hang up":
 						Main.clientPTS.hangUp();
 					break;
-					
+
 					default:
 					break;
 				}
@@ -81,10 +89,10 @@ public class MainWindow{
 		});
 		springLayout.putConstraint(SpringLayout.NORTH, btnCall, 6,
 				SpringLayout.SOUTH, tabbedPane);
-		
+
 		loggedUsersList = new JList<>();
 		tabbedPane.addTab("Logged Users", null, loggedUsersList, null);
-		
+
 		allUsersList = new JList<>();
 		tabbedPane.addTab("All Users", null, allUsersList, null);
 		springLayout.putConstraint(SpringLayout.WEST, btnCall, 10,

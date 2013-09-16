@@ -84,9 +84,7 @@ public class LoginWindow{
 					}
 					Main.clientPTS.login(textFieldUserName.getText());
 					
-					Main.mainWindow = new MainWindow();
-					Main.mainWindow.frame.setVisible(true);
-					frame.setVisible(false);
+					Main.startMainWindow();
 				}catch(IOException e){
 					// TODO Auto-generated catch block
 					e.printStackTrace();

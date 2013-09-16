@@ -53,11 +53,11 @@ public class Log extends PTSBasicCommunication{
 	}
 	
 	public static PTS getLogon(String username){
-		PTS pts = new PTS();// TODO: colocar isto na classe Log
-		pts.setType("log");
+		PTS ptsTemp = new PTS();
+		ptsTemp.setType("log");
 
-		pts.setValue(On.getLogon(username));
-		return pts;
+		ptsTemp.setValue(On.getLogon(username));
+		return ptsTemp;
 	}
 	
 	public static PTS getLogoff(String username){

@@ -1,17 +1,30 @@
 package view.RTP;
 
 import java.awt.EventQueue;
-
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import util.PTS.ThreadPTSClient;
-import util.RTP.Phone;
 
 public class Main{
 	public static ThreadPTSClient clientPTS;
 	public static LoginWindow loginWindow;
 	public static MainWindow mainWindow;
+	
+	public static void startLoginWindow(){
+		if(Main.mainWindow != null){
+			Main.mainWindow.frame.setVisible(false);
+		}
+		Main.loginWindow.frame.setVisible(true);
+	}
+
+	public static void startMainWindow(){
+		if(Main.loginWindow != null){
+			Main.loginWindow.frame.setVisible(false);
+		}
+		Main.mainWindow.frame.setVisible(true);
+		Main.mainWindow.run();
+	}
+	
 	/**
 	 * @param args
 	 */
@@ -35,8 +48,9 @@ public class Main{
 		EventQueue.invokeLater(new Runnable(){
 			public void run(){
 				try{
-					loginWindow = new LoginWindow();
-					loginWindow.frame.setVisible(true);
+					Main.loginWindow = new LoginWindow();
+					Main.mainWindow = new MainWindow();
+					startLoginWindow();
 				}catch(Exception e){
 					e.printStackTrace();
 				}

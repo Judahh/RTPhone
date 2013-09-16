@@ -52,19 +52,16 @@ public class StartServerWindow{
 				SpringLayout.WEST, labelServerPort);
 		btnStart.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-
 				if(textFieldServerPort.getText() == null){
 					textFieldServerPort.setText("9000");
 
 				}
-
+				
 				Main.server = new ThreadPTSServer(Integer
 						.parseInt(textFieldServerPort.getText()));
 				Main.server.start();
-
-				Main.mainWindow = new MainWindow();
-				Main.mainWindow.frame.setVisible(true);
-				frame.setVisible(false);
+				
+				Main.startMainWindow();
 			}
 		});
 		frame.getContentPane().add(btnStart);
@@ -76,7 +73,7 @@ public class StartServerWindow{
 				SpringLayout.EAST, labelServerPort);
 		springLayout.putConstraint(SpringLayout.EAST, textFieldServerPort, 105,
 				SpringLayout.EAST, labelServerPort);
-		textFieldServerPort.setText("56789");
+		textFieldServerPort.setText("9000");
 		frame.getContentPane().add(textFieldServerPort);
 		textFieldServerPort.setColumns(10);
 

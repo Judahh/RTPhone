@@ -16,6 +16,14 @@ public class On extends Log{
 		}
 		return false;
 	}
+	
+	public static PTS getLogon(String username){
+		PTS ptsTemp = new PTS();
+		ptsTemp.setType("on");
+
+		ptsTemp.setValue(username);
+		return ptsTemp;
+	}
 
 	protected void start(){
 		if(!pts.toString().isEmpty()){

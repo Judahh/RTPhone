@@ -13,8 +13,11 @@ public class ThreadSingleTCPServer extends Thread{
 
 	public ThreadSingleTCPServer(Socket clientSocket) throws IOException{
 		this.clientSocket = clientSocket;
-		this.threadReceiver = new ThreadReceiver(clientSocket.getInputStream());
-		this.threadSender = new ThreadSender(clientSocket.getOutputStream());
+		// this.threadReceiver = new
+		// ThreadReceiver(serverSocket.getInputStream());
+		// this.threadSender = new ThreadSender(serverSocket.getOutputStream());
+		this.threadReceiver = new ThreadReceiver(clientSocket);
+		this.threadSender = new ThreadSender(clientSocket);
 	}
 
 	public void addBroadcast(Vector<String> broadcast){
@@ -22,20 +25,20 @@ public class ThreadSingleTCPServer extends Thread{
 
 	public void addToCheck(Vector<String> toCheck){
 	}
-	
+
 	public Vector<String> getCall(){
 		return new Vector<>();
 	}
-	
+
 	public void addCall(Vector<String> call){
 	}
-	
+
 	public void addCall(String call){
 	}
-	
+
 	public void clearCall(String call){
 	}
-	
+
 	public Vector<String> getReceived(){
 		return this.threadReceiver.getReceived();
 	}
@@ -80,7 +83,7 @@ public class ThreadSingleTCPServer extends Thread{
 
 	public void setUsername(String username){
 	}
-	
+
 	public void clearBroadcast(){
 	}
 
@@ -89,33 +92,44 @@ public class ThreadSingleTCPServer extends Thread{
 
 	public void clearUsername(){
 	}
-	
+
 	public void setLogin(boolean login){
 	}
-	
+
 	public void setRegister(boolean register){
 	}
-	
+
 	public boolean isLogin(){
 		return false;
 	}
-	
+
 	public boolean isRegister(){
 		return false;
 	}
-	
+
 	public void setOn(boolean on){
 	}
-	
+
 	public boolean isOn(){
 		return false;
+	}
+	
+	synchronized private void startServerTCP(){
+		this.threadReceiver.start();
+		this.threadSender.start();
 	}
 
 	public void run(){
 		try{
-			this.threadReceiver.start();
-			this.threadSender.start();
-			while(clientSocket.isConnected());
+			startServerTCP();
+			while(clientSocket.isConnected()){
+				try{
+					Thread.sleep(1000);
+				}catch(InterruptedException e1){
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 			close();
 		}catch(IOException e){
 			e.printStackTrace();

@@ -6,6 +6,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
+import util.PTS.Exception.CallBusyException;
+import util.PTS.Exception.LoginErrorException;
+import util.PTS.Exception.RegisterErrorException;
+
 public class ThreadTCPClient extends Thread{
 	protected Socket			serverSocket;
 	protected String			host;
@@ -18,8 +22,11 @@ public class ThreadTCPClient extends Thread{
 		this.host = host;
 		this.port = port;// 6789
 		this.serverSocket = new Socket(host, port);
-		this.threadReceiver = new ThreadReceiver(serverSocket.getInputStream());
-		this.threadSender = new ThreadSender(serverSocket.getOutputStream());
+		// this.threadReceiver = new
+		// ThreadReceiver(serverSocket.getInputStream());
+		// this.threadSender = new ThreadSender(serverSocket.getOutputStream());
+		this.threadReceiver = new ThreadReceiver(serverSocket);
+		this.threadSender = new ThreadSender(serverSocket);
 	}
 
 	synchronized public Vector<String> getReceived(){
@@ -62,10 +69,25 @@ public class ThreadTCPClient extends Thread{
 	public void run(){
 		startClientTCP();
 		while(serverSocket.isConnected()){
-			check();
+			try{
+				Thread.sleep(1000);
+			}catch(InterruptedException e1){
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try{
+				check();
+			}catch(CallBusyException e){
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}catch(RegisterErrorException e){
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}catch(LoginErrorException e){
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		this.threadSender.stop();
-		this.threadReceiver.stop();
 		try{
 			close();
 		}catch(IOException e){
@@ -73,7 +95,7 @@ public class ThreadTCPClient extends Thread{
 		}
 	}
 
-	protected void check(){
+	protected void check() throws CallBusyException, RegisterErrorException, LoginErrorException{
 		// TODO Auto-generated method stub
 		
 	}

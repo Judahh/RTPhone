@@ -7,6 +7,9 @@ import java.util.Vector;
 import util.PTS.Call.Address;
 import util.PTS.Call.Call;
 import util.PTS.Call.User;
+import util.PTS.Exception.CallBusyException;
+import util.PTS.Exception.LoginErrorException;
+import util.PTS.Exception.RegisterErrorException;
 import util.PTS.Log.Log;
 import util.RTP.Phone;
 import util.TCP.ThreadTCPClient;
@@ -211,7 +214,7 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.userOn = userOn;
 	}
 
-	synchronized protected void check(){
+	synchronized protected void check() throws CallBusyException, RegisterErrorException, LoginErrorException{
 		// TODO: checar todas as respostas do servidor aqui usando getReceived()
 		// e atualizar as listas
 		// OBS: isso fica num loop que roda no ran da classe ThreadClientTCP
@@ -227,6 +230,7 @@ public class ThreadPTSClient extends ThreadTCPClient{
 
 				if(received.get(index).equals(Log.getError())){
 					setToCheckLogin(false);
+					throw new LoginErrorException();
 				}
 			}
 
@@ -238,22 +242,22 @@ public class ThreadPTSClient extends ThreadTCPClient{
 
 				if(received.get(index).equals(Log.getError())){
 					setToCheckRegister(false);
+					throw new RegisterErrorException();
 				}
 			}
 
 			if(isToCheckCall()){
 
 				if(new Address(pts).isAddress()){
-					setToCheckRegister(false);
-					setRegistered(true);
+					setToCheckCall(false);
 					setPhone(new Phone(pts.getPts().get(0).getValue(),
 							getPort0(), getPort1()));
 					getPhone().start();
 				}
 
 				if(Call.isError(received.get(index))){
-					setToCheckRegister(false);
-					// TODO: mostrar erro
+					setToCheckCall(false);
+					throw new CallBusyException();
 				}
 			}
 
@@ -268,7 +272,6 @@ public class ThreadPTSClient extends ThreadTCPClient{
 						try{
 							send(Call.getOk(getCaller()).toString());
 						}catch(IOException e){
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}else{
@@ -276,7 +279,6 @@ public class ThreadPTSClient extends ThreadTCPClient{
 						try{
 							send(Call.getError(tempCaller).toString());
 						}catch(IOException e){
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

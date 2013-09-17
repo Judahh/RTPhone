@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Socket;
 import java.util.Vector;
 
 public class ThreadReceiver extends Thread{
@@ -14,8 +15,17 @@ public class ThreadReceiver extends Thread{
 		this.received = new Vector<>();
 	}
 
+	public ThreadReceiver(Socket serverSocket) throws IOException{
+		this.input = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+		this.received = new Vector<>();
+	}
+
 	private void receive() throws IOException{
 		this.received.add(this.input.readLine());
+		if(this.received.size() > 0){
+			System.out.println("Client received:"
+					+ this.received.get(this.received.size() - 1) + '\n');
+		}
 	}
 
 	public Vector<String> getReceived(){
@@ -28,14 +38,10 @@ public class ThreadReceiver extends Thread{
 	public void run(){
 		try{
 			while(true){
-				Thread.sleep(1000);
 				receive();
 			}
 		}catch(IOException e){
 
-		}catch(InterruptedException e){
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 }

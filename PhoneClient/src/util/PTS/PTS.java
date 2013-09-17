@@ -9,8 +9,8 @@ public class PTS{
 	private String		value;
 
 	public PTS(){
-		this.pts = new Vector<>();
 		this.size = 0;
+		this.pts = new Vector<>();
 		this.type = new String();
 		this.value = new String();
 	}

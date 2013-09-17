@@ -61,7 +61,7 @@ public class Log extends PTSBasicCommunication{
 	}
 	
 	public static PTS getLogoff(String username){
-		PTS pts = new PTS();// TODO: colocar isto na classe Log
+		PTS pts = new PTS();
 		pts.setType("log");
 
 		pts.setValue(Off.getLogoff(username));

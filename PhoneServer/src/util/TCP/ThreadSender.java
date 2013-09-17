@@ -30,10 +30,14 @@ public class ThreadSender extends Thread{
 	public void run(){
 		try{
 			while(true){
+				Thread.sleep(1000);
 				send();
 			}
 		}catch(IOException e){
 
+		}catch(InterruptedException e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

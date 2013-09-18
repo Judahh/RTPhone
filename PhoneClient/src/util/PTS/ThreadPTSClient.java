@@ -102,9 +102,9 @@ public class ThreadPTSClient extends ThreadTCPClient{
 	synchronized public Vector<String> getUserOn(){
 		return userOn;
 	}
-	
+
 	synchronized public Vector<String> getUser(){
-		Vector<String> user=new Vector<>(userOn);
+		Vector<String> user = new Vector<>(userOn);
 		user.addAll(userOff);
 		return userOff;
 	}
@@ -173,48 +173,49 @@ public class ThreadPTSClient extends ThreadTCPClient{
 	synchronized public void setCaller(String caller){
 		this.caller = caller;
 	}
-	
+
 	synchronized public void setLogged(boolean logged){
 		this.logged = logged;
 	}
-	
+
 	synchronized public void setPort0(int port0){
 		this.port0 = port0;
 	}
-	
+
 	synchronized public void setPort1(int port1){
 		this.port1 = port1;
 	}
-	
+
 	synchronized public void setRegistered(boolean registered){
 		this.registered = registered;
 	}
-	
+
 	synchronized public void setToCheckCall(boolean toCheckCall){
 		this.toCheckCall = toCheckCall;
 	}
-	
+
 	synchronized public void setToCheckLogin(boolean toCheckLogin){
 		this.toCheckLogin = toCheckLogin;
 	}
-	
+
 	synchronized public void setToCheckRegister(boolean toCheckRegister){
 		this.toCheckRegister = toCheckRegister;
 	}
-	
+
 	synchronized public void setUsername(String username){
 		this.username = username;
 	}
-	
+
 	synchronized public void setUserOff(Vector<String> userOff){
 		this.userOff = userOff;
 	}
-	
+
 	synchronized public void setUserOn(Vector<String> userOn){
 		this.userOn = userOn;
 	}
 
-	synchronized protected void check() throws CallBusyException, RegisterErrorException, LoginErrorException{
+	synchronized protected void check() throws CallBusyException,
+			RegisterErrorException, LoginErrorException{
 		// TODO: checar todas as respostas do servidor aqui usando getReceived()
 		// e atualizar as listas
 		// OBS: isso fica num loop que roda no ran da classe ThreadClientTCP
@@ -269,18 +270,10 @@ public class ThreadPTSClient extends ThreadTCPClient{
 						setPhone(new Phone(pts.getPts().get(1).getValue(),
 								getPort1(), getPort0()));
 						getPhone().start();
-						try{
-							send(Call.getOk(getCaller()).toString());
-						}catch(IOException e){
-							e.printStackTrace();
-						}
+						send(Call.getOk(getCaller()).toString());
 					}else{
 						String tempCaller = pts.getPts().get(0).getValue();
-						try{
-							send(Call.getError(tempCaller).toString());
-						}catch(IOException e){
-							e.printStackTrace();
-						}
+						send(Call.getError(tempCaller).toString());
 					}
 				}
 			}

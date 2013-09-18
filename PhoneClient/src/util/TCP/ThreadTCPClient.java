@@ -1,6 +1,9 @@
 package util.TCP;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -14,27 +17,58 @@ public class ThreadTCPClient extends Thread{
 	protected Socket			serverSocket;
 	protected String			host;
 	protected int				port;
-	protected ThreadReceiver	threadReceiver;
-	protected ThreadSender	threadSender;
+	private boolean				sent;
+	private BufferedReader		input;
+	private Vector<String>		received;
+	private DataOutputStream	output;
+	private Vector<String>		toSend;
 
 	public ThreadTCPClient(String host, int port) throws UnknownHostException,
 			IOException{
+		this.sent = false;
 		this.host = host;
 		this.port = port;// 6789
 		this.serverSocket = new Socket(host, port);
-		// this.threadReceiver = new
-		// ThreadReceiver(serverSocket.getInputStream());
-		// this.threadSender = new ThreadSender(serverSocket.getOutputStream());
-		this.threadReceiver = new ThreadReceiver(serverSocket);
-		this.threadSender = new ThreadSender(serverSocket);
+		this.received = new Vector<>();
+		this.input = new BufferedReader(new InputStreamReader(
+				serverSocket.getInputStream()));
+		this.toSend = new Vector<>();
+		this.output = new DataOutputStream(serverSocket.getOutputStream());
 	}
 
-	synchronized public Vector<String> getReceived(){
-		return this.threadReceiver.getReceived();
+	private void receive() throws IOException{
+		System.out.println("Receive");
+		if(this.sent){
+			this.received.add(this.input.readLine());
+			if(this.received.size() > 0){
+				System.out.println("Client received:"
+						+ this.received.get(this.received.size() - 1) + '\n');
+			}
+			this.sent = false;
+		}
+		System.out.println("ReceiveEnd");
+	}
+	public Vector<String> getReceived(){
+		Vector<String> temp = received;
+		this.received = new Vector<>();
+		return temp;
 	}
 
-	synchronized public void send(String toSend) throws IOException{
-		this.threadSender.send(toSend);
+	public void send(String toSend){
+		this.toSend.add(toSend);
+		System.out.println("ADD Client send:" + this.toSend.get(0) + '\n');
+	}
+
+	private void send() throws IOException{
+		System.out.println("Send");
+		while(!this.toSend.isEmpty()){
+			this.output.write((this.toSend.get(0) + '\n').getBytes());
+			this.output.flush();
+			System.out.println("Client send:" + this.toSend.get(0) + '\n');
+			this.toSend.remove(0);
+			this.sent = true;
+		}
+		System.out.println("SendEnd");
 	}
 
 	synchronized public InetAddress inetAddress(){
@@ -60,43 +94,39 @@ public class ThreadTCPClient extends Thread{
 	synchronized public int getPort(){
 		return port;
 	}
-	
-	synchronized private void startClientTCP(){
-		this.threadReceiver.start();
-		this.threadSender.start();
-	}
 
 	public void run(){
-		startClientTCP();
-		while(serverSocket.isConnected()){
-			try{
-				Thread.sleep(1000);
-			}catch(InterruptedException e1){
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			try{
-				check();
-			}catch(CallBusyException e){
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}catch(RegisterErrorException e){
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}catch(LoginErrorException e){
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		try{
+			while(serverSocket.isConnected()){
+				checkTCP();
+				try{
+					check();
+				}catch(CallBusyException e){
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}catch(RegisterErrorException e){
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}catch(LoginErrorException e){
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			System.out.println("Out");
 			close();
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}
 
-	protected void check() throws CallBusyException, RegisterErrorException, LoginErrorException{
-		// TODO Auto-generated method stub
-		
+	private void checkTCP() throws IOException{
+		System.out.println("Check");
+		send();
+		receive();
+		System.out.println("CheckEnd");
+	}
+
+	protected void check() throws CallBusyException, RegisterErrorException,
+			LoginErrorException{
 	}
 }

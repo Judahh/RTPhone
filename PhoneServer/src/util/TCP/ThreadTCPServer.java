@@ -51,10 +51,6 @@ public class ThreadTCPServer extends Thread{
 		}
 	}
 
-	// protected void check(){
-	//
-	// }
-
 	synchronized private void closeConnections(){
 		for(ThreadSingleTCPServer iterable_element : getThreadSingleTCPServer()){
 			try{
@@ -75,7 +71,6 @@ public class ThreadTCPServer extends Thread{
 		this.threadTCPChecker.start();
 		while(!isStopped()){
 			acceptConnection();
-			// check();
 		}
 		closeConnections();
 	}

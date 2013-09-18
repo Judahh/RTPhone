@@ -1,4 +1,4 @@
-package view.RTP;
+package view;
 
 import java.awt.EventQueue;
 import javax.swing.UIManager;

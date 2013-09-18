@@ -116,6 +116,40 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 
 	protected void check(){
 		// TODO: Fazer todas as checagens aqui!!!
+		Vector<String> received = getReceived();
+		for(int index = 0; index < received.size(); index++){
+			if(!received.get(index).isEmpty()){
+				System.out.println("all received:" + received.get(index)
+						+ "fim");
+				PTS pts = new PTS(received.get(index));
+				System.out.println("all received pts:" + pts.toString());
+				switch(pts.getType()){
+					case "log":
+						Log log = new Log(pts);
+						addBroadcast(log.getBroadcast());
+						addToCheck(log.getToCheck());
+						System.out.println("to check:" + log.getToCheck());
+						if(!log.getUsername().isEmpty()){
+							setUsername(log.getUsername());
+						}
+						if(!log.getToSend().isEmpty()){
+							System.out.println("to send:" + log.getToSend());
+							send(log.getToSend());
+						}
+					break;
+					case "call":
+						if((Call.isOk(received.get(index)))
+								|| (Call.isError(received.get(index)))){
+							addCall(received.get(index));
+						}else{
+							Call call = new Call(pts, username, new Address(
+									this.getAddress()));
+							addCall(call.getToCheck());
+						}
+				}
+			}
+		}
+
 		if(this.login){
 			addBroadcast(Log.getLog(username, true));
 			this.on = true;
@@ -123,56 +157,6 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 
 		if(this.register){
 			addBroadcast(Log.getLog(username, false));
-		}
-	}
-
-	@Override
-	public void run(){
-		try{
-			this.threadReceiver.start();
-			this.threadSender.start();
-			while(clientSocket.isConnected()){
-				Vector<String> received = getReceived();
-				for(int index = 0; index < received.size(); index++){
-					if(!received.get(index).isEmpty()){
-						System.out.println("all received:"
-								+ received.get(index) + "fim");
-						PTS pts = new PTS(received.get(index));
-						System.out
-								.println("all received pts:" + pts.toString());
-						switch(pts.getType()){
-							case "log":
-								Log log = new Log(pts);
-								addBroadcast(log.getBroadcast());
-								addToCheck(log.getToCheck());
-								System.out.println("to check:"
-										+ log.getToCheck());
-								if(!log.getUsername().isEmpty()){
-									setUsername(log.getUsername());
-								}
-								if(!log.getToSend().isEmpty()){
-									System.out.println("to send:"
-											+ log.getToSend());
-									send(log.getToSend());
-								}
-							break;
-							case "call":
-								if((Call.isOk(received.get(index)))
-										|| (Call.isError(received.get(index)))){
-									addCall(received.get(index));
-								}else{
-									Call call = new Call(pts, username,
-											new Address(this.getAddress()));
-									addCall(call.getToCheck());
-								}
-						}
-					}
-					check();
-				}
-			}
-			close();
-		}catch(IOException e){
-			e.printStackTrace();
 		}
 	}
 }

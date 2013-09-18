@@ -128,7 +128,7 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 						Log log = new Log(pts);
 						addBroadcast(log.getBroadcast());
 						addToCheck(log.getToCheck());
-						System.out.println("to check:" + log.getToCheck());
+						System.out.println("to check:" + getToCheck());
 						if(!log.getUsername().isEmpty()){
 							setUsername(log.getUsername());
 						}

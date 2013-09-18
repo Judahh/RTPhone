@@ -17,7 +17,9 @@ public class ThreadTCPChecker extends Thread{
 
 	@Override
 	public void run(){
-		while(!this.threadTCPServer.isStopped()){
+		System.out.println("start");
+		while(true){
+			//System.out.println("check");
 			check();
 		}
 	}

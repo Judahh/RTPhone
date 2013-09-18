@@ -80,6 +80,7 @@ public class Log extends PTSBasicCommunication{
 			switch(pts.getPts().get(0).getType()){
 				case "in":
 					In in = new In(pts);
+					setUsername(in.getUsername());
 					addBroadcast(in.getBroadcast());
 					addToCheck(in.getToCheck());
 					setToSend(in.getToSend());
@@ -87,6 +88,7 @@ public class Log extends PTSBasicCommunication{
 
 				case "on":
 					On on = new On(pts);
+					setUsername(on.getUsername());
 					addBroadcast(on.getBroadcast());
 					addToCheck(on.getToCheck());
 					setToSend(on.getToSend());

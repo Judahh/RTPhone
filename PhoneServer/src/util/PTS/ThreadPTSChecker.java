@@ -21,7 +21,6 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 	protected void check(){
 		// TODO: Fazer todas as checagens e broadcasts aqui!!!
 		// OBS: isso fica num loop que roda no ran da classe ThreadTCPServer
-		// System.out.println("check");
 		checkLogin();
 		checkRegister();
 		checkBroadcast();
@@ -119,8 +118,11 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 		// TODO: Fazer todas as checagens de login aqui!!!
 		for(ThreadSingleTCPServer iterable_element : getThreadTCPServer()
 				.getThreadSingleTCPServer()){
+//			System.out.println("entrou 1");
 			for(int index = 0; index < iterable_element.getToCheck().size();){
+				System.out.println("entrou 2");
 				if(new In(new PTS(iterable_element.getToCheck().get(0))).isIn()){
+					System.out.println("entrou 3");
 					boolean ok = false;
 
 					for(String iterable_element2 : getThreadTCPServer()
@@ -132,9 +134,11 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 					}
 
 					if(!ok){
+						System.out.println("entrou 4");
 						iterable_element.send(Log.getError());// não
 																// registrado
 					}
+					System.out.println("saiu 4");
 
 					for(String iterable_element2 : getThreadTCPServer()
 							.getLogged()){

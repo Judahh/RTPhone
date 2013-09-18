@@ -87,7 +87,7 @@ public class ThreadTCPServer extends Thread{
 		}
 	}
 
-	synchronized public Vector<ThreadSingleTCPServer> getThreadSingleTCPServer(){
+	public Vector<ThreadSingleTCPServer> getThreadSingleTCPServer(){
 		return this.threadSingleTCPServer;
 	}
 

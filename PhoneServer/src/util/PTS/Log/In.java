@@ -27,8 +27,12 @@ public class In extends Log{
 	}
 
 	protected void start(){
+		System.out.println("PTS:"+this.pts);
 		if(!pts.toString().isEmpty()){
 			this.toCheck.add(pts.toString());
+		}
+		if(!pts.getPts().get(0).getValue().isEmpty()){
+			this.username = pts.getPts().get(0).getValue();
 		}
 	}
 }

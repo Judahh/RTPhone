@@ -16,7 +16,6 @@ public class ThreadSingleTCPServer extends Thread{
 			Socket clientReceiverSocket) throws IOException{
 		this.clientSenderSocket = clientSenderSocket;
 		this.clientReceiverSocket = clientReceiverSocket;
-
 	}
 
 	public Vector<String> getReceived(){

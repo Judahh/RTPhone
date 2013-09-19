@@ -29,28 +29,11 @@ public class ThreadTCPServer extends Thread{
 		this.threadTCPChecker = new ThreadTCPChecker(this);
 	}
 
-	synchronized private void acceptSenderConnection(){
-		this.newClientSenderConnection = null;
-		try{
-			this.newClientSenderConnection = this.serverSenderSocket.accept();
-		}catch(IOException e){
-			if(isStopped()){
-				System.out.println("Server Stopped.");
-				return;
-			}
-			throw new RuntimeException("Error accepting client connection", e);
-		}
-	}
-
 	synchronized private void acceptConnection(){
-		acceptSenderConnection();
-		acceptReceiverConnection();
-		addConnection();
-	}
-
-	synchronized private void acceptReceiverConnection(){
+		this.newClientSenderConnection = null;
 		this.newClientReceiverConnection = null;
 		try{
+			this.newClientSenderConnection = this.serverSenderSocket.accept();
 			this.newClientReceiverConnection = this.serverReceiverSocket
 					.accept();
 		}catch(IOException e){
@@ -60,6 +43,7 @@ public class ThreadTCPServer extends Thread{
 			}
 			throw new RuntimeException("Error accepting client connection", e);
 		}
+		addConnection();
 	}
 
 	synchronized protected void addConnection(){

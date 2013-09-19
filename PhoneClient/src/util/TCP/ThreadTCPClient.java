@@ -57,7 +57,7 @@ public class ThreadTCPClient extends Thread{
 				e.printStackTrace();
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -72,7 +72,9 @@ public class ThreadTCPClient extends Thread{
 
 	public void run(){
 		try{
-			startTCP();
+			synchronized(this){
+				startTCP();
+			}
 			while(isConnected()){
 				try{
 					check();

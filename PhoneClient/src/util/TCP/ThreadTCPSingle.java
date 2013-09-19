@@ -59,7 +59,7 @@ public class ThreadTCPSingle extends Thread{
 					work();
 				}
 			}catch(IOException e){
-
+				System.err.println(e);
 			}
 		}
 	}

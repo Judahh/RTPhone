@@ -10,6 +10,8 @@ public class ThreadTCPReceiver extends ThreadTCPSingle{
 	}
 	
 	protected void work() throws IOException{
+		System.out.println("Entrou receive");
 		receive();
+		System.out.println("Saiu receive");
 	}
 }

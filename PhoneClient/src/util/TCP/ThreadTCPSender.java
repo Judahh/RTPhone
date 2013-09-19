@@ -10,6 +10,8 @@ public class ThreadTCPSender extends ThreadTCPSingle{
 	}
 	
 	protected void work() throws IOException{
+		System.out.println("Entrou send");
 		send();
+		System.out.println("Saiu send");
 	}
 }

@@ -27,7 +27,8 @@ public class ThreadTCPClient extends Thread{
 		this.serverReceiverSocket = new Socket(host, clientReceiverport);
 		this.serverSenderSocket = new Socket(host, clientSenderport);
 		this.threadTCPReceiver = new ThreadTCPReceiver(serverReceiverSocket);
-		this.threadTCPReceiver = new ThreadTCPReceiver(serverSenderSocket);
+		this.threadTCPSender = new ThreadTCPSender(serverSenderSocket);
+		startTCP();
 	}
 
 	public Vector<String> getReceived(){
@@ -72,9 +73,6 @@ public class ThreadTCPClient extends Thread{
 
 	public void run(){
 		try{
-			synchronized(this){
-				startTCP();
-			}
 			while(isConnected()){
 				try{
 					check();

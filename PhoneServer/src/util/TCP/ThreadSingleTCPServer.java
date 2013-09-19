@@ -16,6 +16,9 @@ public class ThreadSingleTCPServer extends Thread{
 			Socket clientReceiverSocket) throws IOException{
 		this.clientSenderSocket = clientSenderSocket;
 		this.clientReceiverSocket = clientReceiverSocket;
+		threadTCPSender = new ThreadTCPSender(clientSenderSocket);
+		threadTCPReceiver= new ThreadTCPReceiver(clientReceiverSocket);
+		startTCP();
 	}
 
 	public Vector<String> getReceived(){
@@ -134,7 +137,6 @@ public class ThreadSingleTCPServer extends Thread{
 
 	public void run(){
 		try{
-			startTCP();
 			while(isConnected()){
 				check();
 			}

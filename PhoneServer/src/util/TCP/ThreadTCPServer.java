@@ -40,12 +40,12 @@ public class ThreadTCPServer extends Thread{
 			}
 			throw new RuntimeException("Error accepting client connection", e);
 		}
-		addConnection();
 	}
 
 	synchronized private void acceptConnection(){
 		acceptSenderConnection();
 		acceptReceiverConnection();
+		addConnection();
 	}
 
 	synchronized private void acceptReceiverConnection(){
@@ -60,7 +60,6 @@ public class ThreadTCPServer extends Thread{
 			}
 			throw new RuntimeException("Error accepting client connection", e);
 		}
-		addConnection();
 	}
 
 	synchronized protected void addConnection(){

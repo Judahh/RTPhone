@@ -19,8 +19,9 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 	private boolean			register;
 	private String			username;
 
-	public ThreadSinglePTSServer(Socket clientSocket) throws IOException{
-		super(clientSocket);
+	public ThreadSinglePTSServer(Socket clientSenderSocket,
+			Socket clientReceiverSocket) throws IOException{
+		super(clientSenderSocket, clientReceiverSocket);
 		this.broadcast = new Vector<>();
 		this.toCheck = new Vector<>();
 		this.call = new Vector<>();

@@ -8,15 +8,9 @@ public class ThreadPTSServer extends ThreadTCPServer{
 	private Vector<String>	resgistered;
 	private Vector<String>	logged;
 
-	public ThreadPTSServer(int port){
-		super(port);
-		this.threadTCPChecker= new ThreadPTSChecker(this);
-		this.resgistered = new Vector<>();
-		this.logged = new Vector<>();
-	}
-
 	public ThreadPTSServer(){
-		super(9000);
+		super();
+		this.threadTCPChecker= new ThreadPTSChecker(this);
 		this.resgistered = new Vector<>();
 		this.logged = new Vector<>();
 	}
@@ -26,7 +20,7 @@ public class ThreadPTSServer extends ThreadTCPServer{
 		try{
 			ThreadSinglePTSServer ThreadSinglePTSServerA;
 			ThreadSinglePTSServerA = new ThreadSinglePTSServer(
-					newClientConnection);
+					newClientSenderConnection, newClientReceiverConnection);
 			ThreadSinglePTSServerA.start();
 			getThreadSingleTCPServer().add(ThreadSinglePTSServerA);
 		}catch(IOException e){

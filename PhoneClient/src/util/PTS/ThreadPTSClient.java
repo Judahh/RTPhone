@@ -28,9 +28,9 @@ public class ThreadPTSClient extends ThreadTCPClient{
 	private int				port0;
 	private int				port1;
 
-	public ThreadPTSClient(String host, int port, int port0, int port1)
+	public ThreadPTSClient(String host, int port0, int port1)
 			throws UnknownHostException, IOException{
-		super(host, port);
+		super(host);
 		this.userOn = new Vector<>();
 		this.userOff = new Vector<>();
 		this.username = new String();
@@ -45,26 +45,9 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.port1 = port1;
 	}
 
-	public ThreadPTSClient(String host, int port) throws UnknownHostException,
-			IOException{
-		super(host, port);
-		this.userOn = new Vector<>();
-		this.userOff = new Vector<>();
-		this.username = new String();
-		this.toCheckLogin = false;
-		this.toCheckRegister = false;
-		this.toCheckCall = false;
-		this.logged = false;
-		this.registered = false;
-		this.phone = null;
-		this.caller = null;
-		this.port0 = 16384;
-		this.port1 = 32766;
-	}
-
 	public ThreadPTSClient(String host) throws UnknownHostException,
 			IOException{
-		super(host, 9000);
+		super(host);
 		this.userOn = new Vector<>();
 		this.userOff = new Vector<>();
 		this.username = new String();

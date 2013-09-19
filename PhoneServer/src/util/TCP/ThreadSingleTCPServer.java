@@ -1,55 +1,30 @@
 package util.TCP;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Vector;
 
 public class ThreadSingleTCPServer extends Thread{
 
-	protected Socket			clientSocket;
-	private BufferedReader		input;
-	private Vector<String>		received;
-	private DataOutputStream	output;
-	private Vector<String>		toSend;
+	protected Socket			clientSenderSocket;
+	protected Socket			clientReceiverSocket;
+	protected ThreadTCPSender	threadTCPSender;
+	protected ThreadTCPReceiver	threadTCPReceiver;
 
-	public ThreadSingleTCPServer(Socket clientSocket) throws IOException{
-		this.clientSocket = clientSocket;
-		this.received = new Vector<>();
-		this.input = new BufferedReader(new InputStreamReader(
-				clientSocket.getInputStream()));
-		this.toSend = new Vector<>();
-		this.output = new DataOutputStream(clientSocket.getOutputStream());
-	}
+	public ThreadSingleTCPServer(Socket clientSenderSocket,
+			Socket clientReceiverSocket) throws IOException{
+		this.clientSenderSocket = clientSenderSocket;
+		this.clientReceiverSocket = clientReceiverSocket;
 
-	private void receive() throws IOException{
-		this.received.add(this.input.readLine());
-		if(this.received.size() > 0){
-			System.out.println("Client received:"
-					+ this.received.get(this.received.size() - 1) + '\n');
-		}
 	}
 
 	public Vector<String> getReceived(){
-		Vector<String> temp = received;
-		this.received = new Vector<>();
-		return temp;
+		return this.threadTCPReceiver.getReceived();
 	}
 
 	public void send(String toSend){
-		this.toSend.add(toSend);
-	}
-
-	private void send() throws IOException{
-		while(!this.toSend.isEmpty()){
-			this.output.write((this.toSend.get(0) + '\n').getBytes());
-			this.output.flush();
-			System.out.println("Client send:" + this.toSend.get(0) + '\n');
-			this.toSend.remove(0);
-		}
+		this.threadTCPSender.toSend.add(toSend);
 	}
 
 	public void addBroadcast(Vector<String> broadcast){
@@ -72,19 +47,31 @@ public class ThreadSingleTCPServer extends Thread{
 	}
 
 	public InetAddress inetAddress(){
-		return this.clientSocket.getInetAddress();
+		return this.clientSenderSocket.getInetAddress();
 	}
 
 	public String getAddress(){
-		return this.clientSocket.getInetAddress().toString();
+		return this.clientSenderSocket.getInetAddress().toString();
 	}
 
 	public boolean isConnected(){
-		return clientSocket.isConnected();
+		if(clientSenderSocket.isConnected()
+				&& clientReceiverSocket.isConnected()){
+			return true;
+		}else{
+			try{
+				close();
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		}
+		
+		return false;
 	}
 
 	public void close() throws IOException{
-		clientSocket.close();
+		clientSenderSocket.close();
+		clientReceiverSocket.close();
 	}
 
 	public Vector<String> getBroadcast(){
@@ -138,9 +125,9 @@ public class ThreadSingleTCPServer extends Thread{
 		return false;
 	}
 
-	private void checkTCP() throws IOException{
-		receive();
-		send();
+	private void startTCP(){
+		threadTCPSender.start();
+		threadTCPReceiver.start();
 	}
 
 	protected void check(){
@@ -148,8 +135,8 @@ public class ThreadSingleTCPServer extends Thread{
 
 	public void run(){
 		try{
-			while(clientSocket.isConnected()){
-				checkTCP();
+			startTCP();
+			while(isConnected()){
 				check();
 			}
 			close();

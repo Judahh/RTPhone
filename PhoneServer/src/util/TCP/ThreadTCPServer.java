@@ -7,27 +7,52 @@ import java.util.Vector;
 
 public class ThreadTCPServer extends Thread{
 
-	protected int							serverPort;
-	protected ServerSocket					serverSocket;
+	protected int							serverSenderPort;
+	protected int							serverReceiverPort;
+	protected ServerSocket					serverSenderSocket;
+	protected ServerSocket					serverReceiverSocket;
 	protected boolean						isStopped;
 	protected Thread						runningThread;
 	protected Vector<ThreadSingleTCPServer>	threadSingleTCPServer;
-	protected Socket						newClientConnection;
+	protected Socket						newClientSenderConnection;
+	protected Socket						newClientReceiverConnection;
 	protected ThreadTCPChecker				threadTCPChecker;
 
-	public ThreadTCPServer(int port){
-		this.serverPort = port;
-		this.serverSocket = null;
+	public ThreadTCPServer(){
+		this.serverSenderPort = 9000;
+		this.serverReceiverPort = 9001;
+		this.serverSenderSocket = null;
+		this.serverReceiverSocket = null;
 		this.isStopped = false;
 		this.runningThread = null;
 		this.threadSingleTCPServer = new Vector<>();
 		this.threadTCPChecker = new ThreadTCPChecker(this);
 	}
 
-	synchronized private void acceptConnection(){
-		this.newClientConnection = null;
+	synchronized private void acceptSenderConnection(){
+		this.newClientSenderConnection = null;
 		try{
-			this.newClientConnection = this.serverSocket.accept();
+			this.newClientSenderConnection = this.serverSenderSocket.accept();
+		}catch(IOException e){
+			if(isStopped()){
+				System.out.println("Server Stopped.");
+				return;
+			}
+			throw new RuntimeException("Error accepting client connection", e);
+		}
+		addConnection();
+	}
+
+	synchronized private void acceptConnection(){
+		acceptSenderConnection();
+		acceptReceiverConnection();
+	}
+
+	synchronized private void acceptReceiverConnection(){
+		this.newClientReceiverConnection = null;
+		try{
+			this.newClientReceiverConnection = this.serverReceiverSocket
+					.accept();
 		}catch(IOException e){
 			if(isStopped()){
 				System.out.println("Server Stopped.");
@@ -42,7 +67,7 @@ public class ThreadTCPServer extends Thread{
 		try{
 			ThreadSingleTCPServer threadSingleTCPServerA;
 			threadSingleTCPServerA = new ThreadSingleTCPServer(
-					newClientConnection);
+					newClientSenderConnection, newClientReceiverConnection);
 			threadSingleTCPServerA.start();
 			getThreadSingleTCPServer().add(threadSingleTCPServerA);
 		}catch(IOException e){
@@ -81,7 +106,9 @@ public class ThreadTCPServer extends Thread{
 
 	private void openServerSocket(){
 		try{
-			this.serverSocket = new ServerSocket(this.serverPort);
+			this.serverSenderSocket = new ServerSocket(this.serverSenderPort);
+			this.serverReceiverSocket = new ServerSocket(
+					this.serverReceiverPort);
 		}catch(IOException e){
 			throw new RuntimeException("Cannot open port", e);
 		}

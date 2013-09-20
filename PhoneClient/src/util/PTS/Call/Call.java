@@ -99,13 +99,15 @@ public class Call extends PTSBasicCommunication{
 				addBroadcast(callStatus.getBroadcast());
 				addToCheck(callStatus.getToCheck());
 				setToSend(callStatus.getToSend());
-			}else if(pts.getPts().get(0).getType().equals("user")){
-				PTS tempPTS = new PTS();
-				tempPTS.setType("call");
-				tempPTS.addValue(this.address.getAddress());
-				tempPTS.addValue(this.callerUser.getUser());
-				tempPTS.addValue(this.user.getUser());
-				addToCheck(tempPTS.toString());
+			} else if (pts.getPts().size() > 0) {
+				if (pts.getPts().get(0).getType().equals("user")) {
+					PTS tempPTS = new PTS();
+					tempPTS.setType("call");
+					tempPTS.addValue(this.address.getAddress());
+					tempPTS.addValue(this.callerUser.getUser());
+					tempPTS.addValue(this.user.getUser());
+					addToCheck(tempPTS.toString());
+				}
 			}
 		}
 	}

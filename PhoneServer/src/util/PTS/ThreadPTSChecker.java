@@ -7,7 +7,7 @@ import util.TCP.ThreadSingleTCPServer;
 import util.TCP.ThreadTCPChecker;
 import util.TCP.ThreadTCPServer;
 
-public class ThreadPTSChecker extends ThreadTCPChecker{//Versão certa!!!
+public class ThreadPTSChecker extends ThreadTCPChecker{// Versão certa!!!
 
 	public ThreadPTSChecker(ThreadTCPServer threadTCPServer){
 		super(threadTCPServer);
@@ -24,6 +24,11 @@ public class ThreadPTSChecker extends ThreadTCPChecker{//Versão certa!!!
 		checkRegister();
 		checkBroadcast();
 		checkCall();
+		
+	}
+
+	@Override
+	protected void checkClean(){
 		clean();
 	}
 

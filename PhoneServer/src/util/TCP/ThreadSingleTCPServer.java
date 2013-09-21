@@ -21,6 +21,10 @@ public class ThreadSingleTCPServer extends Thread{
 		startTCP();
 	}
 
+	public boolean isCheck(){
+		return threadTCPReceiver.isCheck();
+	}
+	
 	public Vector<String> getReceived(){
 		return this.threadTCPReceiver.getReceived();
 	}
@@ -138,12 +142,16 @@ public class ThreadSingleTCPServer extends Thread{
 	public void run(){
 		try{
 			while(isConnected()){
-				Thread.sleep(10);
+//				Thread.sleep(10);
 				check();
 			}
 			close();
-		}catch(IOException | InterruptedException e){
+		}catch(IOException e){
 			e.printStackTrace();
 		}
+//		catch(InterruptedException e){
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

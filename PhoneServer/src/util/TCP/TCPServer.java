@@ -5,28 +5,56 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Vector;
 
-public class ThreadSingleTCPServer extends Thread{
+import Extasys.DataFrame;
+import Extasys.Network.TCP.Server.Listener.TCPClientConnection;
+import Extasys.Network.TCP.Server.Listener.TCPListener;
 
-	protected Socket			clientSenderSocket;
-	protected Socket			clientReceiverSocket;
-	protected ThreadTCPSender	threadTCPSender;
-	protected ThreadTCPReceiver	threadTCPReceiver;
+public class TCPServer extends Extasys.Network.TCP.Server.ExtasysTCPServer{
 
-	public ThreadSingleTCPServer(Socket clientSenderSocket,
-			Socket clientReceiverSocket) throws IOException{
-		this.clientSenderSocket = clientSenderSocket;
-		this.clientReceiverSocket = clientReceiverSocket;
-		threadTCPSender = new ThreadTCPSender(clientSenderSocket);
-		threadTCPReceiver= new ThreadTCPReceiver(clientReceiverSocket);
-		startTCP();
+	protected TCPListener	TCPListener;
+
+	public TCPServer(InetAddress listenerIP, int maxConnections,
+			int connectionsTimeOut, int corePoolSize, int maximumPoolSize)
+			throws IOException, Exception{
+		super("TCPServer", "", corePoolSize, maximumPoolSize);
+		TCPListener = AddListener("Main Listener", listenerIP, 9000,
+				maxConnections, 65535, connectionsTimeOut, 100, ((char) 2));
+		Start();
+
 	}
 
-	public Vector<String> getReceived(){
-		return this.threadTCPReceiver.getReceived();
+	@Override
+	public void OnDataReceive(TCPClientConnection sender, DataFrame data){
+		byte[] reply = new byte[data.getLength() + 1];
+		System.arraycopy(data.getBytes(), 0, reply, 0, data.getLength());
+		reply[data.getLength()] = ((char) 2);
+
+		this.ReplyToAll(reply, 0, reply.length);
+	}
+	
+	@Override
+	public void OnClientConnect(TCPClientConnection client){
+		// New client connected.
+		client.setName(client.getIPAddress()); // Set a name for this client if
+												// you want to.
+		System.out.println(client.getIPAddress() + " connected.");
+		System.out.println("Total clients connected: "
+				+ super.getCurrentConnectionsNumber());
+	}
+
+	@Override
+	public void OnClientDisconnect(TCPClientConnection client){
+		// Client disconnected.
+		System.out.println(client.getIPAddress() + " disconnected.");
+		clientDisconnected();
+	}
+
+	protected void clientDisconnected(){
+		// this.ReplyToAll(reply, 0, reply.length);
 	}
 
 	public void send(String toSend){
-		this.threadTCPSender.toSend.add(toSend);
+		super.ReplyToSender(toSend, (TCPClientConnection) TCPListener.getConnectedClients().get(0));
 	}
 
 	public void addBroadcast(Vector<String> broadcast){
@@ -67,7 +95,7 @@ public class ThreadSingleTCPServer extends Thread{
 				e.printStackTrace();
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -125,24 +153,5 @@ public class ThreadSingleTCPServer extends Thread{
 
 	public boolean isOn(){
 		return false;
-	}
-
-	private void startTCP(){
-		threadTCPSender.start();
-		threadTCPReceiver.start();
-	}
-
-	protected void check(){
-	}
-
-	public void run(){
-		try{
-			while(isConnected()){
-				check();
-			}
-			close();
-		}catch(IOException e){
-			e.printStackTrace();
-		}
 	}
 }

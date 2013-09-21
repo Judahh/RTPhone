@@ -7,6 +7,10 @@
 	<classpathentry kind="lib" path="lib/mediaplayer.jar"/>
 	<classpathentry kind="lib" path="lib/multiplayer.jar"/>
 	<classpathentry kind="lib" path="lib/sound.jar"/>
-	<classpathentry kind="lib" path="lib/Extasys.jar"/>
+	<classpathentry kind="lib" path="lib/Extasys.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/JH/Documents/GitHub/RTPhone/PhoneClient/lib/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

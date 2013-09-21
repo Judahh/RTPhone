@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/mediaplayer.jar"/>
 	<classpathentry kind="lib" path="lib/multiplayer.jar"/>
 	<classpathentry kind="lib" path="lib/sound.jar"/>
+	<classpathentry kind="lib" path="lib/Extasys.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

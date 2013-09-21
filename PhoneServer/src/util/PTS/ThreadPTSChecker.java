@@ -137,6 +137,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 						System.out.println("entrou 4");
 						iterable_element.send(Log.getError());// não
 																// registrado
+						break;
 					}
 					System.out.println("saiu 4");
 
@@ -158,6 +159,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 						getThreadTCPServer().getLogged().add(
 								iterable_element.getUsername());
 						iterable_element.send(Log.getOk());
+						break;
 					}
 
 					iterable_element.send(Log.getOk());

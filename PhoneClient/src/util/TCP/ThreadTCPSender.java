@@ -11,6 +11,12 @@ public class ThreadTCPSender extends ThreadTCPSingle{
 	
 	protected void work() throws IOException{
 //		System.out.println("Entrou send");
+		try {
+			this.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		send();
 //		System.out.println("Saiu send");
 	}

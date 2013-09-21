@@ -5,11 +5,7 @@ import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-
-import Extasys.Network.TCP.Client.Exceptions.ConnectorCannotSendPacketException;
-import Extasys.Network.TCP.Client.Exceptions.ConnectorDisconnectedException;
 import util.PTS.ThreadPTSClient;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -86,21 +82,12 @@ public class LoginWindow{
 					if(textFieldUserName.getText()==null){
 						textFieldUserName.setText("User");
 					}
-					try{
-						Main.clientPTS.login(textFieldUserName.getText());
-					}catch(ConnectorDisconnectedException
-							| ConnectorCannotSendPacketException e){
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					Main.clientPTS.login(textFieldUserName.getText());
 					
 					Main.startMainWindow();
 				}catch(IOException e){
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}catch(Exception e1){
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
 				
 				
@@ -127,19 +114,10 @@ public class LoginWindow{
 					if(textFieldUserName.getText()==null){
 						textFieldUserName.setText("user");
 					}
-					try{
-						Main.clientPTS.register(textFieldUserName.getText());
-					}catch(ConnectorDisconnectedException
-							| ConnectorCannotSendPacketException e){
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					Main.clientPTS.register(textFieldUserName.getText());
 				}catch(IOException e){
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}catch(Exception e1){
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
 			}
 		});

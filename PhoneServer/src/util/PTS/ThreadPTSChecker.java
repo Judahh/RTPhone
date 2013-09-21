@@ -7,7 +7,7 @@ import util.TCP.ThreadSingleTCPServer;
 import util.TCP.ThreadTCPChecker;
 import util.TCP.ThreadTCPServer;
 
-public class ThreadPTSChecker extends ThreadTCPChecker{
+public class ThreadPTSChecker extends ThreadTCPChecker{//Versão certa!!!
 
 	public ThreadPTSChecker(ThreadTCPServer threadTCPServer){
 		super(threadTCPServer);

@@ -27,9 +27,9 @@ public class Off extends Log{
 	}
 	
 	protected void start(){
-		if(pts.getPts().get(0).getValue().equals(this.username)){
-			toSend = (LogStatus.getOk());
-			this.broadcast.add(pts.toString());
-		}
+//		if(pts.getPts().get(0).getValue().equals(this.username)){
+//			toSend = (LogStatus.getOk());
+//			this.broadcast.add(pts.toString());
+//		}
 	}
 }

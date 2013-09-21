@@ -138,10 +138,11 @@ public class ThreadSingleTCPServer extends Thread{
 	public void run(){
 		try{
 			while(isConnected()){
+				Thread.sleep(10);
 				check();
 			}
 			close();
-		}catch(IOException e){
+		}catch(IOException | InterruptedException e){
 			e.printStackTrace();
 		}
 	}

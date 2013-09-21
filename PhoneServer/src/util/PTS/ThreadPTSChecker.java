@@ -4,7 +4,7 @@ import java.util.Vector;
 import util.PTS.Log.In;
 import util.PTS.Log.Log;
 import util.PTS.Log.On;
-import util.TCP.TCPServer;
+import util.TCP.ThreadSingleTCPServer;
 import util.TCP.ThreadTCPChecker;
 import util.TCP.ThreadTCPServer;
 
@@ -66,10 +66,10 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 	}
 
 	synchronized private void checkBroadcast(){
-		for(TCPServer iterable_element : getThreadTCPServer()
+		for(ThreadSingleTCPServer iterable_element : getThreadTCPServer()
 				.getThreadSingleTCPServer()){
 			for(int index = 0; index < iterable_element.getBroadcast().size();){
-				for(TCPServer iterable_element2 : getThreadTCPServer()
+				for(ThreadSingleTCPServer iterable_element2 : getThreadTCPServer()
 						.getThreadSingleTCPServer()){
 					iterable_element2.send(iterable_element.getBroadcast().get(
 							0));
@@ -81,7 +81,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 
 	synchronized private void checkRegister(){
 		// TODO: Fazer todas as checagens de registros aqui!!!
-		for(TCPServer iterable_element : getThreadTCPServer()
+		for(ThreadSingleTCPServer iterable_element : getThreadTCPServer()
 				.getThreadSingleTCPServer()){
 
 			for(int index = 0; index < iterable_element.getToCheck().size();){
@@ -116,7 +116,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 
 	synchronized private void checkLogin(){
 		// TODO: Fazer todas as checagens de login aqui!!!
-		for(TCPServer iterable_element : getThreadTCPServer()
+		for(ThreadSingleTCPServer iterable_element : getThreadTCPServer()
 				.getThreadSingleTCPServer()){
 //			System.out.println("entrou 1");
 			for(int index = 0; index < iterable_element.getToCheck().size();){
@@ -165,7 +165,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 					iterable_element.send(Log.getOk());
 					PTS ptsTemp = Log.getLog();
 					Vector<String> on = new Vector<String>();
-					for(TCPServer iterable_element2 : getThreadTCPServer()
+					for(ThreadSingleTCPServer iterable_element2 : getThreadTCPServer()
 							.getThreadSingleTCPServer()){
 						if(iterable_element2.isConnected()){
 							ptsTemp.addValue(Log.getLogon(

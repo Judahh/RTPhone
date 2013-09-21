@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
-import Extasys.Network.TCP.Client.Exceptions.ConnectorCannotSendPacketException;
-import Extasys.Network.TCP.Client.Exceptions.ConnectorDisconnectedException;
 import util.PTS.Call.Address;
 import util.PTS.Call.Call;
 import util.PTS.Call.User;
@@ -31,7 +29,7 @@ public class ThreadPTSClient extends ThreadTCPClient{
 	private int				port1;
 
 	public ThreadPTSClient(String host, int port0, int port1)
-			throws Exception{
+			throws UnknownHostException, IOException{
 		super(host);
 		this.userOn = new Vector<>();
 		this.userOff = new Vector<>();
@@ -47,7 +45,8 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		this.port1 = port1;
 	}
 
-	public ThreadPTSClient(String host) throws Exception{
+	public ThreadPTSClient(String host) throws UnknownHostException,
+			IOException{
 		super(host);
 		this.userOn = new Vector<>();
 		this.userOff = new Vector<>();
@@ -113,32 +112,32 @@ public class ThreadPTSClient extends ThreadTCPClient{
 		return toCheckCall;
 	}
 
-	synchronized public void login(String username) throws IOException, ConnectorDisconnectedException, ConnectorCannotSendPacketException{
+	synchronized public void login(String username) throws IOException{
 		this.username = username;
 		login();
 	}
 
-	public void login() throws IOException, ConnectorDisconnectedException, ConnectorCannotSendPacketException{
+	public void login() throws IOException{
 		send(Log.getLogin(username).toString());
 		this.toCheckLogin = true;
 	}
 
-	synchronized public void logoff() throws IOException, ConnectorDisconnectedException, ConnectorCannotSendPacketException{
+	synchronized public void logoff() throws IOException{
 		send(Log.getLogoff(username).toString());
 		this.toCheckLogin = false;
 	}
 
-	synchronized public void register(String username) throws IOException, ConnectorDisconnectedException, ConnectorCannotSendPacketException{
+	synchronized public void register(String username) throws IOException{
 		send(Log.getLogon(username).toString());
 		this.toCheckRegister = true;
 	}
 
-	synchronized public void call(String username) throws IOException, ConnectorDisconnectedException, ConnectorCannotSendPacketException{
+	synchronized public void call(String username) throws IOException{
 		send(Call.call(username).toString());
 		this.toCheckCall = true;
 	}
 
-	synchronized public void call(int index) throws IOException, ConnectorDisconnectedException, ConnectorCannotSendPacketException{
+	synchronized public void call(int index) throws IOException{
 		call(userOn.get(index));
 	}
 
@@ -199,7 +198,7 @@ public class ThreadPTSClient extends ThreadTCPClient{
 	}
 
 	synchronized protected void check() throws CallBusyException,
-			RegisterErrorException, LoginErrorException, ConnectorDisconnectedException, ConnectorCannotSendPacketException{
+			RegisterErrorException, LoginErrorException{
 		// TODO: checar todas as respostas do servidor aqui usando getReceived()
 		// e atualizar as listas
 		// OBS: isso fica num loop que roda no ran da classe ThreadClientTCP

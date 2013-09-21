@@ -7,9 +7,9 @@ import java.util.Vector;
 import util.PTS.Call.Address;
 import util.PTS.Call.Call;
 import util.PTS.Log.Log;
-import util.TCP.TCPServer;
+import util.TCP.ThreadSingleTCPServer;
 
-public class ThreadSinglePTSServer extends TCPServer{
+public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 
 	private Vector<String>	broadcast;
 	private Vector<String>	call;

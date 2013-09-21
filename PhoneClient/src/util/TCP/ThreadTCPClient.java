@@ -2,43 +2,69 @@ package util.TCP;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
-import Extasys.Network.TCP.Client.Exceptions.ConnectorCannotSendPacketException;
-import Extasys.Network.TCP.Client.Exceptions.ConnectorDisconnectedException;
 import util.PTS.Exception.CallBusyException;
 import util.PTS.Exception.LoginErrorException;
 import util.PTS.Exception.RegisterErrorException;
 
 public class ThreadTCPClient extends Thread{
+	protected Socket			serverReceiverSocket;
+	protected Socket			serverSenderSocket;
 	protected String			host;
-	protected TCPSingleClient	TCPSingle;
+	protected int				clientReceiverport;
+	protected int				clientSenderport;
+	protected ThreadTCPReceiver	threadTCPReceiver;
+	protected ThreadTCPSender	threadTCPSender;
 
-	public ThreadTCPClient(String host) throws Exception{
+	public ThreadTCPClient(String host) throws UnknownHostException,
+			IOException{
 		this.host = host;
-		this.TCPSingle = new TCPSingleClient(host);
+		this.clientReceiverport = 9000;
+		this.clientSenderport = 9001;
+		this.serverReceiverSocket = new Socket(host, clientReceiverport);
+		this.serverSenderSocket = new Socket(host, clientSenderport);
+		this.threadTCPReceiver = new ThreadTCPReceiver(serverReceiverSocket);
+		this.threadTCPSender = new ThreadTCPSender(serverSenderSocket);
+		startTCP();
 	}
 
 	public Vector<String> getReceived(){
-		return TCPSingle.getReceived();
+		return threadTCPReceiver.getReceived();
 	}
 
-	public void send(String toSend) throws ConnectorDisconnectedException,
-			ConnectorCannotSendPacketException{
-		this.TCPSingle.send(toSend);
+	public void send(String toSend){
+		this.threadTCPSender.send(toSend);
 	}
 
-	synchronized public InetAddress inetAddress() throws UnknownHostException{
-		return InetAddress.getByName(host);
+	synchronized public InetAddress inetAddress(){
+		return this.serverReceiverSocket.getInetAddress();
 	}
 
 	synchronized public String address(){
-		return host;
+		return this.serverReceiverSocket.getInetAddress().toString();
+	}
+
+	synchronized public boolean isConnected(){
+		if(serverSenderSocket.isConnected()
+				&& serverReceiverSocket.isConnected()){
+			return true;
+		}else{
+			try{
+				close();
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		}
+
+		return false;
 	}
 
 	synchronized public void close() throws IOException{
-		this.TCPSingle.Dispose();
+		serverReceiverSocket.close();
+		serverSenderSocket.close();
 	}
 
 	synchronized public String getHost(){
@@ -47,7 +73,7 @@ public class ThreadTCPClient extends Thread{
 
 	public void run(){
 		try{
-			while(true){
+			while(isConnected()){
 				try{
 					check();
 				}catch(CallBusyException e){
@@ -61,21 +87,19 @@ public class ThreadTCPClient extends Thread{
 					e.printStackTrace();
 				}
 			}
-		}catch(ConnectorDisconnectedException e){
-			try{
-				this.close();
-			}catch(IOException e1){
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}catch(ConnectorCannotSendPacketException e){
-			// TODO Auto-generated catch block
+			System.out.println("Out");
+			close();
+		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}
 
+	private void startTCP() throws IOException{
+		threadTCPReceiver.start();
+		threadTCPSender.start();
+	}
+
 	protected void check() throws CallBusyException, RegisterErrorException,
-			LoginErrorException, ConnectorDisconnectedException,
-			ConnectorCannotSendPacketException{
+			LoginErrorException{
 	}
 }

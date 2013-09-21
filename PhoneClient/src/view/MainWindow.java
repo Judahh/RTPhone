@@ -6,9 +6,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JButton;
 import javax.swing.JList;
 
-import Extasys.Network.TCP.Client.Exceptions.ConnectorCannotSendPacketException;
-import Extasys.Network.TCP.Client.Exceptions.ConnectorDisconnectedException;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -32,7 +29,7 @@ public class MainWindow{
 		new Runnable(){
 			@Override
 			public void run(){
-				while(true){
+				while(Main.clientPTS.isConnected()){
 					loggedUsersList = new JList<>(Main.clientPTS.getUserOn());
 					allUsersList = new JList<>(Main.clientPTS.getUser());
 					if(Main.clientPTS.getPhone() == null){
@@ -41,7 +38,7 @@ public class MainWindow{
 						btnCall = new JButton("Hang up");
 					}
 				}
-//				Main.startLoginWindow();
+				Main.startLoginWindow();
 			}
 		};
 	}
@@ -75,7 +72,7 @@ public class MainWindow{
 						try{
 							Main.clientPTS.call(loggedUsersList
 									.getSelectedIndex());
-						}catch(IOException | ConnectorDisconnectedException | ConnectorCannotSendPacketException e){
+						}catch(IOException e){
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}

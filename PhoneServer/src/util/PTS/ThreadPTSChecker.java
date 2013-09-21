@@ -3,7 +3,7 @@ package util.PTS;
 import util.PTS.Log.In;
 import util.PTS.Log.Log;
 import util.PTS.Log.On;
-import util.TCP.ThreadSingleTCPServer;
+import util.TCP.TCPServer;
 import util.TCP.ThreadTCPChecker;
 import util.TCP.ThreadTCPServer;
 
@@ -130,10 +130,10 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 	}
 
 	synchronized private void checkBroadcast(){
-		for(ThreadSingleTCPServer iterable_element : getThreadTCPServer()
+		for(TCPServer iterable_element : getThreadTCPServer()
 				.getThreadSingleTCPServer()){
 			for(int index = 0; index < iterable_element.getBroadcast().size();){
-				for(ThreadSingleTCPServer iterable_element2 : getThreadTCPServer()
+				for(TCPServer iterable_element2 : getThreadTCPServer()
 						.getThreadSingleTCPServer()){
 					if(!iterable_element2.getUsername().equals(
 							iterable_element.getUsername())
@@ -153,7 +153,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 
 	synchronized private void checkRegister(){
 		// TODO: Fazer todas as checagens de registros aqui!!!
-		for(ThreadSingleTCPServer iterable_element : getThreadTCPServer()
+		for(TCPServer iterable_element : getThreadTCPServer()
 				.getThreadSingleTCPServer()){
 
 			for(int index = 0; index < iterable_element.getToCheck().size();){
@@ -194,7 +194,7 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 
 	synchronized private void checkLogin(){
 		// TODO: Fazer todas as checagens de login aqui!!!
-		for(ThreadSingleTCPServer iterable_element : getThreadTCPServer()
+		for(TCPServer iterable_element : getThreadTCPServer()
 				.getThreadSingleTCPServer()){
 			// System.out.println("entrou 1");
 			for(int index = 0; index < iterable_element.getToCheck().size();){
@@ -246,9 +246,41 @@ public class ThreadPTSChecker extends ThreadTCPChecker{
 						iterable_element.getToCheck().remove(0);
 						break;
 					}
+<<<<<<< HEAD
 				}
 				if(tempSize == iterable_element.getToCheck().size()){
 					index++;
+=======
+
+					iterable_element.send(Log.getOk());
+					PTS ptsTemp = Log.getLog();
+					Vector<String> on = new Vector<String>();
+					for(TCPServer iterable_element2 : getThreadTCPServer()
+							.getThreadSingleTCPServer()){
+						if(iterable_element2.isConnected()){
+							ptsTemp.addValue(Log.getLogon(
+									iterable_element2.getUsername(),
+									iterable_element2.isOn()));
+							on.add(iterable_element2.getUsername());
+						}
+					}
+					for(String iterable_element2 : getThreadTCPServer()
+							.getResgistered()){
+						ok = true;
+						for(String iterable_element3 : on){
+							if(iterable_element2.equals(iterable_element3)){
+								ok = false;
+								break;
+							}
+						}
+						if(ok){
+							ptsTemp.addValue(Log.getLogon(
+									iterable_element2, false));
+						}
+					}
+					iterable_element.send(ptsTemp.toString());
+					iterable_element.getToCheck().remove(0);
+>>>>>>> 9dea7d9fd1ced4ab0fd8b4e680f9f57dfa2e71bd
 				}
 			}
 		}

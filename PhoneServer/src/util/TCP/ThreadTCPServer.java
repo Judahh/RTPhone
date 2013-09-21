@@ -6,21 +6,17 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class ThreadTCPServer extends Thread{
-
-	protected int							serverSenderPort;
-	protected int							serverReceiverPort;
 	protected ServerSocket					serverSenderSocket;
 	protected ServerSocket					serverReceiverSocket;
 	protected boolean						isStopped;
 	protected Thread						runningThread;
-	protected Vector<ThreadSingleTCPServer>	threadSingleTCPServer;
+	protected Vector<TCPServer>	threadSingleTCPServer;
 	protected Socket						newClientSenderConnection;
 	protected Socket						newClientReceiverConnection;
 	protected ThreadTCPChecker				threadTCPChecker;
 
 	public ThreadTCPServer(){
 		this.serverSenderPort = 9000;
-		this.serverReceiverPort = 9001;
 		this.serverSenderSocket = null;
 		this.serverReceiverSocket = null;
 		this.isStopped = false;
@@ -48,8 +44,8 @@ public class ThreadTCPServer extends Thread{
 
 	synchronized protected void addConnection(){
 		try{
-			ThreadSingleTCPServer threadSingleTCPServerA;
-			threadSingleTCPServerA = new ThreadSingleTCPServer(
+			TCPServer threadSingleTCPServerA;
+			threadSingleTCPServerA = new TCPServer(
 					newClientSenderConnection, newClientReceiverConnection);
 			threadSingleTCPServerA.start();
 			getThreadSingleTCPServer().add(threadSingleTCPServerA);
@@ -60,7 +56,7 @@ public class ThreadTCPServer extends Thread{
 	}
 
 	synchronized private void closeConnections(){
-		for(ThreadSingleTCPServer iterable_element : getThreadSingleTCPServer()){
+		for(TCPServer iterable_element : getThreadSingleTCPServer()){
 			try{
 				iterable_element.close();
 			}catch(IOException e){
@@ -97,7 +93,7 @@ public class ThreadTCPServer extends Thread{
 		}
 	}
 
-	public Vector<ThreadSingleTCPServer> getThreadSingleTCPServer(){
+	public Vector<TCPServer> getThreadSingleTCPServer(){
 		return this.threadSingleTCPServer;
 	}
 

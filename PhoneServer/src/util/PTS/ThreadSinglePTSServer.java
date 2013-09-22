@@ -119,7 +119,9 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 		// TODO: Fazer todas as checagens aqui!!!
 		Vector<String> received = getReceived();
 		clearRealReceived();
+		System.out.println("R");
 		for(int index = 0; index < received.size(); index++){
+			System.out.println("R");
 			if(!received.get(index).isEmpty()){
 				System.out.println("all received:" + received.get(index)
 						+ "fim");

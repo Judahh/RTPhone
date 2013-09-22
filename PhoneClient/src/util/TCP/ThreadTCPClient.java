@@ -79,7 +79,7 @@ public class ThreadTCPClient extends Thread{
 		try{
 			while(isConnected()){
 				try{
-					Thread.sleep(10);
+					Thread.sleep(5);
 					check();
 				}catch(CallBusyException e){
 					// TODO Auto-generated catch block
@@ -90,7 +90,8 @@ public class ThreadTCPClient extends Thread{
 				}catch(LoginErrorException e){
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}catch(InterruptedException e){
+				}
+				catch(InterruptedException e){
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

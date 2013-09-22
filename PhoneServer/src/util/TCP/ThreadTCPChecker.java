@@ -31,7 +31,7 @@ public class ThreadTCPChecker extends Thread{
 		while(true){
 			// System.out.println("check");
 			try{
-				Thread.sleep(10);
+				Thread.sleep(5);
 //				if(isCheck()){
 					check();
 //				}

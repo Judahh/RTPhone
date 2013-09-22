@@ -6,53 +6,66 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Vector;
+import java.util.concurrent.Semaphore;
 
 public class ThreadTCPSingle extends Thread{
 	protected DataOutputStream	output;
 	protected Vector<String>	toSend;
 	protected BufferedReader	input;
 	protected Vector<String>	received;
-	protected boolean			check;
+	protected Semaphore			receivedSemaphore;
+//	protected boolean			check;
 
 	public ThreadTCPSingle(Socket serverSocket) throws IOException{
-		setCheck(false);
+		receivedSemaphore=new Semaphore(0);
+//		setCheck(false);
 		this.output = new DataOutputStream(serverSocket.getOutputStream());
 		this.toSend = new Vector<>();
 		this.input = new BufferedReader(new InputStreamReader(
 				serverSocket.getInputStream()));
+		
 		this.received = new Vector<>();
 	}
 
 	synchronized protected void receive() throws IOException{
-		String temp = this.input.readLine();
-
+		String temp=new String();
+		char tmp=0;
+		while(tmp!='\n'){
+			temp+=tmp;
+			tmp=(char)this.input.read();
+		}
+		temp=temp.trim();
 		if(!temp.isEmpty()){
-			this.getRealReceived().add(this.input.readLine());
-			setCheck(true);
+			this.getRealReceived().add(temp);
+//			setCheck(true);
 			for(int i = 0; i < this.getRealReceived().size(); i++){
-				System.out.println("Client received:" + this.getRealReceived().get(i)
-						+ '\n');
+				System.out.println("Client received:"
+						+ this.getRealReceived().get(i) + '\n');
 			}
 		}
+		receivedSemaphore.release();
 	}
 
-	synchronized protected  Vector<String> getRealReceived(){
+	synchronized protected Vector<String> getRealReceived(){
 		return received;
 	}
 	
-	protected Vector<String> getReceived(){
-		Vector<String> temp = getRealReceived();
-		getRealReceived().clear();
-		setCheck(false);
-		return temp;
+	synchronized protected void clearRealReceived(){
+		received=new Vector<>();
 	}
 
-	synchronized public boolean isCheck(){
-		return check;
-	}
-	
-	synchronized public void setCheck(boolean check){
-		this.check = check;
+	synchronized protected Vector<String> getReceived(){
+		try{
+			receivedSemaphore.acquire();
+		}catch(InterruptedException e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("CLEAR");
+		Vector<String> temp = getRealReceived();
+//		getRealReceived().clear();
+//		setCheck(false);
+		return temp;
 	}
 
 	protected void send(String toSend){
@@ -72,6 +85,7 @@ public class ThreadTCPSingle extends Thread{
 
 	}
 
+	@Override
 	public void run(){
 		try{
 			while(true){

@@ -118,6 +118,7 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 	protected void check(){
 		// TODO: Fazer todas as checagens aqui!!!
 		Vector<String> received = getReceived();
+		clearRealReceived();
 		for(int index = 0; index < received.size(); index++){
 			if(!received.get(index).isEmpty()){
 				System.out.println("all received:" + received.get(index)
@@ -126,6 +127,7 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 				System.out.println("all received pts:" + pts.toString());
 				switch(pts.getType()){
 					case "log":
+						
 						Log log = new Log(pts);
 						addBroadcast(log.getBroadcast());
 						addToCheck(log.getToCheck());
@@ -160,4 +162,5 @@ public class ThreadSinglePTSServer extends ThreadSingleTCPServer{
 			addBroadcast(Log.getLog(username, false));
 		}
 	}
+
 }

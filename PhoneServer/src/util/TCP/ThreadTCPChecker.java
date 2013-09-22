@@ -11,15 +11,15 @@ public class ThreadTCPChecker extends Thread{
 		return threadTCPServer;
 	}
 
-	protected boolean isCheck(){
-		for(int index = 0; index < threadTCPServer.getThreadSingleTCPServer()
-				.size(); index++){
-			if(threadTCPServer.getThreadSingleTCPServer().get(index).isCheck()){
-				return true;
-			}
-		}
-		return false;
-	}
+//	protected boolean isCheck(){
+//		for(int index = 0; index < threadTCPServer.getThreadSingleTCPServer()
+//				.size(); index++){
+//			if(threadTCPServer.getThreadSingleTCPServer().get(index).isCheck()){
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	protected void setThreadTCPServer(ThreadTCPServer threadTCPServer){
 		this.threadTCPServer = threadTCPServer;
@@ -31,11 +31,10 @@ public class ThreadTCPChecker extends Thread{
 		while(true){
 			// System.out.println("check");
 			try{
-				Thread.sleep(5);
-				if(isCheck()){
+				Thread.sleep(10);
+//				if(isCheck()){
 					check();
-				}
-				Thread.sleep(5);
+//				}
 				checkClean();
 			}catch(InterruptedException e){
 				// TODO Auto-generated catch block

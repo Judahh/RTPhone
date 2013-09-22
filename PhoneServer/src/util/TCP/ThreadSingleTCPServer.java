@@ -21,14 +21,18 @@ public class ThreadSingleTCPServer extends Thread{
 		startTCP();
 	}
 
-	public boolean isCheck(){
-		return threadTCPReceiver.isCheck();
-	}
+//	public boolean isCheck(){
+//		return threadTCPReceiver.isCheck();
+//	}
 	
 	public Vector<String> getReceived(){
 		return this.threadTCPReceiver.getReceived();
 	}
 
+	public void clearRealReceived(){
+		this.threadTCPReceiver.clearRealReceived();;
+	}
+	
 	public void send(String toSend){
 		this.threadTCPSender.toSend.add(toSend);
 	}

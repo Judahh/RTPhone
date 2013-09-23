@@ -6,6 +6,8 @@ package rmiserver;
 
 import clientrmi.ClientRMI;
 import java.net.MalformedURLException;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -39,6 +41,21 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
    public RMIServer() throws RemoteException {
 //      super(Registry.REGISTRY_PORT);
       super();
+      try {
+         //Exporta o objeto remoto  
+         ClientRMI rmi = (ClientRMI) UnicastRemoteObject
+                 .exportObject(this, 0);
+         //Liga o stub do objeto remoto no registro  
+         Registry registry = LocateRegistry.getRegistry(9000);
+         //Dá um nome pra ele no registro  
+         registry.bind("RTPhoneServer", rmi);
+      } catch (AlreadyBoundException ex) {
+         Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (AccessException ex) {
+         Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (RemoteException Re) {
+         System.out.println(Re.getMessage());
+      }
    }
 
    public Connection getConnection() {
@@ -72,7 +89,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
    public String getUser() {
       return user;
    }
-   
+
    @Override
    public String call(String username, String caller) throws RemoteException {
       try {

@@ -46,7 +46,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
          RMI rmi = (RMI) UnicastRemoteObject
                  .exportObject(this, 0);
          //Liga o stub do objeto remoto no registro  
-         Registry registry = LocateRegistry.getRegistry(9000);
+         Registry registry = LocateRegistry.getRegistry(22);
          //Dá um nome pra ele no registro  
          registry.bind("RTPhoneServer", rmi);
       } catch (AlreadyBoundException ex) {

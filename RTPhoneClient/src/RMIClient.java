@@ -31,14 +31,6 @@ public class RMIClient extends UnicastRemoteObject implements ClientRMI {
       CallWindow callWindow = new CallWindow(username);
       callWindow.setVisible(true);
       boolean ok = false;
-      while (callWindow.getValue() == -1) {
-         int i=0;
-         i++;
-         i++;
-         i++;
-         i++;
-         i++;
-      }
       ok = (callWindow.getValue() == 0);
       if (ok) {
          Phone phone = new Phone(Address, 32766, 16384);

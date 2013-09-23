@@ -155,7 +155,7 @@ public class LoginWindow extends javax.swing.JFrame {
 
    private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
       try {
-         Registry registry = LocateRegistry.getRegistry(this.jTextFieldHost.getText(), 9000);
+         Registry registry = LocateRegistry.getRegistry(this.jTextFieldHost.getText(), 22);
          rmi = (RMI) registry.lookup("RTPhoneServer");
          boolean check = rmi.login(this.jTextFieldUsername.getText(), this.jPasswordField.getText(), Inet4Address.getLocalHost().getHostAddress().toString());
          if (check) {
@@ -176,7 +176,7 @@ public class LoginWindow extends javax.swing.JFrame {
 
    private void jButtonRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterActionPerformed
       try {
-         Registry registry = LocateRegistry.getRegistry(this.jTextFieldHost.getText(), 9000);
+         Registry registry = LocateRegistry.getRegistry(this.jTextFieldHost.getText(), 22);
          rmi = (RMI) registry.lookup("RTPhoneServer");
          boolean check = rmi.register(this.jTextFieldUsername.getText(), this.jPasswordField.getText());
          if (check) {

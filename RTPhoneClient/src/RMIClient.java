@@ -36,13 +36,16 @@ public class RMIClient extends UnicastRemoteObject implements ClientRMI {
 //         System.out.println("F");
 //         if (ok) {
 //            System.out.println("G");
+
             Phone phone = new Phone(Address, 32766, 16384);
             phone.start();
+            
 //            optionThread.close();
             return true;
+//
 //         }
 //         System.out.println("H");
-//         optionThread.close();
+//        optionThread.close();
 //
 //      } catch (InterruptedException ex) {
 //         System.out.println("Z");

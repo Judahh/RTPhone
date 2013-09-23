@@ -11,14 +11,14 @@ import java.util.concurrent.Semaphore;
  * @author JH
  */
 public class CallWindow extends javax.swing.JFrame {
-   public static Semaphore semaphore;
+   public static Semaphore semaphore=new Semaphore(0);
    private static int value;
    /**
     * Creates new form CallWindow
     */
    public CallWindow(String username) {
       value=-1;
-      semaphore=new Semaphore(0);
+      //semaphore=new Semaphore(0);
       initComponents();
       jLabel1.setText(username+" is calling, Anwser?");
    }

@@ -37,7 +37,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
    private ResultSet resultSet = null;
 
    public RMIServer() throws RemoteException {
-      super();
+      super(Registry.REGISTRY_PORT);
+      //super();
    }
 
    public Connection getConnection() {

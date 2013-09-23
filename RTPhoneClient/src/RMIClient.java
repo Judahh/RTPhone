@@ -1,6 +1,7 @@
 
 import clientrmi.ClientRMI;
 import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import javax.swing.JOptionPane;
 import util.RTP.Phone;
@@ -16,7 +17,8 @@ import util.RTP.Phone;
 public class RMIClient extends UnicastRemoteObject implements ClientRMI {
 
    public RMIClient() throws RemoteException {
-      super();
+      super(Registry.REGISTRY_PORT);
+//      super();
    }
 
    @Override

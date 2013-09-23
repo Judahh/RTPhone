@@ -40,6 +40,7 @@ public class MainWindow extends javax.swing.JFrame {
    private LoginWindow loginWindow;
    private DefaultListModel model;
    private DefaultListModel model2;
+   private boolean open;
 
    /**
     * Creates new form MainWindow
@@ -48,6 +49,7 @@ public class MainWindow extends javax.swing.JFrame {
       initComponents();
       this.loginWindow = loginWindow;
       phone = null;
+      open = true;
       int delay = 10000; //milliseconds
       ActionListener taskPerformer = new ActionListener() {
          public void actionPerformed(ActionEvent evt) {
@@ -58,8 +60,10 @@ public class MainWindow extends javax.swing.JFrame {
    }
 
    private void updateData() {
-      updateLoggedUsers();
-      updateRegisteredUsers();
+      if (open) {
+         updateLoggedUsers();
+         updateRegisteredUsers();
+      }
    }
 
    /**
@@ -81,6 +85,11 @@ public class MainWindow extends javax.swing.JFrame {
       jButtonCall = new javax.swing.JButton();
 
       setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+      addWindowListener(new java.awt.event.WindowAdapter() {
+         public void windowClosing(java.awt.event.WindowEvent evt) {
+            formWindowClosing(evt);
+         }
+      });
 
       jListLoggedUsers.setModel(model);
       jScrollPane1.setViewportView(jListLoggedUsers);
@@ -128,11 +137,12 @@ public class MainWindow extends javax.swing.JFrame {
    private void jButtonCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCallActionPerformed
       if (jButtonCall.getText().equals("Call")) {
          try {
-            Registry registry = LocateRegistry.getRegistry(loginWindow.getjTextFieldHost().getText(), 22);
+            Registry registry = LocateRegistry.getRegistry(loginWindow.getjTextFieldHost().getText(), 9000);
             loginWindow.setRmi((RMI) registry.lookup("RTPhoneServer"));
             String check = loginWindow.getRmi().call((String) this.jListLoggedUsers.getSelectedValue(), loginWindow.getjTextFieldUsername().getText());
             if (!check.isEmpty()) {
                phone = new Phone(check, 16384, 32766);
+               phone.start();
                jButtonCall.setText("Hang Up");
             } else {
                JOptionPane.showMessageDialog(null, "erro");
@@ -146,6 +156,20 @@ public class MainWindow extends javax.swing.JFrame {
          phone = null;
       }
    }//GEN-LAST:event_jButtonCallActionPerformed
+
+   private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+      open = false;
+      try {
+         boolean check = false;
+         while (check) {
+            Registry registry = LocateRegistry.getRegistry(loginWindow.getjTextFieldHost().getText(), 9000);
+            loginWindow.setRmi((RMI) registry.lookup("RTPhoneServer"));
+            check = loginWindow.getRmi().logoff(loginWindow.getjTextFieldUsername().getText(), loginWindow.getjPasswordField().getText());
+         }
+      } catch (Exception e) {
+         System.out.println(e);
+      }
+   }//GEN-LAST:event_formWindowClosing
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.JButton jButtonCall;
    private javax.swing.JList jListLoggedUsers;
@@ -156,7 +180,7 @@ public class MainWindow extends javax.swing.JFrame {
    // End of variables declaration//GEN-END:variables
 
    public Vector<String> getLoggedUsers() {
-      String dbUrl = "jdbc:mysql://" + url + ":" + port + "/" + DBName + "?user=" +user + "&password=" + password;
+      String dbUrl = "jdbc:mysql://" + url + ":" + port + "/" + DBName + "?user=" + user + "&password=" + password;
       try {
          Class.forName("com.mysql.jdbc.Driver");
          connection = DriverManager.getConnection(dbUrl);
@@ -178,9 +202,9 @@ public class MainWindow extends javax.swing.JFrame {
       }
       return temp;
    }
-   
+
    public Vector<String> getRegisteredUsers() {
-      String dbUrl = "jdbc:mysql://" + url + ":" + port + "/" + DBName + "?user=" +user + "&password=" + password;
+      String dbUrl = "jdbc:mysql://" + url + ":" + port + "/" + DBName + "?user=" + user + "&password=" + password;
       try {
          Class.forName("com.mysql.jdbc.Driver");
          connection = DriverManager.getConnection(dbUrl);
@@ -194,7 +218,7 @@ public class MainWindow extends javax.swing.JFrame {
       }
       return new Vector<>();
    }
-   
+
    private void updateLoggedUsers() {
       Vector<String> check = getLoggedUsers();
       model.clear();

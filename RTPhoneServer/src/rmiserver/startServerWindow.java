@@ -19,6 +19,7 @@ import java.util.Vector;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 /**
  *
@@ -29,6 +30,7 @@ public class startServerWindow extends javax.swing.JFrame {
    private DefaultListModel model;
    private DefaultListModel model2;
    private RMIServer RMIServer;
+   private boolean open;
    private Connection connection = null;
    private Statement statement = null;
    private ResultSet resultSet = null;
@@ -39,6 +41,7 @@ public class startServerWindow extends javax.swing.JFrame {
    public startServerWindow() {
       initComponents();
       jTabbedPane1.setVisible(false);
+      open = true;
       int delay = 10000; //milliseconds
       ActionListener taskPerformer = new ActionListener() {
          public void actionPerformed(ActionEvent evt) {
@@ -49,7 +52,7 @@ public class startServerWindow extends javax.swing.JFrame {
    }
 
    private void updateData() {
-      if (RMIServer != null) {
+      if (RMIServer != null && open) {
          updateLoggedUsers();
          updateRegisteredUsers();
       }
@@ -80,6 +83,9 @@ public class startServerWindow extends javax.swing.JFrame {
       addWindowListener(new java.awt.event.WindowAdapter() {
          public void windowClosed(java.awt.event.WindowEvent evt) {
             formWindowClosed(evt);
+         }
+         public void windowClosing(java.awt.event.WindowEvent evt) {
+            formWindowClosing(evt);
          }
       });
 
@@ -154,7 +160,7 @@ public class startServerWindow extends javax.swing.JFrame {
 
    private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartActionPerformed
       try {
-         Registry registry = LocateRegistry.createRegistry(22);
+         Registry registry = LocateRegistry.createRegistry(9000);
          RMIServer = new RMIServer();
          registry.rebind("RTPhoneServer", RMIServer);
          System.out.println("start");
@@ -174,6 +180,10 @@ public class startServerWindow extends javax.swing.JFrame {
       dispose();
    }//GEN-LAST:event_jButtonCloseAllClientsActionPerformed
 
+   private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+      close();
+   }//GEN-LAST:event_formWindowClosing
+
    @Override
    public void dispose() {
       System.out.println("closed!!!!!!");
@@ -182,9 +192,10 @@ public class startServerWindow extends javax.swing.JFrame {
    }
 
    public void close() {
+      open=false;
       Vector<Vector<String>> temp = getLoggedUsersPlus();
       for (int index = 0; index < temp.size(); index++) {
-         logoff(temp.get(index).get(0),temp.get(index).get(1));
+         logoff(temp.get(index).get(0), temp.get(index).get(1));
       }
    }
 
@@ -218,8 +229,8 @@ public class startServerWindow extends javax.swing.JFrame {
       }
       return temp;
    }
-   
-    private Vector<Vector<String>> writeValuesPlus(ResultSet resultSet) throws SQLException {
+
+   private Vector<Vector<String>> writeValuesPlus(ResultSet resultSet) throws SQLException {
       Vector<Vector<String>> temp = new Vector<>();
       Vector<String> temp2 = new Vector<>();
       while (resultSet.next()) {
@@ -229,7 +240,7 @@ public class startServerWindow extends javax.swing.JFrame {
       }
       return temp;
    }
-   
+
    public Vector<Vector<String>> getLoggedUsersPlus() {
       String dbUrl = "jdbc:mysql://" + RMIServer.getUrl() + ":" + RMIServer.getPort() + "/" + RMIServer.getDBName() + "?user=" + RMIServer.getUser() + "&password=" + RMIServer.getPassword();
       try {
@@ -284,7 +295,7 @@ public class startServerWindow extends javax.swing.JFrame {
       for (int index = 0; index < check.size(); index++) {
          model.addElement(check.get(index));
       }
-      
+
    }
 
    private void updateRegisteredUsers() {
@@ -305,12 +316,7 @@ public class startServerWindow extends javax.swing.JFrame {
        * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
        */
       try {
-         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-               javax.swing.UIManager.setLookAndFeel(info.getClassName());
-               break;
-            }
-         }
+         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       } catch (ClassNotFoundException ex) {
          java.util.logging.Logger.getLogger(startServerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
       } catch (InstantiationException ex) {

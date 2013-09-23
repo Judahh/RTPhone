@@ -28,20 +28,27 @@ public class RMIClient extends UnicastRemoteObject implements ClientRMI {
 
    @Override
    public boolean call(String username, String Address) throws RemoteException {
-      CallWindow callWindow = new CallWindow(username);
-      callWindow.setVisible(true);
-      boolean ok = false;
-      ok = (callWindow.getValue() == 0);
-      if (ok) {
-         Phone phone = new Phone(Address, 32766, 16384);
-         callWindow.setVisible(false);
-         callWindow.dispose();
-         callWindow = null;
-         return true;
-      }
-      callWindow.setVisible(false);
-      callWindow.dispose();
-      callWindow = null;
-      return false;
+//      try {
+//         optionThread = new OptionThread(username);
+//         optionThread.start();
+//         boolean ok = false;
+//         ok = (optionThread.getValue() == 0);
+//         System.out.println("F");
+//         if (ok) {
+//            System.out.println("G");
+            Phone phone = new Phone(Address, 32766, 16384);
+            phone.start();
+//            optionThread.close();
+            return true;
+//         }
+//         System.out.println("H");
+//         optionThread.close();
+//
+//      } catch (InterruptedException ex) {
+//         System.out.println("Z");
+//         Logger.getLogger(RMIClient.class.getName()).log(Level.SEVERE, null, ex);
+//      }
+//      System.out.println("I");
+//      return false;
    }
 }

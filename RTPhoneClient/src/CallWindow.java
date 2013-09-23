@@ -1,3 +1,6 @@
+
+import java.util.concurrent.Semaphore;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -8,21 +11,28 @@
  * @author JH
  */
 public class CallWindow extends javax.swing.JFrame {
-
-   private int value;
+   public static Semaphore semaphore;
+   private static int value;
    /**
     * Creates new form CallWindow
     */
    public CallWindow(String username) {
       value=-1;
+      semaphore=new Semaphore(0);
       initComponents();
       jLabel1.setText(username+" is calling, Anwser?");
    }
 
-   public int getValue() {
+   public static synchronized int getValue() throws InterruptedException{
+      System.out.println("A");
+      semaphore.acquire();
+      System.out.println("B");
       return value;
    }
 
+   public static synchronized void setValue(int value) {
+      CallWindow.value = value;
+   }
    /**
     * This method is called from within the constructor to initialize the form.
     * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,11 +94,17 @@ public class CallWindow extends javax.swing.JFrame {
    }// </editor-fold>//GEN-END:initComponents
 
    private void jButtonYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonYesActionPerformed
-      this.value=0;
+      setValue(0);
+      setVisible(false);
+      dispose();
+      this.semaphore.release();
    }//GEN-LAST:event_jButtonYesActionPerformed
 
    private void jButtonNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNoActionPerformed
-      this.value=1;
+      setValue(1);
+      setVisible(false);
+      dispose();
+      this.semaphore.release();
    }//GEN-LAST:event_jButtonNoActionPerformed
 
    /**

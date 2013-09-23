@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import rmi.RMI;
 
 /*
@@ -155,7 +156,7 @@ public class LoginWindow extends javax.swing.JFrame {
 
    private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
       try {
-         Registry registry = LocateRegistry.getRegistry(this.jTextFieldHost.getText(), 22);
+         Registry registry = LocateRegistry.getRegistry(this.jTextFieldHost.getText(), 9000);
          rmi = (RMI) registry.lookup("RTPhoneServer");
          boolean check = rmi.login(this.jTextFieldUsername.getText(), this.jPasswordField.getText(), Inet4Address.getLocalHost().getHostAddress().toString());
          if (check) {
@@ -176,7 +177,7 @@ public class LoginWindow extends javax.swing.JFrame {
 
    private void jButtonRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterActionPerformed
       try {
-         Registry registry = LocateRegistry.getRegistry(this.jTextFieldHost.getText(), 22);
+         Registry registry = LocateRegistry.getRegistry(this.jTextFieldHost.getText(), 9000);
          rmi = (RMI) registry.lookup("RTPhoneServer");
          boolean check = rmi.register(this.jTextFieldUsername.getText(), this.jPasswordField.getText());
          if (check) {
@@ -199,12 +200,7 @@ public class LoginWindow extends javax.swing.JFrame {
        * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
        */
       try {
-         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-               javax.swing.UIManager.setLookAndFeel(info.getClassName());
-               break;
-            }
-         }
+         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       } catch (ClassNotFoundException ex) {
          java.util.logging.Logger.getLogger(LoginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
       } catch (InstantiationException ex) {

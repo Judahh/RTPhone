@@ -9,16 +9,30 @@ import javax.swing.JOptionPane;
  *
  * @author JH
  */
-public class OptionThread extends javax.swing.JFrame {
+public class OptionThread extends Thread {
 
-   private int value;
    private String username;
+   private CallWindow callWindow;
+   private boolean on;
 
    public OptionThread(String username) {
-      value = JOptionPane.showConfirmDialog(null, username+" is calling, Anwser?");
+      this.username = username;
+      on=true;
    }
 
-   public int getValue() {
-      return value;
+   public int getValue() throws InterruptedException{
+      return callWindow.getValue();
+   }
+
+   public void close() {
+      callWindow.setVisible(false);
+      callWindow.dispose();
+      callWindow = null;
+   }
+
+   @Override
+   public void run() {
+      this.callWindow = new CallWindow(username);
+      callWindow.setVisible(true);
    }
 }

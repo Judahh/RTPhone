@@ -43,7 +43,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
       super();
       try {
          //Exporta o objeto remoto  
-         ClientRMI rmi = (ClientRMI) UnicastRemoteObject
+         RMI rmi = (RMI) UnicastRemoteObject
                  .exportObject(this, 0);
          //Liga o stub do objeto remoto no registro  
          Registry registry = LocateRegistry.getRegistry(9000);

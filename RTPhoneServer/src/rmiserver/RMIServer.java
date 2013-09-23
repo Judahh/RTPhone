@@ -6,7 +6,6 @@ package rmiserver;
 
 import clientrmi.ClientRMI;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -80,7 +79,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
          String address = getUserAddress(username);
          if (!address.isEmpty()) {
             Registry registry = LocateRegistry.getRegistry(address, 1100);
-            rmi = (ClientRMI) Naming.lookup("RTPhoneClient");
+            rmi = (ClientRMI) registry.lookup("RTPhoneClient");
             String callerAddress = getUserAddress(caller);
             if (!callerAddress.isEmpty()) {
                boolean check = rmi.call(caller, callerAddress);
@@ -90,8 +89,6 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
             }
          }
       } catch (NotBoundException ex) {
-         Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
-      } catch (MalformedURLException ex) {
          Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
       }
       return new String();

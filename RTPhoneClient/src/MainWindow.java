@@ -2,7 +2,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Inet4Address;
-import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.Connection;
@@ -130,7 +129,7 @@ public class MainWindow extends javax.swing.JFrame {
       if (jButtonCall.getText().equals("Call")) {
          try {
             Registry registry = LocateRegistry.getRegistry(loginWindow.getjTextFieldHost().getText(), 1099);
-            loginWindow.setRmi((RMI) Naming.lookup("RTPhoneServer"));
+            loginWindow.setRmi((RMI) registry.lookup("RTPhoneServer"));
             String check = loginWindow.getRmi().call((String) this.jListLoggedUsers.getSelectedValue(), loginWindow.getjTextFieldUsername().getText());
             if (!check.isEmpty()) {
                phone = new Phone(check, 16384, 32766);

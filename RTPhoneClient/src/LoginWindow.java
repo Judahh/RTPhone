@@ -1,6 +1,5 @@
 
 import java.net.Inet4Address;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -157,7 +156,7 @@ public class LoginWindow extends javax.swing.JFrame {
    private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
       try {
          Registry registry = LocateRegistry.getRegistry(this.jTextFieldHost.getText(), 1099);
-         rmi = (RMI) Naming.lookup("RTPhoneServer");
+         rmi = (RMI) registry.lookup("RTPhoneServer");
          boolean check = rmi.login(this.jTextFieldUsername.getText(), this.jPasswordField.getText(), Inet4Address.getLocalHost().getHostAddress().toString());
          if (check) {
             JOptionPane.showMessageDialog(null, "ok");
@@ -171,13 +170,14 @@ public class LoginWindow extends javax.swing.JFrame {
 
       } catch (Exception e) {
          System.out.println(e);
+         System.out.println(this.jTextFieldHost.getText());
       }
    }//GEN-LAST:event_jButtonLoginActionPerformed
 
    private void jButtonRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterActionPerformed
       try {
          Registry registry = LocateRegistry.getRegistry(this.jTextFieldHost.getText(), 1099);
-         rmi = (RMI) Naming.lookup("RTPhoneServer");
+         rmi = (RMI) registry.lookup("RTPhoneServer");
          boolean check = rmi.register(this.jTextFieldUsername.getText(), this.jPasswordField.getText());
          if (check) {
             JOptionPane.showMessageDialog(null, "ok");

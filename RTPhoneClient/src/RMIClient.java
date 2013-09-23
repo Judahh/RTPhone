@@ -1,6 +1,9 @@
 
 import clientrmi.ClientRMI;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
@@ -23,7 +26,21 @@ public class RMIClient extends UnicastRemoteObject implements ClientRMI {
    public RMIClient() throws RemoteException {
 //      super(Registry.REGISTRY_PORT);
       super();
-
+try {
+         //Exporta o objeto remoto  
+         ClientRMI rmi = (ClientRMI) UnicastRemoteObject
+                 .exportObject(this, 0);
+         //Liga o stub do objeto remoto no registro  
+         Registry registry = LocateRegistry.getRegistry(9001);
+         //Dá um nome pra ele no registro  
+         registry.bind("RTPhoneServer", rmi);
+      } catch (AlreadyBoundException ex) {
+         Logger.getLogger(RMIClient.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (AccessException ex) {
+         Logger.getLogger(RMIClient.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (RemoteException Re) {
+         System.out.println(Re.getMessage());
+      }
    }
 
    @Override

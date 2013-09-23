@@ -39,7 +39,7 @@ public class startServerWindow extends javax.swing.JFrame {
    public startServerWindow() {
       initComponents();
       jTabbedPane1.setVisible(false);
-      int delay = 500; //milliseconds
+      int delay = 10000; //milliseconds
       ActionListener taskPerformer = new ActionListener() {
          public void actionPerformed(ActionEvent evt) {
             updateData();
@@ -182,13 +182,13 @@ public class startServerWindow extends javax.swing.JFrame {
    }
 
    public void close() {
-      Vector<String> temp = getLoggedUsers();
+      Vector<Vector<String>> temp = getLoggedUsersPlus();
       for (int index = 0; index < temp.size(); index++) {
-         logoff(temp.get(index));
+         logoff(temp.get(index).get(0),temp.get(index).get(1));
       }
    }
 
-   public boolean logoff(String username) {
+   public boolean logoff(String username, String password) {
       String dbUrl = "jdbc:mysql://" + RMIServer.getUrl() + ":" + RMIServer.getPort() + "/" + RMIServer.getDBName() + "?user=" + RMIServer.getUser() + "&password=" + RMIServer.getPassword();
       try {
          Class.forName("com.mysql.jdbc.Driver");
@@ -200,7 +200,7 @@ public class startServerWindow extends javax.swing.JFrame {
             query = "DELETE FROM `RTPhoneDatabase`.`login` WHERE `user_id`='" + username + "';";
             System.out.println(query);
             statement.executeUpdate(query);
-            query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "');";
+            query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
             System.out.println(query);
             statement.executeUpdate(query);
             return true;
@@ -217,6 +217,33 @@ public class startServerWindow extends javax.swing.JFrame {
          temp.add(resultSet.getString("user_id"));
       }
       return temp;
+   }
+   
+    private Vector<Vector<String>> writeValuesPlus(ResultSet resultSet) throws SQLException {
+      Vector<Vector<String>> temp = new Vector<>();
+      Vector<String> temp2 = new Vector<>();
+      while (resultSet.next()) {
+         temp2.add(resultSet.getString("user_id"));
+         temp2.add(resultSet.getString("password"));
+         temp.add(temp2);
+      }
+      return temp;
+   }
+   
+   public Vector<Vector<String>> getLoggedUsersPlus() {
+      String dbUrl = "jdbc:mysql://" + RMIServer.getUrl() + ":" + RMIServer.getPort() + "/" + RMIServer.getDBName() + "?user=" + RMIServer.getUser() + "&password=" + RMIServer.getPassword();
+      try {
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
+         String query = "select `user_id`,`password` from login where !(logged is null or logged is NULL or logged=0 or logged='');";
+         resultSet = statement.executeQuery(query);
+
+         return writeValuesPlus(resultSet);
+      } catch (Exception e) {
+         System.out.println(e);
+      }
+      return new Vector<>();
    }
 
    public Vector<String> getLoggedUsers() {

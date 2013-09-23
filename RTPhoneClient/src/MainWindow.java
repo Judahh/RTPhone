@@ -48,7 +48,7 @@ public class MainWindow extends javax.swing.JFrame {
       initComponents();
       this.loginWindow = loginWindow;
       phone = null;
-      int delay = 500; //milliseconds
+      int delay = 10000; //milliseconds
       ActionListener taskPerformer = new ActionListener() {
          public void actionPerformed(ActionEvent evt) {
             updateData();

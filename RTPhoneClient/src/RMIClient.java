@@ -17,8 +17,8 @@ import util.RTP.Phone;
 public class RMIClient extends UnicastRemoteObject implements ClientRMI {
 
    public RMIClient() throws RemoteException {
-      super(Registry.REGISTRY_PORT);
-//      super();
+//      super(Registry.REGISTRY_PORT);
+      super();
    }
 
    @Override

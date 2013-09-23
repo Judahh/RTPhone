@@ -78,7 +78,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
          ClientRMI rmi;
          String address = getUserAddress(username);
          if (!address.isEmpty()) {
-            Registry registry = LocateRegistry.getRegistry(address, 1100);
+            Registry registry = LocateRegistry.getRegistry(address, 9001);
             rmi = (ClientRMI) registry.lookup("RTPhoneClient");
             String callerAddress = getUserAddress(caller);
             if (!callerAddress.isEmpty()) {

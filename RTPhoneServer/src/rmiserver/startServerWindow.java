@@ -154,7 +154,7 @@ public class startServerWindow extends javax.swing.JFrame {
 
    private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartActionPerformed
       try {
-         Registry registry = LocateRegistry.createRegistry(1099);
+         Registry registry = LocateRegistry.createRegistry(9000);
          RMIServer = new RMIServer();
          registry.rebind("RTPhoneServer", RMIServer);
          System.out.println("start");

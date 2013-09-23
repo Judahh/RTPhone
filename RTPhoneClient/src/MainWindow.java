@@ -128,7 +128,7 @@ public class MainWindow extends javax.swing.JFrame {
    private void jButtonCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCallActionPerformed
       if (jButtonCall.getText().equals("Call")) {
          try {
-            Registry registry = LocateRegistry.getRegistry(loginWindow.getjTextFieldHost().getText(), 1099);
+            Registry registry = LocateRegistry.getRegistry(loginWindow.getjTextFieldHost().getText(), 9000);
             loginWindow.setRmi((RMI) registry.lookup("RTPhoneServer"));
             String check = loginWindow.getRmi().call((String) this.jListLoggedUsers.getSelectedValue(), loginWindow.getjTextFieldUsername().getText());
             if (!check.isEmpty()) {

@@ -170,6 +170,7 @@ public class MainWindow extends javax.swing.JFrame {
       } else {
          this.phone.stop();
          this.phone = null;
+         jButtonCall.setText("Call");
       }
    }//GEN-LAST:event_jButtonCallActionPerformed
 
@@ -228,7 +229,9 @@ public class MainWindow extends javax.swing.JFrame {
          Vector<String> check = getLoggedUsers();
          model.clear();
          for (int index = 0; index < check.size(); index++) {
-            model.addElement(check.get(index));
+             if(!loginWindow.getjTextFieldUsername().getText().equals(check.get(index))){
+                model.addElement(check.get(index));
+             }
          }
       } catch (SQLException ex) {
          Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
@@ -243,7 +246,9 @@ public class MainWindow extends javax.swing.JFrame {
          Vector<String> check = getRegisteredUsers();
          model2.clear();
          for (int index = 0; index < check.size(); index++) {
-            model2.addElement(check.get(index));
+             if(!loginWindow.getjTextFieldUsername().getText().equals(check.get(index))){
+                 model2.addElement(check.get(index));
+             }
          }
       } catch (ClassNotFoundException ex) {
          Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);

@@ -25,7 +25,7 @@ import javax.swing.UIManager;
  *
  * @author JH
  */
-public class startServerWindow extends javax.swing.JFrame {
+public class StartServerWindow extends javax.swing.JFrame {
 
    private DefaultListModel model;
    private DefaultListModel model2;
@@ -38,22 +38,15 @@ public class startServerWindow extends javax.swing.JFrame {
    /**
     * Creates new form startServerWindow
     */
-   public startServerWindow() {
+   public StartServerWindow() {
       initComponents();
       jTabbedPane1.setVisible(false);
       open = true;
-      int delay = 10000; //milliseconds
-      ActionListener taskPerformer = new ActionListener() {
-         public void actionPerformed(ActionEvent evt) {
-            updateData();
-         }
-      };
-      new Timer(delay, taskPerformer).start();
    }
 
    private void updateData() {
       if (RMIServer != null && open) {
-         updateLoggedUsers();
+//         updateLoggedUsers();
          updateRegisteredUsers();
       }
    }
@@ -132,7 +125,7 @@ public class startServerWindow extends javax.swing.JFrame {
                .addGroup(layout.createSequentialGroup()
                   .addComponent(jLabel1)
                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                  .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
+                  .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                .addGroup(layout.createSequentialGroup()
                   .addComponent(jButtonStart)
                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -161,11 +154,12 @@ public class startServerWindow extends javax.swing.JFrame {
    private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartActionPerformed
       try {
          Registry registry = LocateRegistry.createRegistry(9000);
-         RMIServer = new RMIServer();
+         RMIServer = new RMIServer(this);
          registry.rebind("RTPhoneServer", RMIServer);
          System.out.println("start");
          jTabbedPane1.setVisible(true);
          jButtonStart.setVisible(false);
+         updateData();
       } catch (Exception e) {
          System.out.println(e);
       }
@@ -192,7 +186,7 @@ public class startServerWindow extends javax.swing.JFrame {
    }
 
    public void close() {
-      open=false;
+      open = false;
       Vector<Vector<String>> temp = getLoggedUsersPlus();
       for (int index = 0; index < temp.size(); index++) {
          logoff(temp.get(index).get(0), temp.get(index).get(1));
@@ -208,10 +202,7 @@ public class startServerWindow extends javax.swing.JFrame {
          String query = "select * from login where user_id='" + username + "' and !(logged is null or logged is NULL or logged=0 or logged='');";
          resultSet = statement.executeQuery(query);
          if (resultSet.next()) {
-            query = "DELETE FROM `RTPhoneDatabase`.`login` WHERE `user_id`='" + username + "';";
-            System.out.println(query);
-            statement.executeUpdate(query);
-            query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
+            query = "UPDATE `RTPhoneDatabase`.`login` SET `logged`=null WHERE `user_id`='" + username + "'";
             System.out.println(query);
             statement.executeUpdate(query);
             return true;
@@ -298,12 +289,20 @@ public class startServerWindow extends javax.swing.JFrame {
 
    }
 
+   public DefaultListModel getUpdateLoggedUsers() {
+      return model;
+   }
+
    private void updateRegisteredUsers() {
       Vector<String> check = getRegisteredUsers();
       model2.clear();
       for (int index = 0; index < check.size(); index++) {
          model2.addElement(check.get(index));
       }
+   }
+
+   public DefaultListModel getUpdateRegisteredUsers() {
+      return model2;
    }
 
    /**
@@ -318,20 +317,20 @@ public class startServerWindow extends javax.swing.JFrame {
       try {
          UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       } catch (ClassNotFoundException ex) {
-         java.util.logging.Logger.getLogger(startServerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+         java.util.logging.Logger.getLogger(StartServerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
       } catch (InstantiationException ex) {
-         java.util.logging.Logger.getLogger(startServerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+         java.util.logging.Logger.getLogger(StartServerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
       } catch (IllegalAccessException ex) {
-         java.util.logging.Logger.getLogger(startServerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+         java.util.logging.Logger.getLogger(StartServerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
       } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-         java.util.logging.Logger.getLogger(startServerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+         java.util.logging.Logger.getLogger(StartServerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
       }
       //</editor-fold>
 
       /* Create and display the form */
       java.awt.EventQueue.invokeLater(new Runnable() {
          public void run() {
-            new startServerWindow().setVisible(true);
+            new StartServerWindow().setVisible(true);
          }
       });
    }

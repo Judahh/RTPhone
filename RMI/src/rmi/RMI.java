@@ -14,6 +14,7 @@ import java.util.Vector;
  */
 public interface RMI extends Remote{
    public boolean checkUser(String username, String password, String Address) throws RemoteException;
+   
    public boolean login(String username, String password, String Address) throws RemoteException;
    public boolean logoff(String username, String password) throws RemoteException;
    public boolean register(String username, String password) throws RemoteException;

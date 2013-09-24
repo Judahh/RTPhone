@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -50,6 +52,7 @@ public class MainWindow extends javax.swing.JFrame {
       this.loginWindow = loginWindow;
       phone = null;
       open = true;
+      updateData();
       int delay = 10000; //milliseconds
       ActionListener taskPerformer = new ActionListener() {
          public void actionPerformed(ActionEvent evt) {
@@ -161,7 +164,7 @@ public class MainWindow extends javax.swing.JFrame {
       open = false;
       try {
          boolean check = false;
-         while (check) {
+         while (!check) {
             Registry registry = LocateRegistry.getRegistry(loginWindow.getjTextFieldHost().getText(), 9000);
             loginWindow.setRmi((RMI) registry.lookup("RTPhoneServer"));
             check = loginWindow.getRmi().logoff(loginWindow.getjTextFieldUsername().getText(), loginWindow.getjPasswordField().getText());
@@ -179,20 +182,14 @@ public class MainWindow extends javax.swing.JFrame {
    private javax.swing.JTabbedPane jTabbedPane1;
    // End of variables declaration//GEN-END:variables
 
-   public Vector<String> getLoggedUsers() {
+   public Vector<String> getLoggedUsers() throws SQLException, ClassNotFoundException {
       String dbUrl = "jdbc:mysql://" + url + ":" + port + "/" + DBName + "?user=" + user + "&password=" + password;
-      try {
-         Class.forName("com.mysql.jdbc.Driver");
-         connection = DriverManager.getConnection(dbUrl);
-         statement = connection.createStatement();
-         String query = "select `user_id` from login where !(logged is null or logged is NULL or logged=0 or logged='');";
-         resultSet = statement.executeQuery(query);
-
-         return writeValues(resultSet);
-      } catch (Exception e) {
-         System.out.println(e);
-      }
-      return new Vector<>();
+      Class.forName("com.mysql.jdbc.Driver");
+      connection = DriverManager.getConnection(dbUrl);
+      statement = connection.createStatement();
+      String query = "select `user_id` from login where !(logged is null or logged is NULL or logged=0 or logged='');";
+      resultSet = statement.executeQuery(query);
+      return writeValues(resultSet);
    }
 
    private Vector<String> writeValues(ResultSet resultSet) throws SQLException {
@@ -203,36 +200,42 @@ public class MainWindow extends javax.swing.JFrame {
       return temp;
    }
 
-   public Vector<String> getRegisteredUsers() {
+   public Vector<String> getRegisteredUsers() throws ClassNotFoundException, SQLException {
       String dbUrl = "jdbc:mysql://" + url + ":" + port + "/" + DBName + "?user=" + user + "&password=" + password;
-      try {
-         Class.forName("com.mysql.jdbc.Driver");
-         connection = DriverManager.getConnection(dbUrl);
-         statement = connection.createStatement();
-         String query = "select `user_id` from login;";
-         resultSet = statement.executeQuery(query);
-
-         return writeValues(resultSet);
-      } catch (Exception e) {
-         System.out.println(e);
-      }
-      return new Vector<>();
+      Class.forName("com.mysql.jdbc.Driver");
+      connection = DriverManager.getConnection(dbUrl);
+      statement = connection.createStatement();
+      String query = "select `user_id` from login;";
+      resultSet = statement.executeQuery(query);
+      return writeValues(resultSet);
    }
 
    private void updateLoggedUsers() {
-      Vector<String> check = getLoggedUsers();
-      model.clear();
-      for (int index = 0; index < check.size(); index++) {
-         model.addElement(check.get(index));
+      try {
+         Vector<String> check = getLoggedUsers();
+         model.clear();
+         for (int index = 0; index < check.size(); index++) {
+            model.addElement(check.get(index));
+         }
+      } catch (SQLException ex) {
+         Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (ClassNotFoundException ex) {
+         Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
       }
 
    }
 
    private void updateRegisteredUsers() {
-      Vector<String> check = getRegisteredUsers();
-      model2.clear();
-      for (int index = 0; index < check.size(); index++) {
-         model2.addElement(check.get(index));
+      try {
+         Vector<String> check = getRegisteredUsers();
+         model2.clear();
+         for (int index = 0; index < check.size(); index++) {
+            model2.addElement(check.get(index));
+         }
+      } catch (ClassNotFoundException ex) {
+         Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (SQLException ex) {
+         Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
       }
    }
 }

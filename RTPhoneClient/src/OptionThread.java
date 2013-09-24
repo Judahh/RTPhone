@@ -13,11 +13,9 @@ public class OptionThread extends Thread {
 
    private String username;
    private CallWindow callWindow;
-   private boolean on;
 
    public OptionThread(String username) {
       this.username = username;
-      on=true;
    }
 
    public int getValue() throws InterruptedException{

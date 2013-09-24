@@ -8,6 +8,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import util.RTP.Phone;
 
@@ -20,13 +21,15 @@ import util.RTP.Phone;
  * @author JH
  */
 public class RMIClient extends UnicastRemoteObject implements ClientRMI {
-
-   OptionThread optionThread;
-
-   public RMIClient() throws RemoteException {
+   
+   private OptionThread optionThread;
+   private LoginWindow loginWindow;
+   
+   public RMIClient(LoginWindow loginWindow) throws RemoteException {
 //      super(Registry.REGISTRY_PORT);
       super();
-try {
+      try {
+         this.loginWindow = loginWindow;
          //Exporta o objeto remoto  
          ClientRMI rmi = (ClientRMI) UnicastRemoteObject
                  .exportObject(this, 0);
@@ -42,7 +45,7 @@ try {
          System.out.println(Re.getMessage());
       }
    }
-
+   
    @Override
    public boolean call(String username, String Address) throws RemoteException {
 //      try {
@@ -53,12 +56,14 @@ try {
 //         System.out.println("F");
 //         if (ok) {
 //            System.out.println("G");
-
-            Phone phone = new Phone(Address, 32766, 16384);
-            phone.start();
-            
+      if (loginWindow.getMainWindow().getjButtonCall().getText().equals("Call")) {
+         Phone phone = new Phone(Address, 32766, 16384);
+         phone.start();
+         loginWindow.getMainWindow().getjButtonCall().setText("Hang Up");
 //            optionThread.close();
-            return true;
+         return true;
+      }
+      return false;
 //
 //         }
 //         System.out.println("H");

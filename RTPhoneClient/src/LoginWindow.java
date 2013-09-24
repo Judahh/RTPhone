@@ -21,8 +21,11 @@ import rmi.RMI;
  */
 public class LoginWindow extends javax.swing.JFrame {
 
-   RMI rmi;
+   private RMI rmi;
 
+   private RMIClient rmiClient;
+   
+   private MainWindow mainWindow;
    /**
     * Creates new form LoginWindow
     */
@@ -30,13 +33,22 @@ public class LoginWindow extends javax.swing.JFrame {
       try {
          initComponents();
          Registry registry = LocateRegistry.createRegistry(9001);
-         registry.rebind("RTPhoneClient", new RMIClient());
+         rmiClient=new RMIClient(this);
+         registry.rebind("RTPhoneClient", rmiClient);
          System.out.println("start");
       } catch (RemoteException ex) {
          Logger.getLogger(LoginWindow.class.getName()).log(Level.SEVERE, null, ex);
       }
    }
 
+   public MainWindow getMainWindow() {
+      return mainWindow;
+   }
+   
+   public RMIClient getRmiClient() {
+      return rmiClient;
+   }
+   
    public RMI getRmi() {
       return rmi;
    }
@@ -164,7 +176,8 @@ public class LoginWindow extends javax.swing.JFrame {
             rmi.getLoggedUsers();
             rmi.getRegisteredUsers();
             this.setVisible(false);
-            new MainWindow(this).setVisible(true);
+            mainWindow = new MainWindow(this);
+            mainWindow.setVisible(true);
          } else {
             JOptionPane.showMessageDialog(null, "erro");
          }

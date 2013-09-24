@@ -7,6 +7,7 @@ package clientrmi;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Vector;
+import javax.swing.JButton;
 
 /**
  *

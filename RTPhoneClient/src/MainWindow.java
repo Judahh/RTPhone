@@ -63,6 +63,14 @@ public class MainWindow extends javax.swing.JFrame {
       new Timer(delay, taskPerformer).start();
    }
 
+    public void setPhone(Phone phone) {
+        this.phone = phone;
+    }
+
+    public Phone getPhone() {
+        return phone;
+    }
+
    private void updateData() {
       if (open) {
          updateLoggedUsers();
@@ -149,8 +157,8 @@ public class MainWindow extends javax.swing.JFrame {
             loginWindow.setRmi((RMI) registry.lookup("RTPhoneServer"));
             String check = loginWindow.getRmi().call((String) this.jListLoggedUsers.getSelectedValue(), loginWindow.getjTextFieldUsername().getText());
             if (!check.isEmpty()) {
-               phone = new Phone(check, 16384, 32766);
-               phone.start();
+               this.phone = new Phone(check, 16384, 32766);
+               this.phone.start();
                jButtonCall.setText("Hang Up");
             } else {
                JOptionPane.showMessageDialog(null, "erro");
@@ -161,7 +169,7 @@ public class MainWindow extends javax.swing.JFrame {
          }
       } else {
          this.phone.stop();
-         phone = null;
+         this.phone = null;
       }
    }//GEN-LAST:event_jButtonCallActionPerformed
 

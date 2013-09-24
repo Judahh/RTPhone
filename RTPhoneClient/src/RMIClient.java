@@ -57,8 +57,10 @@ public class RMIClient extends UnicastRemoteObject implements ClientRMI {
 //         if (ok) {
 //            System.out.println("G");
       if (loginWindow.getMainWindow().getjButtonCall().getText().equals("Call")) {
-         Phone phone = new Phone(Address, 32766, 16384);
-         phone.start();
+         loginWindow.getMainWindow().setPhone(new Phone(Address, 32766, 16384));
+         loginWindow.getMainWindow().getPhone().start();
+//         Phone phone = new Phone(Address, 32766, 16384);
+//         phone.start();
          loginWindow.getMainWindow().getjButtonCall().setText("Hang Up");
 //            optionThread.close();
          return true;

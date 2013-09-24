@@ -5,7 +5,6 @@
 package rmiserver;
 
 import clientrmi.ClientRMI;
-import java.net.MalformedURLException;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
@@ -37,10 +36,12 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
    private Connection connection = null;
    private Statement statement = null;
    private ResultSet resultSet = null;
+   private StartServerWindow startServerWindow;
 
-   public RMIServer() throws RemoteException {
+   public RMIServer(StartServerWindow startServerWindow) throws RemoteException {
 //      super(Registry.REGISTRY_PORT);
       super();
+      this.startServerWindow = startServerWindow;
       try {
          //Exporta o objeto remoto  
          RMI rmi = (RMI) UnicastRemoteObject
@@ -199,7 +200,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
    }
 
    @Override
-   public boolean login(String username, String password, String Address) throws RemoteException {
+   public boolean login(String username, String password, String address) throws RemoteException {
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.DBName + "?user=" + this.user + "&password=" + this.password;
       try {
          Class.forName("com.mysql.jdbc.Driver");
@@ -211,12 +212,10 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
          System.out.println(query);
          resultSet = statement.executeQuery(query);
          if (resultSet.next()) {
-            query = "DELETE FROM `RTPhoneDatabase`.`login` WHERE `user_id`='" + username + "';";
+            query = "UPDATE `RTPhoneDatabase`.`login` SET `logged`='"+address+"' WHERE `user_id`='"+username+"'";
             System.out.println(query);
             statement.executeUpdate(query);
-            query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`, `logged`) VALUES ('" + username + "', '" + password + "', '" + Address + "');";
-            System.out.println(query);
-            statement.executeUpdate(query);
+            startServerWindow.getUpdateLoggedUsers().addElement(username);
             return true;
          }
       } catch (Exception e) {
@@ -238,12 +237,16 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
          System.out.println(query);
          resultSet = statement.executeQuery(query);
          if (resultSet.next()) {
-            query = "DELETE FROM `RTPhoneDatabase`.`login` WHERE `user_id`='" + username + "';";
+            query = "UPDATE `RTPhoneDatabase`.`login` SET `logged`=null WHERE `user_id`='" + username + "'";
             System.out.println(query);
             statement.executeUpdate(query);
-            query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
-            System.out.println(query);
-            statement.executeUpdate(query);
+            startServerWindow.getUpdateLoggedUsers();
+            for (int index = 0; index < startServerWindow.getUpdateLoggedUsers().getSize(); index++) {
+               if(startServerWindow.getUpdateLoggedUsers().getElementAt(index).equals(username)){
+                  startServerWindow.getUpdateLoggedUsers().removeElementAt(index);
+               }
+            }
+            
             return true;
          }
       } catch (Exception e) {
@@ -269,6 +272,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI {
             query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
             System.out.println(query);
             statement.executeUpdate(query);
+            startServerWindow.getUpdateRegisteredUsers().addElement(username);
             return true;
          }
       } catch (Exception e) {

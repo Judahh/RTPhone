@@ -128,7 +128,7 @@ public class Server extends UnicastRemoteObject implements RemoteMethodInvocatio
          while (resultSet.next()) {
             return resultSet.getString("logged");
          }
-      } catch (Exception e) {
+      } catch (ClassNotFoundException | SQLException e) {
          System.out.println(e);
       }
       return new String();

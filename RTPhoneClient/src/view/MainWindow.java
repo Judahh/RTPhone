@@ -94,13 +94,17 @@ public class MainWindow extends javax.swing.JFrame {
    private void initComponents() {
 
       jTabbedPane1 = new javax.swing.JTabbedPane();
-      jScrollPane1 = new javax.swing.JScrollPane();
-      model = new DefaultListModel();
-      jListLoggedUsers = new JList(model);
-      jScrollPane2 = new javax.swing.JScrollPane();
-      model2 = new DefaultListModel();
-      jListRegisteredUsers = new JList(model2);
+      jPanel1 = new javax.swing.JPanel();
       jButtonCall = new javax.swing.JButton();
+      jLabel1 = new javax.swing.JLabel();
+      jComboBox1 = new javax.swing.JComboBox();
+      jButton1 = new javax.swing.JButton();
+      jScrollPane1 = new javax.swing.JScrollPane();
+      jList1 = new javax.swing.JList();
+      jButton2 = new javax.swing.JButton();
+      jButton3 = new javax.swing.JButton();
+      jMenuBar1 = new javax.swing.JMenuBar();
+      jMenu2 = new javax.swing.JMenu();
 
       setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
       addWindowListener(new java.awt.event.WindowAdapter() {
@@ -109,16 +113,6 @@ public class MainWindow extends javax.swing.JFrame {
          }
       });
 
-      jListLoggedUsers.setModel(model);
-      jScrollPane1.setViewportView(jListLoggedUsers);
-
-      jTabbedPane1.addTab("Logged Users", jScrollPane1);
-
-      jListRegisteredUsers.setModel(model2);
-      jScrollPane2.setViewportView(jListRegisteredUsers);
-
-      jTabbedPane1.addTab("Registered Users", jScrollPane2);
-
       jButtonCall.setText("Call");
       jButtonCall.addActionListener(new java.awt.event.ActionListener() {
          public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,26 +120,84 @@ public class MainWindow extends javax.swing.JFrame {
          }
       });
 
+      jLabel1.setText("Status:");
+
+      jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+      jButton1.setText("Chat");
+
+      jList1.setModel(new javax.swing.AbstractListModel() {
+         String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+         public int getSize() { return strings.length; }
+         public Object getElementAt(int i) { return strings[i]; }
+      });
+      jScrollPane1.setViewportView(jList1);
+
+      jButton2.setText("Remove");
+
+      jButton3.setText("Logoff");
+
+      javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+      jPanel1.setLayout(jPanel1Layout);
+      jPanel1Layout.setHorizontalGroup(
+         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+         .addGroup(jPanel1Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+               .addComponent(jScrollPane1)
+               .addGroup(jPanel1Layout.createSequentialGroup()
+                  .addComponent(jLabel1)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+               .addGroup(jPanel1Layout.createSequentialGroup()
+                  .addComponent(jButtonCall)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(jButton1)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                  .addComponent(jButton2)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(jButton3)))
+            .addContainerGap())
+      );
+      jPanel1Layout.setVerticalGroup(
+         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+               .addComponent(jLabel1)
+               .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+               .addComponent(jButtonCall)
+               .addComponent(jButton1)
+               .addComponent(jButton2)
+               .addComponent(jButton3))
+            .addContainerGap())
+      );
+
+      jTabbedPane1.addTab("Contacts", jPanel1);
+
+      jMenu2.setText("Configurations");
+      jMenuBar1.add(jMenu2);
+
+      setJMenuBar(jMenuBar1);
+
       javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
       getContentPane().setLayout(layout);
       layout.setHorizontalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-               .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
-               .addGroup(layout.createSequentialGroup()
-                  .addComponent(jButtonCall)
-                  .addGap(0, 0, Short.MAX_VALUE)))
+            .addComponent(jTabbedPane1)
             .addContainerGap())
       );
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jButtonCall)
+            .addComponent(jTabbedPane1)
             .addContainerGap())
       );
 
@@ -190,11 +242,17 @@ public class MainWindow extends javax.swing.JFrame {
       }
    }//GEN-LAST:event_formWindowClosing
    // Variables declaration - do not modify//GEN-BEGIN:variables
+   private javax.swing.JButton jButton1;
+   private javax.swing.JButton jButton2;
+   private javax.swing.JButton jButton3;
    private javax.swing.JButton jButtonCall;
-   private javax.swing.JList jListLoggedUsers;
-   private javax.swing.JList jListRegisteredUsers;
+   private javax.swing.JComboBox jComboBox1;
+   private javax.swing.JLabel jLabel1;
+   private javax.swing.JList jList1;
+   private javax.swing.JMenu jMenu2;
+   private javax.swing.JMenuBar jMenuBar1;
+   private javax.swing.JPanel jPanel1;
    private javax.swing.JScrollPane jScrollPane1;
-   private javax.swing.JScrollPane jScrollPane2;
    private javax.swing.JTabbedPane jTabbedPane1;
    // End of variables declaration//GEN-END:variables
 

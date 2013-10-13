@@ -88,16 +88,18 @@ public class LoginWindow extends javax.swing.JFrame {
       jPasswordField = new javax.swing.JPasswordField();
       jButtonRegister = new javax.swing.JButton();
       jButtonLogin = new javax.swing.JButton();
+      jMenuBar1 = new javax.swing.JMenuBar();
+      jMenu2 = new javax.swing.JMenu();
 
       setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-      jLabel1.setText("Host:");
+      jLabel1.setText("Name:");
 
       jLabel2.setText("Username:");
 
       jLabel3.setText("Password:");
 
-      jTextFieldHost.setText("127.0.0.1");
+      jTextFieldHost.setText("User Zero");
 
       jTextFieldUsername.setText("user0");
 
@@ -117,6 +119,11 @@ public class LoginWindow extends javax.swing.JFrame {
          }
       });
 
+      jMenu2.setText("Configurations");
+      jMenuBar1.add(jMenu2);
+
+      setJMenuBar(jMenuBar1);
+
       javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
       getContentPane().setLayout(layout);
       layout.setHorizontalGroup(
@@ -128,7 +135,7 @@ public class LoginWindow extends javax.swing.JFrame {
                   .addGroup(layout.createSequentialGroup()
                      .addComponent(jLabel1)
                      .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                     .addComponent(jTextFieldHost))
+                     .addComponent(jTextFieldHost, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE))
                   .addGroup(layout.createSequentialGroup()
                      .addComponent(jLabel2)
                      .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -136,12 +143,12 @@ public class LoginWindow extends javax.swing.JFrame {
                   .addGroup(layout.createSequentialGroup()
                      .addComponent(jLabel3)
                      .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                     .addComponent(jPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)))
+                     .addComponent(jPasswordField)))
                .addGroup(layout.createSequentialGroup()
                   .addComponent(jButtonRegister)
-                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
                   .addComponent(jButtonLogin)))
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap())
       );
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,6 +247,8 @@ public class LoginWindow extends javax.swing.JFrame {
    private javax.swing.JLabel jLabel1;
    private javax.swing.JLabel jLabel2;
    private javax.swing.JLabel jLabel3;
+   private javax.swing.JMenu jMenu2;
+   private javax.swing.JMenuBar jMenuBar1;
    private javax.swing.JPasswordField jPasswordField;
    private javax.swing.JTextField jTextFieldHost;
    private javax.swing.JTextField jTextFieldUsername;

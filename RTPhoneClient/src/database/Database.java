@@ -130,6 +130,17 @@ public class Database {
          System.out.println(e);
       }
    }
+   
+   public void remove(String username) {//TODO: REFAZER
+      try {
+         String query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
+         System.out.println(query);
+         statement.executeUpdate(query);
+//         startServerWindow.getUpdateRegisteredUsers().addElement(username);
+      } catch (Exception e) {
+         System.out.println(e);
+      }
+   }
 
    public void login(String username, String password) {//TODO:
       try {

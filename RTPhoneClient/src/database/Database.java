@@ -103,7 +103,7 @@ public class Database {
       return false;
    }
    
-   public ArrayList<Client> getLoggedList(String username) {//TODO: para o refresh
+   public ArrayList<Client> getUserList(String username) {//TODO: para o login
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
          Class.forName("com.mysql.jdbc.Driver");
@@ -152,7 +152,7 @@ public class Database {
          System.out.println(e);
       }
    }
-
+   
    public void logoff(String username) {//TODO:
       try {
          String query = "UPDATE `RTPhoneDatabase`.`login` SET `logged`=null WHERE `user_id`='" + username + "'";

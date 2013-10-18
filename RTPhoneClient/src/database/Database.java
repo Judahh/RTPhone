@@ -142,15 +142,16 @@ public class Database {
       }
    }
 
-   public void login(String username, String password) {//TODO:
+   public boolean login(String username, String password) {//TODO:
       try {
-         String query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
-         System.out.println(query);
-         statement.executeUpdate(query);
+         //String query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
+         //System.out.println(query);
+         //statement.executeUpdate(query);
 //      startServerWindow.getUpdateRegisteredUsers().addElement(username);
       } catch (Exception e) {
          System.out.println(e);
       }
+      return false;
    }
    
    public void logoff(String username) {//TODO:

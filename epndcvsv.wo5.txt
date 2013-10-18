@@ -1,0 +1,51 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	deleted:    RMI/src/remoteMethodInvocation/RemoteMethodInvocation.java
+#	renamed:    RMI/build.xml -> RemoteMethodInvocation/build.xml
+#	renamed:    RMI/build/built-jar.properties -> RemoteMethodInvocation/build/built-jar.properties
+#	renamed:    RMI/build/classes/clientRemoteMethodInvocation/ClientRemoteMethodInvocation.class -> RemoteMethodInvocation/build/classes/clientRemoteMethodInvocation/ClientRemoteMethodInvocation.class
+#	renamed:    RMI/build/classes/remoteMethodInvocation/RemoteMethodInvocation.class -> RemoteMethodInvocation/build/classes/remoteMethodInvocation/RemoteMethodInvocation.class
+#	renamed:    RMI/dist/README.TXT -> RemoteMethodInvocation/dist/README.TXT
+#	renamed:    RMI/dist/RMI.jar -> RemoteMethodInvocation/dist/RMI.jar
+#	renamed:    RMI/manifest.mf -> RemoteMethodInvocation/manifest.mf
+#	renamed:    RMI/nbproject/build-impl.xml -> RemoteMethodInvocation/nbproject/build-impl.xml
+#	renamed:    RMI/nbproject/genfiles.properties -> RemoteMethodInvocation/nbproject/genfiles.properties
+#	renamed:    RMI/nbproject/private/private.properties -> RemoteMethodInvocation/nbproject/private/private.properties
+#	renamed:    RMI/nbproject/private/private.xml -> RemoteMethodInvocation/nbproject/private/private.xml
+#	renamed:    RMI/nbproject/project.properties -> RemoteMethodInvocation/nbproject/project.properties
+#	renamed:    RMI/nbproject/project.xml -> RemoteMethodInvocation/nbproject/project.xml
+#	renamed:    RMI/src/clientRemoteMethodInvocation/ClientRemoteMethodInvocation.java -> RemoteMethodInvocation/src/clientRemoteMethodInvocation/ClientRemoteMethodInvocation.java
+#	new file:   RemoteMethodInvocation/src/database/ClientStatus.java
+#
+# Changes not staged for commit:
+#   (use "git add/rm <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   RTPhoneClient/dist/README.TXT
+#	modified:   RTPhoneClient/nbproject/private/private.properties
+#	modified:   RTPhoneClient/src/remoteMethodInvocation/Client.java
+#	modified:   RTPhoneClient/src/view/LoginWindow.java
+#	modified:   RTPhoneServer/dist/README.TXT
+#	modified:   RTPhoneServer/nbproject/private/private.properties
+#	modified:   RemoteMethodInvocation/build.xml
+#	modified:   RemoteMethodInvocation/build/built-jar.properties
+#	modified:   RemoteMethodInvocation/build/classes/clientRemoteMethodInvocation/ClientRemoteMethodInvocation.class
+#	deleted:    RemoteMethodInvocation/build/classes/remoteMethodInvocation/RemoteMethodInvocation.class
+#	modified:   RemoteMethodInvocation/dist/README.TXT
+#	deleted:    RemoteMethodInvocation/dist/RMI.jar
+#	modified:   RemoteMethodInvocation/nbproject/build-impl.xml
+#	modified:   RemoteMethodInvocation/nbproject/genfiles.properties
+#	modified:   RemoteMethodInvocation/nbproject/project.properties
+#	modified:   RemoteMethodInvocation/nbproject/project.xml
+#	modified:   RemoteMethodInvocation/src/clientRemoteMethodInvocation/ClientRemoteMethodInvocation.java
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	.gitignore
+

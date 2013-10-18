@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import remoteMethodInvocation.RemoteMethodInvocation;
+import remoteMethodInvocation.Client;
 
 /*
  * To change this template, choose Tools | Templates
@@ -22,9 +22,6 @@ import remoteMethodInvocation.RemoteMethodInvocation;
  * @author JH
  */
 public class LoginWindow extends javax.swing.JFrame {
-
-   private RemoteMethodInvocation rmi;
-
    private Client rmiClient;
    
    private MainWindow mainWindow;

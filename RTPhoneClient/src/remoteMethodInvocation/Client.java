@@ -4,6 +4,7 @@ package remoteMethodInvocation;
 import view.OptionThread;
 import view.LoginWindow;
 import clientRemoteMethodInvocation.ClientRemoteMethodInvocation;
+import database.ClientStatus;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
@@ -51,7 +52,32 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
    }
    
    @Override
-   public boolean call(String username, String Address) throws RemoteException {
+   public void register(String name, String username) throws RemoteException {
+      
+   }
+   
+   @Override
+   public void login(String name, String username) throws RemoteException {
+      
+   }
+   
+   @Override
+   public void logoff(String name, String username) throws RemoteException {
+      
+   }
+   
+   @Override
+   public void changeStatus(String name, String username, ClientStatus status) throws RemoteException {
+      
+   }
+   
+   @Override
+   public void sendMessage(String name, String username, String message) throws RemoteException {
+      
+   }
+   
+   @Override
+   public boolean call(String name, String username, String Address) throws RemoteException {
 //      try {
 //         optionThread = new OptionThread(username);
 //         optionThread.start();

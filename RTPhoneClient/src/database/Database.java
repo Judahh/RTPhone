@@ -70,7 +70,7 @@ public class Database {
    }
 
    public boolean exists(String username) {//TODO:
-      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password + "?allowMultiQuery=true";
       try {
          Class.forName("com.mysql.jdbc.Driver");
          connection = DriverManager.getConnection(dbUrl);

@@ -69,8 +69,8 @@ public class Database {
       return resultSet;
    }
 
-   public boolean exists(String username) {//TODO:
-      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password + "?allowMultiQuery=true";
+   public boolean exists(String username) {
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
          Class.forName("com.mysql.jdbc.Driver");
          connection = DriverManager.getConnection(dbUrl);
@@ -85,7 +85,7 @@ public class Database {
       return false;
    }
 
-   public boolean exists(String username, String password) {//TODO: para o login!!!
+   public boolean exists(String username, String password) {
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
          Class.forName("com.mysql.jdbc.Driver");
@@ -93,10 +93,10 @@ public class Database {
          statement = connection.createStatement();
          System.out.println(username);
          System.out.println(password);
-         String query = "select * from userAuthenticationTable where username='" + username + "' and password='" + password + "' and (logged is null or logged is NULL or logged=0 or logged='');";
+         String query = "select * from userAuthenticationTable where username='" + username + "' and password='" + password + "';";
          System.out.println(query);
          resultSet = statement.executeQuery(query);
-         if(resultSet.next()){
+         if (resultSet.next()) {
             return true;
          }
       } catch (ClassNotFoundException | SQLException e) {
@@ -104,7 +104,7 @@ public class Database {
       }
       return false;
    }
-   
+
    public ArrayList<Client> getUserList(String username) {//TODO: para o login
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
@@ -122,20 +122,35 @@ public class Database {
       return null;
    }
 
-   public void register(String username, String name, String password) {//TODO:
+   public void register(String username, String name, String password) {
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+      //String dbUrl = "jdbc:mysql://" + this.url + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
+         System.out.println(dbUrl);
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
          String query = "INSERT INTO userTable (`username`) VALUES ('" + username + "');";
          System.out.println(query);
          statement.executeUpdate(query);
-         
+
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
          query = "INSERT INTO userAuthenticationTable (`username`,`password`) VALUES ('" + username + "','" + password + "');";
          System.out.println(query);
          statement.executeUpdate(query);
-         
+
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
          query = "INSERT INTO userInformationTable (`username`,`name`) VALUES ('" + username + "','" + name + "');";
          System.out.println(query);
          statement.executeUpdate(query);
-         
+
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
          query = "INSERT INTO userStatusTable (`username`) VALUES ('" + username + "');";
          System.out.println(query);
          statement.executeUpdate(query);
@@ -144,31 +159,39 @@ public class Database {
          System.out.println(e);
       }
    }
-   
+
    public void remove(String username) {//TODO: REFAZER
       try {
          String query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
          System.out.println(query);
          statement.executeUpdate(query);
-         
+
 //         startServerWindow.getUpdateRegisteredUsers().addElement(username);
       } catch (Exception e) {
          System.out.println(e);
       }
    }
 
-   public boolean login(String username, String password) {//TODO:
+   public boolean login(String username, String password) {
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
-         //String query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
-         //System.out.println(query);
-         //statement.executeUpdate(query);
-//      startServerWindow.getUpdateRegisteredUsers().addElement(username);
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
+         System.out.println(username);
+         System.out.println(password);
+         String query = "select * from userStatusTable where username='" + username + "' and (address is null or address is NULL or address=0 or address='');";
+         System.out.println(query);
+         resultSet = statement.executeQuery(query);
+         if (resultSet.next()) {
+            return true;
+         }
       } catch (Exception e) {
          System.out.println(e);
       }
       return false;
    }
-   
+
    public void logoff(String username) {//TODO:
       try {
          String query = "UPDATE `RTPhoneDatabase`.`login` SET `logged`=null WHERE `user_id`='" + username + "'";
@@ -184,6 +207,4 @@ public class Database {
          System.out.println(e);
       }
    }
-   
-   
 }

@@ -76,7 +76,7 @@ public class Database {
          connection = DriverManager.getConnection(dbUrl);
          statement = connection.createStatement();
          System.out.println(username);
-         String query = "select * from login where user_id='" + username + "';";
+         String query = "select * from userAuthenticationTable where username='" + username + "';";
          resultSet = statement.executeQuery(query);
          return (resultSet.next());
       } catch (ClassNotFoundException | SQLException e) {
@@ -93,10 +93,12 @@ public class Database {
          statement = connection.createStatement();
          System.out.println(username);
          System.out.println(password);
-         String query = "select * from login where user_id='" + username + "' and password='" + password + "' and (logged is null or logged is NULL or logged=0 or logged='');";
+         String query = "select * from userAuthenticationTable where username='" + username + "' and password='" + password + "' and (logged is null or logged is NULL or logged=0 or logged='');";
          System.out.println(query);
          resultSet = statement.executeQuery(query);
-//         return (resultSet.next());
+         if(resultSet.next()){
+            return true;
+         }
       } catch (ClassNotFoundException | SQLException e) {
          System.out.println(e);
       }
@@ -110,7 +112,7 @@ public class Database {
          connection = DriverManager.getConnection(dbUrl);
          statement = connection.createStatement();
          System.out.println(username);
-         String query = "select * from login where user_id='" + username + "' and (logged is null or logged is NULL or logged=0 or logged='');";//colocar para pegar os amigos logados
+         String query = "select * from login where username='" + username + "' and (logged is null or logged is NULL or logged=0 or logged='');";//colocar para pegar os amigos logados
          System.out.println(query);
          resultSet = statement.executeQuery(query);
 //         return (resultSet.next());
@@ -122,7 +124,19 @@ public class Database {
 
    public void register(String username, String name, String password) {//TODO:
       try {
-         String query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
+         String query = "INSERT INTO userTable (`username`) VALUES ('" + username + "');";
+         System.out.println(query);
+         statement.executeUpdate(query);
+         
+         query = "INSERT INTO userAuthenticationTable (`username`,`password`) VALUES ('" + username + "','" + password + "');";
+         System.out.println(query);
+         statement.executeUpdate(query);
+         
+         query = "INSERT INTO userInformationTable (`username`,`name`) VALUES ('" + username + "','" + name + "');";
+         System.out.println(query);
+         statement.executeUpdate(query);
+         
+         query = "INSERT INTO userStatusTable (`username`) VALUES ('" + username + "');";
          System.out.println(query);
          statement.executeUpdate(query);
 //         startServerWindow.getUpdateRegisteredUsers().addElement(username);
@@ -136,6 +150,7 @@ public class Database {
          String query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
          System.out.println(query);
          statement.executeUpdate(query);
+         
 //         startServerWindow.getUpdateRegisteredUsers().addElement(username);
       } catch (Exception e) {
          System.out.println(e);

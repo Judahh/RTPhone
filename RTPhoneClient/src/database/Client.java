@@ -11,6 +11,7 @@ package database;
 public class Client {
 
    private String name;
+   private int number;
    private String username;
    private String address;
    private String password;
@@ -50,6 +51,14 @@ public class Client {
       this.address = address;
       this.clientStatus = ClientStatus.custom;
       this.customStatus = customStatus;
+   }
+
+   public void setNumber(int number) {
+      this.number = number;
+   }
+
+   public int getNumber() {
+      return number;
    }
 
    public ClientStatus getClientStatus() {

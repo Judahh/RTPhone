@@ -26,6 +26,7 @@ public class MainWindow extends javax.swing.JFrame {
     * Creates new form MainWindow
     */
    public MainWindow(LoginWindow loginWindow) {
+      this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getAddContactList(this.loginWindow.getjTextFieldUsername().getText());
       initComponents();
       this.loginWindow = loginWindow;
       phone = null;

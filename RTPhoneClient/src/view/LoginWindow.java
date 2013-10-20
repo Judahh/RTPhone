@@ -192,11 +192,11 @@ public class LoginWindow extends javax.swing.JFrame {
            if (check) {
                boolean check2 = defaultServerConfigurationsWindow.getDatabase().login(this.jTextFieldUsername.getText(), this.jPasswordField.getText());
                if (check2) {
-                   this.setVisible(false);
-                   mainWindow = new MainWindow(this);
-                   mainWindow.setVisible(true);
+                  this.setVisible(false);
+                  mainWindow = new MainWindow(this);
+                  mainWindow.setVisible(true);
                } else {
-                   JOptionPane.showMessageDialog(null, "User already logged!");
+                  JOptionPane.showMessageDialog(null, "User already logged!");
                }
            } else {
                JOptionPane.showMessageDialog(null, "User unregistered or wrong password!");

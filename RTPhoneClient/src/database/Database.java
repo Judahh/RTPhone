@@ -105,9 +105,26 @@ public class Database {
       return false;
    }
 
+   public ArrayList<Client> getAddContactList(String username) {//TODO: para o login
+//      SELECT A.contact
+//      FROM RTPhoneDatabase.contactTable A
+//      LEFT JOIN RTPhoneDatabase.contactTable B
+//      ON A.user = B.contact and A.contact = B.user
+//      where A.user = 'user0'
+      return null;
+   }
+   
    public ArrayList<Client> getUserList(String username) {//TODO: para o login
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
+//         name,username,address,clientStatus,customStatus;
+//
+//         SELECT A.contact
+//         FROM RTPhoneDatabase.contactTable A
+//         INNER JOIN RTPhoneDatabase.contactTable B
+//         ON A.user = B.contact and A.contact = B.user
+//         where A.user = 'user0'
+
          Class.forName("com.mysql.jdbc.Driver");
          connection = DriverManager.getConnection(dbUrl);
          statement = connection.createStatement();

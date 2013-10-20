@@ -105,7 +105,7 @@ public class LoginWindow extends javax.swing.JFrame {
 
       jTextFieldUsername.setText("user0");
 
-      jPasswordField.setText("password0");
+      jPasswordField.setText("password");
 
       jButtonRegister.setText("Register");
       jButtonRegister.addActionListener(new java.awt.event.ActionListener() {

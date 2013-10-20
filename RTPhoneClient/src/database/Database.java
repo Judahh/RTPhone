@@ -80,7 +80,7 @@ public class Database {
          resultSet = statement.executeQuery(query);
          return (resultSet.next());
       } catch (ClassNotFoundException | SQLException e) {
-         System.out.println(e);
+         System.err.println(e);
       }
       return false;
    }
@@ -105,8 +105,49 @@ public class Database {
       return false;
    }
 
-   public ArrayList<Client> getAddContactList(String username) {//TODO: para o login
+   public Client getUser(String username) {
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+      try {
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
+         String query = "select C.username, C.name, D.address, D.status, D.customStatus, E.number from "
+                 + "(SELECT username "
+                 + "FROM RTPhoneDatabase.userAuthenticationTable "
+                 + "where username = 'user0') G "
+                 + "INNER JOIN RTPhoneDatabase.userInformationTable C "
+                 + "ON G.username = C.username "
+                 + "INNER JOIN RTPhoneDatabase.userStatusTable D "
+                 + "ON G.username = D.username "
+                 + "INNER JOIN RTPhoneDatabase.userTable E "
+                 + "ON G.username = E.username;";
+         System.out.println(query);
+         resultSet = statement.executeQuery(query);
+         if (resultSet.next()) {
+            String tempUsername = resultSet.getString("username");
+            String tempName = resultSet.getString("name");
+            String tempAddress = resultSet.getString("address");
+            int tempStatus = resultSet.getInt("status");
+            String tempCustomStatus = resultSet.getString("customStatus");
+            int tempNumber = resultSet.getInt("number");
+            Client tempClient;
+            if (tempStatus == 3) {
+               tempClient = new Client(tempName, tempUsername, tempAddress, tempCustomStatus);
+            } else {
+               ClientStatus tempClientStatus = ClientStatus(tempStatus);
+               tempClient = new Client(tempName, tempUsername, tempAddress, tempClientStatus);
+            }
+            return tempClient;
+         }
+      } catch (ClassNotFoundException | SQLException e) {
+         System.err.println(e);
+      }
+      return null;
+   }
+
+   public ArrayList<Client> getContactList(String username) {
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+      ArrayList<Client> client = new ArrayList<>();
       try {
          Class.forName("com.mysql.jdbc.Driver");
          connection = DriverManager.getConnection(dbUrl);
@@ -125,45 +166,40 @@ public class Database {
                  + "ON G.contact = E.username;";
          System.out.println(query);
          resultSet = statement.executeQuery(query);
-         if (resultSet.next()) {
-            ArrayList<Client> client = new ArrayList<>();
-            
-            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-               System.out.print(resultSet.getMetaData().getColumnName(i));
-               System.out.print("|");
+         while (resultSet.next()) {
+            String tempUsername = resultSet.getString("username");
+            String tempName = resultSet.getString("name");
+            String tempAddress = resultSet.getString("address");
+            int tempStatus = resultSet.getInt("status");
+            String tempCustomStatus = resultSet.getString("customStatus");
+            int tempNumber = resultSet.getInt("number");
+            Client tempClient;
+            if (tempStatus == 3) {
+               tempClient = new Client(tempName, tempUsername, tempAddress, tempCustomStatus);
+            } else {
+               ClientStatus tempClientStatus = ClientStatus(tempStatus);
+               tempClient = new Client(tempName, tempUsername, tempAddress, tempClientStatus);
             }
-            while (resultSet.next()) {
-               String tempUsername = resultSet.getString("username");
-               String tempName = resultSet.getString("name");
-               String tempAddress = resultSet.getString("address");
-               int tempStatus = resultSet.getInt("status");
-               String tempCustomStatus = resultSet.getString("customStatus");
-               int tempNumber = resultSet.getInt("number");
-               Client tempClient;
-               if(tempStatus==3){
-                  tempClient=new Client(tempName, tempUsername, tempAddress, tempCustomStatus);
-               }else{
-                  ClientStatus tempClientStatus= ClientStatus(tempStatus) ;
-                  tempClient = new Client(tempName, tempUsername, tempAddress, tempClientStatus);
-               }
-               client.add(tempClient);
-            }
-            return client;
+            client.add(tempClient);
          }
       } catch (ClassNotFoundException | SQLException e) {
-         System.out.println(e);
+         System.err.println(e);
       }
+      return client;
+   }
+   
+   public ArrayList<ClientMessage> getMessageList(String username) {//TODO: para o login
       return null;
    }
 
-   public ArrayList<Client> getUserList(String username) {//TODO: para o login
+   public ArrayList<Client> getContactRequestList(String username) {//TODO: para o login
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
 //         name,username,address,clientStatus,customStatus;
 //
 //         SELECT A.contact
 //         FROM RTPhoneDatabase.contactTable A
-//         INNER JOIN RTPhoneDatabase.contactTable B
+//         LEFT JOIN RTPhoneDatabase.contactTable B
 //         ON A.user = B.contact and A.contact = B.user
 //         where A.user = 'user0'
 
@@ -268,16 +304,16 @@ public class Database {
    }
 
    private ClientStatus ClientStatus(int tempStatus) {
-      switch(tempStatus){
+      switch (tempStatus) {
          case 1:
             return ClientStatus.busy;
-            
+
          case 2:
             return ClientStatus.away;
-         
+
          case 3:
             return ClientStatus.custom;
-            
+
          default:
             return ClientStatus.none;
       }

@@ -4,6 +4,8 @@
  */
 package database;
 
+import javax.net.ssl.SSLEngineResult;
+
 /**
  *
  * @author JH
@@ -34,8 +36,7 @@ public class Client {
       this.username = username;
       this.address = address;
       this.password = password;
-      this.clientStatus = ClientStatus.custom;
-      this.customStatus = customStatus;
+      setCustomStatus(customStatus);
    }
 
    public Client(String name, String username, String address, ClientStatus clientStatus) {
@@ -49,8 +50,7 @@ public class Client {
       this.name = name;
       this.username = username;
       this.address = address;
-      this.clientStatus = ClientStatus.custom;
-      this.customStatus = customStatus;
+      setCustomStatus(customStatus);
    }
 
    public void setNumber(int number) {
@@ -74,6 +74,9 @@ public class Client {
    }
 
    public void setCustomStatus(String customStatus) {
+      if(!customStatus.isEmpty()){
+         clientStatus = ClientStatus.custom;
+      }
       this.customStatus = customStatus;
    }
    
@@ -107,5 +110,15 @@ public class Client {
 
    public void setPassword(String password) {
       this.password = password;
+   }
+
+   @Override
+   public String toString() {
+      String string = name;
+      string += " (" + username + ") ";
+      if(clientStatus == ClientStatus.custom){
+         string += "- " + customStatus;
+      }
+      return string;
    }
 }

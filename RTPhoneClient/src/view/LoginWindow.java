@@ -36,7 +36,7 @@ public class LoginWindow extends javax.swing.JFrame {
             remoteMethodInvocationClient = new Client(this);
             registry.rebind("RTPhoneClient", remoteMethodInvocationClient);
             System.out.println("start");
-
+            
             defaultServerConfigurationsWindow = new DefaultServerConfigurationsWindow();
         } catch (RemoteException ex) {
             Logger.getLogger(LoginWindow.class.getName()).log(Level.SEVERE, null, ex);
@@ -202,8 +202,8 @@ public class LoginWindow extends javax.swing.JFrame {
                JOptionPane.showMessageDialog(null, "User unregistered or wrong password!");
            }
        } catch (Exception e) {
-           System.out.println(e);
-           System.out.println(this.jTextFieldName.getText());
+           System.err.println(e);
+           System.err.println(this.jTextFieldName.getText());
        }
    }//GEN-LAST:event_jButtonLoginActionPerformed
 

@@ -79,8 +79,8 @@ public class Database {
          String query = "select * from userAuthenticationTable where username='" + username + "';";
          resultSet = statement.executeQuery(query);
          return (resultSet.next());
-      } catch (ClassNotFoundException | SQLException e) {
-         System.err.println(e);
+      } catch (ClassNotFoundException | SQLException exception) {
+         System.err.println(exception);
       }
       return false;
    }
@@ -99,8 +99,8 @@ public class Database {
          if (resultSet.next()) {
             return true;
          }
-      } catch (ClassNotFoundException | SQLException e) {
-         System.out.println(e);
+      } catch (ClassNotFoundException | SQLException exception) {
+         System.out.println(exception);
       }
       return false;
    }
@@ -139,8 +139,8 @@ public class Database {
             }
             return tempClient;
          }
-      } catch (ClassNotFoundException | SQLException e) {
-         System.err.println(e);
+      } catch (ClassNotFoundException | SQLException exception) {
+         System.err.println(exception);
       }
       return null;
    }
@@ -182,14 +182,66 @@ public class Database {
             }
             client.add(tempClient);
          }
-      } catch (ClassNotFoundException | SQLException e) {
-         System.err.println(e);
+      } catch (ClassNotFoundException | SQLException exception) {
+         System.err.println(exception);
       }
       return client;
    }
-   
-   public ArrayList<ClientMessage> getMessageList(String username) {//TODO: para o login
-      return null;
+
+   public ArrayList<ClientMessage> getMessageList(String to) {
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+      ArrayList<ClientMessage> clientMessage = new ArrayList<>();
+      try {
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
+         String query = "SELECT C.username, C.name, D.address, D.status, D.customStatus, E.number, G.message FROM "
+                 + "(SELECT `from`,`message` "
+                 + "FROM RTPhoneDatabase.messageTable "
+                 + "where `to` = 'user0') G "
+                 + "INNER JOIN RTPhoneDatabase.userInformationTable C "
+                 + "ON G.`to` = C.username "
+                 + "INNER JOIN RTPhoneDatabase.userStatusTable D "
+                 + "ON G.`to` = D.username "
+                 + "INNER JOIN RTPhoneDatabase.userTable E "
+                 + "ON G.`to` = E.username;";
+         System.out.println(query);
+         resultSet = statement.executeQuery(query);
+         while (resultSet.next()) {
+            String tempUsername = resultSet.getString("username");
+            String tempName = resultSet.getString("name");
+            String tempAddress = resultSet.getString("address");
+            int tempStatus = resultSet.getInt("status");
+            String tempCustomStatus = resultSet.getString("customStatus");
+            int tempNumber = resultSet.getInt("number");
+            Client tempClient;
+            String tempMessage = resultSet.getString("message");
+            if (tempStatus == 3) {
+               tempClient = new Client(tempName, tempUsername, tempAddress, tempCustomStatus);
+            } else {
+               ClientStatus tempClientStatus = ClientStatus(tempStatus);
+               tempClient = new Client(tempName, tempUsername, tempAddress, tempClientStatus);
+            }
+            clientMessage.add(new ClientMessage(tempClient, tempMessage));
+         }
+      } catch (ClassNotFoundException | SQLException exception) {
+         System.err.println(exception);
+      }
+      return clientMessage;
+   }
+
+   public void removeMessageList(String from, String to) {
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+      try {
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
+         String query = "DELETE FROM RTPhoneDatabase.messageTable WHERE `to`='" + to + "' and `from`='" + from + "';";//colocar para pegar os amigos logados
+         System.out.println(query);
+         resultSet = statement.executeQuery(query);
+      } catch (ClassNotFoundException | SQLException exception) {
+         System.out.println(exception);
+      }
    }
 
    public ArrayList<Client> getContactRequestList(String username) {//TODO: para o login
@@ -211,8 +263,8 @@ public class Database {
          System.out.println(query);
          resultSet = statement.executeQuery(query);
 //         return (resultSet.next());
-      } catch (ClassNotFoundException | SQLException e) {
-         System.out.println(e);
+      } catch (ClassNotFoundException | SQLException exception) {
+         System.out.println(exception);
       }
       return null;
    }
@@ -250,8 +302,8 @@ public class Database {
          System.out.println(query);
          statement.executeUpdate(query);
 //         startServerWindow.getUpdateRegisteredUsers().addElement(username);
-      } catch (Exception e) {
-         System.out.println(e);
+      } catch (ClassNotFoundException | SQLException exception) {
+         System.out.println(exception);
       }
    }
 
@@ -262,8 +314,8 @@ public class Database {
          statement.executeUpdate(query);
 
 //         startServerWindow.getUpdateRegisteredUsers().addElement(username);
-      } catch (Exception e) {
-         System.out.println(e);
+      } catch (Exception exception) {
+         System.out.println(exception);
       }
    }
 
@@ -281,8 +333,8 @@ public class Database {
          if (resultSet.next()) {
             return true;
          }
-      } catch (Exception e) {
-         System.out.println(e);
+      } catch (ClassNotFoundException | SQLException exception) {
+         System.out.println(exception);
       }
       return false;
    }
@@ -298,8 +350,8 @@ public class Database {
 //               startServerWindow.getUpdateLoggedUsers().removeElementAt(index);
 //            }
 //         }
-      } catch (Exception e) {
-         System.out.println(e);
+      } catch (Exception exception) {
+         System.out.println(exception);
       }
    }
 

@@ -65,7 +65,23 @@ public class Client {
       return clientStatus;
    }
 
+   public int getClientStatusValue() {
+      switch (clientStatus) {
+         case away:
+            return 1;
+         case busy:
+            return 2;
+         case custom:
+            return 3;
+         default:
+            return 0;
+      }
+   }
+
    public void setClientStatus(ClientStatus clientStatus) {
+      if (clientStatus != ClientStatus.custom) {
+         customStatus = "";
+      }
       this.clientStatus = clientStatus;
    }
 
@@ -74,12 +90,12 @@ public class Client {
    }
 
    public void setCustomStatus(String customStatus) {
-      if(!customStatus.isEmpty()){
+      if (!customStatus.isEmpty()) {
          clientStatus = ClientStatus.custom;
       }
       this.customStatus = customStatus;
    }
-   
+
    public String getName() {
       return name;
    }
@@ -116,7 +132,7 @@ public class Client {
    public String toString() {
       String string = name;
       string += " (" + username + ") ";
-      if(clientStatus == ClientStatus.custom){
+      if (clientStatus == ClientStatus.custom) {
          string += "- " + customStatus;
       }
       return string;

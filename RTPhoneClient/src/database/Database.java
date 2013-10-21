@@ -104,6 +104,28 @@ public class Database {
       }
       return false;
    }
+   
+   public void updateStatus(Client client){
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+      try {
+         String query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`='"+client.getAddress()+"' and `status`='"+client.getClientStatusValue()+"' and `customStatus`='"+client.getCustomStatus()+"' WHERE `username`='" + client.getUsername() + "';";
+         System.out.println(query);
+         statement.executeUpdate(query);
+      } catch (Exception exception) {
+         System.out.println(exception);
+      }
+   }
+   
+   public void updateAddress(String username, String address){
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+      try {
+         String query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`='"+address+"' WHERE `username`='" + username + "';";
+         System.out.println(query);
+         statement.executeUpdate(query);
+      } catch (Exception exception) {
+         System.out.println(exception);
+      }
+   }
 
    public Client getUser(String username) {
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
@@ -308,6 +330,7 @@ public class Database {
    }
 
    public void remove(String username) {//TODO: REFAZER
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
          String query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
          System.out.println(query);
@@ -339,17 +362,12 @@ public class Database {
       return false;
    }
 
-   public void logoff(String username) {//TODO:
+   public void logoff(String username) {
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
-         String query = "UPDATE `RTPhoneDatabase`.`login` SET `logged`=null WHERE `user_id`='" + username + "'";
+         String query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`=null WHERE `username`='" + username + "';";
          System.out.println(query);
          statement.executeUpdate(query);
-//         startServerWindow.getUpdateLoggedUsers();
-//         for (int index = 0; index < startServerWindow.getUpdateLoggedUsers().getSize(); index++) {
-//            if (startServerWindow.getUpdateLoggedUsers().getElementAt(index).equals(username)) {
-//               startServerWindow.getUpdateLoggedUsers().removeElementAt(index);
-//            }
-//         }
       } catch (Exception exception) {
          System.out.println(exception);
       }

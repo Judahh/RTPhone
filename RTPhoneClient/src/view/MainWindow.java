@@ -2,9 +2,13 @@ package view;
 
 import database.ClientStatus;
 import java.awt.Color;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -36,27 +40,59 @@ public class MainWindow extends javax.swing.JFrame {
     */
    public MainWindow(LoginWindow loginWindow) {
       this.loginWindow = loginWindow;
-      initMe();
+      updateAddress();
       initLists();
       initComponents();
+      initMe();
       initMonitorDesign();
       initPhone();
    }
 
-   private void initMe() {
-      me=this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getUser(this.loginWindow.getjTextFieldUsername().getText());
+   private String getAddress() {
+      String address = "UNKNOWN";
+
+      try {
+         String hostName = InetAddress.getLocalHost().getHostName();
+         InetAddress addrs[] = InetAddress.getAllByName(hostName);
+         
+         for (InetAddress addr : addrs) {
+//            System.out.println("addr.getHostAddress() = " + addr.getHostAddress());
+//            System.out.println("addr.isLoopbackAddress() = " + addr.isLoopbackAddress());
+//            System.out.println("addr.isSiteLocalAddress() = " + addr.isSiteLocalAddress());
+//            System.out.println("");
+            if (!addr.isLoopbackAddress() && addr.isSiteLocalAddress()) {
+               address = addr.getHostAddress();
+            }
+         }
+         
+         if (address == "UNKNOWN") {
+            address = InetAddress.getLocalHost().getHostAddress();
+         }
+      } catch (UnknownHostException exception) {
+         Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, exception);
+      }
+      return address;
    }
-   
+
+   private void updateAddress() {
+      this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().updateAddress(this.loginWindow.getjTextFieldUsername().getText(), getAddress());
+   }
+
+   private void initMe() {
+      me = this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getUser(this.loginWindow.getjTextFieldUsername().getText());
+      getStatus();
+   }
+
    private void initPhone() {
       phone = null;
       open = true;
    }
-   
+
    private void initMonitorDesign() {
       jButtonLogoff.setVisible(false);//visivel apenas para monitores
       jButtonRemove.setVisible(false);//visivel apenas para monitores
    }
-   
+
    public final void initLists() {
       contactListModel = new DefaultListModel();
       statusListModel = new DefaultComboBoxModel();
@@ -65,7 +101,7 @@ public class MainWindow extends javax.swing.JFrame {
       statusListModel.addElement("Away");
       statusListModel.addElement("Busy");
       statusListModel.addElement("");
-      
+
       contactList = this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getContactList(this.loginWindow.getjTextFieldUsername().getText());
       contactListModel = new DefaultListModel();
 
@@ -232,7 +268,7 @@ public class MainWindow extends javax.swing.JFrame {
    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
       open = false;
       try {
-         loginWindow.getDefaultServerConfigurationsWindow().getDatabase().logoff(loginWindow.getjPasswordField().getText());
+         loginWindow.getDefaultServerConfigurationsWindow().getDatabase().logoff(loginWindow.getjTextFieldUsername().getText());
       } catch (Exception e) {
          System.out.println(e);
       }
@@ -262,6 +298,33 @@ public class MainWindow extends javax.swing.JFrame {
       }
    }//GEN-LAST:event_jButtonCallActionPerformed
 
+   private void getStatus() {
+      switch (me.getClientStatus()) {
+         case away:
+            jComboBoxStatus.setSelectedIndex(1);
+            break;
+
+         case busy:
+            jComboBoxStatus.setSelectedIndex(2);
+            break;
+
+         case custom:
+            jComboBoxStatus.setSelectedIndex(3);
+            statusListModel = new DefaultComboBoxModel();
+            statusListModel.addElement("Online");
+            statusListModel.addElement("Away");
+            statusListModel.addElement("Busy");
+            statusListModel.addElement(me.getCustomStatus());
+            System.out.println("status:" + me.getCustomStatus());
+            jComboBoxStatus.setModel(statusListModel);
+            break;
+
+         default:
+            jComboBoxStatus.setSelectedIndex(0);
+      }
+      //TODO: Update nos outros clientes
+   }
+
    private void updateStatus(String status) {
       ClientStatus clientStatus;
       switch (status) {
@@ -281,7 +344,13 @@ public class MainWindow extends javax.swing.JFrame {
             clientStatus = ClientStatus.custom;
             me.setCustomStatus(status);
       }
-      me.setClientStatus(clientStatus);
+
+      if (me.getClientStatus() != clientStatus) {
+         System.out.println("new clientStatus = " + clientStatus);
+         System.out.println("old clientStatus = " + me.getClientStatus());
+         me.setClientStatus(clientStatus);
+         this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().updateStatus(me);
+      }
       //TODO: Update nos outros clientes
    }
 
@@ -298,6 +367,7 @@ public class MainWindow extends javax.swing.JFrame {
          statusListModel.addElement("Busy");
          statusListModel.addElement(text);
          jComboBoxStatus.setModel(statusListModel);
+         jComboBoxStatus.setSelectedIndex(3);
       }
 
       updateStatus(text);
@@ -306,7 +376,6 @@ public class MainWindow extends javax.swing.JFrame {
    private void jButtonChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChatActionPerformed
       // TODO add your handling code here:
    }//GEN-LAST:event_jButtonChatActionPerformed
-
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.JButton jButtonAdd;
    private javax.swing.JButton jButtonCall;

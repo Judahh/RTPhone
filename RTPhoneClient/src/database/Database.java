@@ -277,29 +277,63 @@ public class Database {
       }
    }
 
+   public void makeContactRequest(String username, String contact){
+       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+       try {
+          Class.forName("com.mysql.jdbc.Driver");
+          connection = DriverManager.getConnection(dbUrl);
+          statement = connection.createStatement();
+          System.out.println(username);
+          String query = "INSERT INTO contactTable (`user`,`contact`) VALUES ('" + username + "','" + contact + "');";//colocar para pegar os amigos logados
+          System.out.println(query);
+          resultSet = statement.executeQuery(query);
+       } catch (ClassNotFoundException | SQLException exception) {
+          System.out.println(exception);
+       }
+   }
+   
    public ArrayList<Client> getContactRequestList(String username) {//TODO: para o login
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+      ArrayList<Client> client = new ArrayList<>();
       try {
-//         name,username,address,clientStatus,customStatus;
-//
-//         SELECT A.contact
-//         FROM RTPhoneDatabase.contactTable A
-//         LEFT JOIN RTPhoneDatabase.contactTable B
-//         ON A.user = B.contact and A.contact = B.user
-//         where A.user = 'user0'
-
-         Class.forName("com.mysql.jdbc.Driver");
-         connection = DriverManager.getConnection(dbUrl);
-         statement = connection.createStatement();
-         System.out.println(username);
-         String query = "select * from login where username='" + username + "' and (logged is null or logged is NULL or logged=0 or logged='');";//colocar para pegar os amigos logados
-         System.out.println(query);
-         resultSet = statement.executeQuery(query);
-//         return (resultSet.next());
+          Class.forName("com.mysql.jdbc.Driver");
+          connection = DriverManager.getConnection(dbUrl);
+          statement = connection.createStatement();
+          System.out.println(username);
+          String query = "select C.username, C.name, D.address, D.status, D.customStatus, E.number from "
+                  + "(SELECT A.user "
+                  + "FROM RTPhoneDatabase.contactTable A "
+                  + "LEFT JOIN RTPhoneDatabase.contactTable B "
+                  + "ON B.user = A.contact "
+                  + "WHERE B.contact IS NULL and A.contact='" + username + "') G "
+                  + "INNER JOIN RTPhoneDatabase.userInformationTable C "
+                  + "ON G.user = C.username "
+                  + "INNER JOIN RTPhoneDatabase.userStatusTable D "
+                  + "ON G.user = D.username "
+                  + "INNER JOIN RTPhoneDatabase.userTable E "
+                  + "ON G.user = E.username;";//colocar para pegar os amigos logados
+          System.out.println(query);
+          resultSet = statement.executeQuery(query);
+          while (resultSet.next()) {
+             String tempUsername = resultSet.getString("username");
+             String tempName = resultSet.getString("name");
+             String tempAddress = resultSet.getString("address");
+             int tempStatus = resultSet.getInt("status");
+             String tempCustomStatus = resultSet.getString("customStatus");
+             int tempNumber = resultSet.getInt("number");
+             Client tempClient;
+             if (tempStatus == 3) {
+                tempClient = new Client(tempName, tempUsername, tempAddress, tempCustomStatus);
+             } else {
+                ClientStatus tempClientStatus = ClientStatus(tempStatus);
+                tempClient = new Client(tempName, tempUsername, tempAddress, tempClientStatus);
+             }
+             client.add(tempClient);
+          }
       } catch (ClassNotFoundException | SQLException exception) {
-         System.out.println(exception);
+          System.out.println(exception);
       }
-      return null;
+      return client;
    }
 
    public void register(String username, String name, String password) {

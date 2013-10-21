@@ -1,5 +1,6 @@
 package view;
 
+import database.ClientMessage;
 import database.ClientStatus;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -45,8 +46,41 @@ public class MainWindow extends javax.swing.JFrame {
       initMe();
       initMonitorDesign();
       initPhone();
+      getContactRequests();
+      getOfflineMessages();
    }
 
+   private void getOfflineMessages(){
+       ArrayList<ClientMessage> messageList=this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getMessageList(me.getUsername());
+       for (int index = 0; index < messageList.size(); index++) {
+           //TODO: pegar as mensagens e adicionalas por ordem do index da mensagem nas tabs de seus respectivos remetentes, caso nao exista a tab criar uma nova
+       }
+   }
+   
+   private void sendContactRequestOK(database.Client client){
+       //TODO: conectar ao client e enviar o OK para entrar na lista de contatos
+   }
+   
+   private void getContactRequests() {
+      ArrayList<database.Client> contactRequestList=this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getContactRequestList(this.loginWindow.getjTextFieldUsername().getText());
+       for (int index = 0; index < contactRequestList.size(); index++) {
+           String requestText="User \""+contactRequestList.get(index).getName()+"\" wants to add you to his contact list.";
+          int showConfirmDialog = JOptionPane.showConfirmDialog(this, requestText);
+          switch(showConfirmDialog){
+              case JOptionPane.YES_OPTION:
+                  if(contactRequestList.get(index).getAddress()!=null && !contactRequestList.get(index).getAddress().isEmpty()){
+                      sendContactRequestOK(contactRequestList.get(index));
+                  }
+                  this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), contactRequestList.get(index).getUsername());
+              break;
+              
+              case JOptionPane.NO_OPTION:
+                  this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().removeContactRequest(contactRequestList.get(index).getUsername(), me.getUsername());
+              break;  
+          }
+       }
+   }
+   
    private String getAddress() {
       String address = "UNKNOWN";
 
@@ -373,7 +407,11 @@ public class MainWindow extends javax.swing.JFrame {
    }//GEN-LAST:event_jComboBoxStatusActionPerformed
 
    private void jButtonChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChatActionPerformed
-      // TODO add your handling code here:
+      database.Client selectedClient=(database.Client) jListContact.getSelectedValue();
+      if(selectedClient.getAddress()==null || selectedClient.getAddress().isEmpty()){
+          JOptionPane.showMessageDialog(this, "User \""+selectedClient.getName()+"\" is Offline!", "Information", JOptionPane.INFORMATION_MESSAGE);
+      }
+      //TODO: mover para aba do usuaio selecionado ou abrir aba caso nao exista a aba
    }//GEN-LAST:event_jButtonChatActionPerformed
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.JButton jButtonAdd;

@@ -12,19 +12,26 @@ public class ClientMessage {
    private Client from;
    private Client to;
    private String message;
+   private int index;
 
-   public ClientMessage(Client from, String message) {
+   public ClientMessage(int index ,Client from, String message) {
+      this.index = index;
       this.from = from;
       this.to = null;
       this.message = message;
    }
    
-   public ClientMessage(Client from, Client to, String message) {
+   public ClientMessage(int index ,Client from, Client to, String message) {
+      this.index = index;
       this.from = from;
       this.to = to;
       this.message = message;
    }
 
+   public int getIndex() {
+       return index;
+   }
+   
    public Client getFrom() {
       return from;
    }

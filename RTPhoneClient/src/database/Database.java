@@ -228,16 +228,16 @@ public class Database {
          Class.forName("com.mysql.jdbc.Driver");
          connection = DriverManager.getConnection(dbUrl);
          statement = connection.createStatement();
-         String query = "SELECT C.username, C.name, D.address, D.status, D.customStatus, E.number, G.message FROM "
-                 + "(SELECT `from`,`message` "
+         String query = "SELECT G.identificationMessageTable, C.username, C.name, D.address, D.status, D.customStatus, E.number, G.message FROM "
+                 + "(SELECT `to`,`from`,`message`,`identificationMessageTable` "
                  + "FROM RTPhoneDatabase.messageTable "
-                 + "where `to` = 'user0') G "
+                 + "where `to` = '"+to+"') G "
                  + "INNER JOIN RTPhoneDatabase.userInformationTable C "
-                 + "ON G.`to` = C.username "
+                 + "ON G.`from` = C.username "
                  + "INNER JOIN RTPhoneDatabase.userStatusTable D "
-                 + "ON G.`to` = D.username "
+                 + "ON G.`from` = D.username "
                  + "INNER JOIN RTPhoneDatabase.userTable E "
-                 + "ON G.`to` = E.username;";
+                 + "ON G.`from` = E.username;";
          System.out.println(query);
          resultSet = statement.executeQuery(query);
          while (resultSet.next()) {
@@ -249,13 +249,14 @@ public class Database {
             int tempNumber = resultSet.getInt("number");
             Client tempClient;
             String tempMessage = resultSet.getString("message");
+            int tempIdentificationMessageTable = resultSet.getInt("identificationMessageTable");
             if (tempStatus == 3) {
                tempClient = new Client(tempName, tempUsername, tempAddress, tempCustomStatus);
             } else {
                ClientStatus tempClientStatus = ClientStatus(tempStatus);
                tempClient = new Client(tempName, tempUsername, tempAddress, tempClientStatus);
             }
-            clientMessage.add(new ClientMessage(tempClient, tempMessage));
+            clientMessage.add(new ClientMessage(tempIdentificationMessageTable, tempClient, tempMessage));
          }
       } catch (ClassNotFoundException | SQLException exception) {
          System.err.println(exception);
@@ -277,6 +278,21 @@ public class Database {
       }
    }
 
+   public void removeContactRequest(String username, String contact){
+       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+       try {
+          Class.forName("com.mysql.jdbc.Driver");
+          connection = DriverManager.getConnection(dbUrl);
+          statement = connection.createStatement();
+          System.out.println(username);
+          String query = "DELETE FROM RTPhoneDatabase.contactTable WHERE `user`='" + username + "' and `contact`='" + contact + "';";//colocar para pegar os amigos logados
+          System.out.println(query);
+          resultSet = statement.executeQuery(query);
+       } catch (ClassNotFoundException | SQLException exception) {
+          System.out.println(exception);
+       }
+   }
+   
    public void makeContactRequest(String username, String contact){
        String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
        try {
@@ -284,7 +300,7 @@ public class Database {
           connection = DriverManager.getConnection(dbUrl);
           statement = connection.createStatement();
           System.out.println(username);
-          String query = "INSERT INTO contactTable (`user`,`contact`) VALUES ('" + username + "','" + contact + "');";//colocar para pegar os amigos logados
+          String query = "INSERT INTO RTPhoneDatabase.contactTable (`user`,`contact`) VALUES ('" + username + "','" + contact + "');";//colocar para pegar os amigos logados
           System.out.println(query);
           resultSet = statement.executeQuery(query);
        } catch (ClassNotFoundException | SQLException exception) {

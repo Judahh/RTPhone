@@ -22,7 +22,7 @@ public class CallWindow extends javax.swing.JFrame {
       value=-1;
       //semaphore=new Semaphore(0);
       initComponents();
-      jLabel1.setText(username+" is calling, Anwser?");
+      jLabelText.setText(username+" is calling, Anwser?");
    }
 
    public static synchronized int getValue() throws InterruptedException{
@@ -44,13 +44,13 @@ public class CallWindow extends javax.swing.JFrame {
    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
    private void initComponents() {
 
-      jLabel1 = new javax.swing.JLabel();
+      jLabelText = new javax.swing.JLabel();
       jButtonYes = new javax.swing.JButton();
       jButtonNo = new javax.swing.JButton();
 
       setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-      jLabel1.setText(" ");
+      jLabelText.setText(" ");
 
       jButtonYes.setText("Yes");
       jButtonYes.addActionListener(new java.awt.event.ActionListener() {
@@ -77,14 +77,14 @@ public class CallWindow extends javax.swing.JFrame {
                   .addComponent(jButtonYes)
                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
                   .addComponent(jButtonNo))
-               .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+               .addComponent(jLabelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addContainerGap())
       );
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jLabel1)
+            .addComponent(jLabelText)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                .addComponent(jButtonYes)
@@ -115,6 +115,6 @@ public class CallWindow extends javax.swing.JFrame {
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.JButton jButtonNo;
    private javax.swing.JButton jButtonYes;
-   private javax.swing.JLabel jLabel1;
+   private javax.swing.JLabel jLabelText;
    // End of variables declaration//GEN-END:variables
 }

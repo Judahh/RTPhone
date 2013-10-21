@@ -1,7 +1,6 @@
 package view;
 
 import database.ClientStatus;
-import java.awt.Color;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.registry.LocateRegistry;
@@ -33,7 +32,7 @@ public class MainWindow extends javax.swing.JFrame {
    private ArrayList<database.Client> contactList;
    private DefaultListModel contactListModel;
    private DefaultComboBoxModel statusListModel;
-   private database.Client me;//TODO: no constructor pegar todas as informação no banco de dados
+   private database.Client me;
 
    /**
     * Creates new form MainWindow
@@ -65,7 +64,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
          }
          
-         if (address == "UNKNOWN") {
+         if ("UNKNOWN".equals(address)) {
             address = InetAddress.getLocalHost().getHostAddress();
          }
       } catch (UnknownHostException exception) {
@@ -81,6 +80,7 @@ public class MainWindow extends javax.swing.JFrame {
    private void initMe() {
       me = this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getUser(this.loginWindow.getjTextFieldUsername().getText());
       getStatus();
+      //TODO: Update nos outros clientes
    }
 
    private void initPhone() {
@@ -322,7 +322,6 @@ public class MainWindow extends javax.swing.JFrame {
          default:
             jComboBoxStatus.setSelectedIndex(0);
       }
-      //TODO: Update nos outros clientes
    }
 
    private void updateStatus(String status) {

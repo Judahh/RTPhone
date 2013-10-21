@@ -108,10 +108,18 @@ public class Database {
    public void updateStatus(Client client){
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
-         String query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`='"+client.getAddress()+"' and `status`='"+client.getClientStatusValue()+"' and `customStatus`='"+client.getCustomStatus()+"' WHERE `username`='" + client.getUsername() + "';";
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
+         String query;
+         if(client.getCustomStatus()==null || client.getCustomStatus().isEmpty()){
+            query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`='"+client.getAddress()+"' and `status`='"+client.getClientStatusValue()+"' and `customStatus`==null WHERE `username`='" + client.getUsername() + "';";
+         }else{
+            query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`='"+client.getAddress()+"' and `status`='"+client.getClientStatusValue()+"' and `customStatus`='"+client.getCustomStatus()+"' WHERE `username`='" + client.getUsername() + "';";
+         }
          System.out.println(query);
          statement.executeUpdate(query);
-      } catch (Exception exception) {
+      } catch (ClassNotFoundException | SQLException exception) {
          System.out.println(exception);
       }
    }
@@ -119,10 +127,13 @@ public class Database {
    public void updateAddress(String username, String address){
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
          String query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`='"+address+"' WHERE `username`='" + username + "';";
          System.out.println(query);
          statement.executeUpdate(query);
-      } catch (Exception exception) {
+      } catch (ClassNotFoundException | SQLException exception) {
          System.out.println(exception);
       }
    }
@@ -332,12 +343,15 @@ public class Database {
    public void remove(String username) {//TODO: REFAZER
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
          String query = "INSERT INTO `RTPhoneDatabase`.`login` (`user_id`, `password`) VALUES ('" + username + "', '" + password + "');";
          System.out.println(query);
          statement.executeUpdate(query);
 
 //         startServerWindow.getUpdateRegisteredUsers().addElement(username);
-      } catch (Exception exception) {
+      } catch (ClassNotFoundException | SQLException exception) {
          System.out.println(exception);
       }
    }
@@ -365,10 +379,13 @@ public class Database {
    public void logoff(String username) {
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
          String query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`=null WHERE `username`='" + username + "';";
          System.out.println(query);
          statement.executeUpdate(query);
-      } catch (Exception exception) {
+      } catch (ClassNotFoundException | SQLException exception) {
          System.out.println(exception);
       }
    }

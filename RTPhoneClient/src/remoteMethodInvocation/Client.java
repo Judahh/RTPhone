@@ -3,7 +3,6 @@ package remoteMethodInvocation;
 import view.LoginWindow;
 import clientRemoteMethodInvocation.ClientRemoteMethodInvocation;
 import database.ClientMessage;
-import database.ClientStatus;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
@@ -13,7 +12,6 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import realTimeTransportProtocol.Phone;
 import view.ChatTabPanel;
@@ -123,6 +121,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
 
     @Override
     public boolean contactRequest(database.Client user) throws RemoteException {
+        System.out.println("contactRequestThread!!!!!!!!!!");
         String requestText = "User \"" + user.getName() + "\" wants to add you to his contact list.";
         int showConfirmDialog = JOptionPane.showConfirmDialog(loginWindow.getMainWindow(), requestText);
         switch (showConfirmDialog) {

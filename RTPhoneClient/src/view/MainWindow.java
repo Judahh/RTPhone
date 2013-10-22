@@ -21,6 +21,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import realTimeTransportProtocol.Phone;
+import util.ContactRequestThread;
 
 /*
  * To change this template, choose Tools | Templates
@@ -522,14 +523,8 @@ public class MainWindow extends javax.swing.JFrame {
            database.Client contact = loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getUser(showInputDialog);
            if(contact!=null){
                if(contact.getAddress()!=null && !contact.getAddress().isEmpty()){
-                   try {
-                       ClientRemoteMethodInvocation rmi;
-                       Registry registry = LocateRegistry.getRegistry(contact.getAddress(), 9000);
-                       rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
-                       boolean OK = rmi.contactRequest(contact);
-                   } catch (RemoteException | NotBoundException exception) {
-                       Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, exception);
-                   }
+                   ContactRequestThread contactRequestThread = new ContactRequestThread(me, contact);
+                   contactRequestThread.start();
                }else{
                    loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), contact.getUsername());
                }

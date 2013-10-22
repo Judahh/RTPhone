@@ -4,11 +4,13 @@
  */
 package database;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JH
  */
-public enum ClientStatus {
+public enum ClientStatus implements Serializable{
    none,
    busy,
    away,

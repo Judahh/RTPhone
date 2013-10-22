@@ -4,11 +4,13 @@
  */
 package database;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JH
  */
-public class ClientMessage {
+public class ClientMessage  implements Serializable{
    private Client from;
    private Client to;
    private String message;

@@ -4,6 +4,7 @@
  */
 package database;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  *
  * @author JH
  */
-public class Database {
+public class Database implements Serializable{
 
    protected String url;
    protected String port;

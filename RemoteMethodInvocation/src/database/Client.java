@@ -4,13 +4,13 @@
  */
 package database;
 
-import javax.net.ssl.SSLEngineResult;
+import java.io.Serializable;
 
 /**
  *
  * @author JH
  */
-public class Client {
+public class Client implements Serializable{
 
    private String name;
    private int number;

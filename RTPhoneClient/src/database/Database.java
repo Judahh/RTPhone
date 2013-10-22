@@ -270,8 +270,7 @@ public class Database {
          Class.forName("com.mysql.jdbc.Driver");
          connection = DriverManager.getConnection(dbUrl);
          statement = connection.createStatement();
-         "INSERT INTO userAuthenticationTable (`username`,`password`) VALUES ('" + username + "','" + password + "');";
-         String query = "INSERT INTO RTPhoneDatabase.messageTable WHERE `to`='" + to + "' and `from`='" + from + "';";//colocar para pegar os amigos logados
+         String query = "INSERT INTO RTPhoneDatabase.messageTable WHERE(`from`,`to`,`message`) VALUES ('" + message.getFrom().getUsername() + "','" + message.getTo().getUsername() + "','" + message.getMessage() + "');";//colocar para pegar os amigos logados
          System.out.println(query);
          resultSet = statement.executeQuery(query);
       } catch (ClassNotFoundException | SQLException exception) {

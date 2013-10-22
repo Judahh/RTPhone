@@ -111,6 +111,7 @@ public class MainWindow extends javax.swing.JFrame {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, exception);
          }
       }
+      loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), client.getUsername());
    }
 
    private void getContactRequests() {
@@ -121,7 +122,6 @@ public class MainWindow extends javax.swing.JFrame {
          switch (showConfirmDialog) {
             case JOptionPane.YES_OPTION:
                sendContactRequestOK(contactRequestList.get(index));
-               this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), contactRequestList.get(index).getUsername());
                break;
 
             case JOptionPane.NO_OPTION:
@@ -517,7 +517,26 @@ public class MainWindow extends javax.swing.JFrame {
    }//GEN-LAST:event_jButtonChatActionPerformed
 
    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
-      // TODO add your handling code here:
+       String showInputDialog = JOptionPane.showInputDialog(this, "Type the username of the user that you want to add:", "Add Contact", JOptionPane.INFORMATION_MESSAGE);
+       if(showInputDialog!=null && !showInputDialog.isEmpty()){
+           database.Client contact = loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getUser(showInputDialog);
+           if(contact!=null){
+               if(contact.getAddress()!=null && !contact.getAddress().isEmpty()){
+                   try {
+                       ClientRemoteMethodInvocation rmi;
+                       Registry registry = LocateRegistry.getRegistry(contact.getAddress(), 9000);
+                       rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
+                       boolean OK = rmi.contactRequest(contact);
+                   } catch (RemoteException | NotBoundException exception) {
+                       Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, exception);
+                   }
+               }else{
+                   loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), contact.getUsername());
+               }
+           }else{
+               JOptionPane.showMessageDialog(this, "The user \"" + showInputDialog + "\" doesnt exist!", "Information", JOptionPane.INFORMATION_MESSAGE);
+           }
+       }
    }//GEN-LAST:event_jButtonAddActionPerformed
 
    // Variables declaration - do not modify//GEN-BEGIN:variables

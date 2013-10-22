@@ -6,6 +6,7 @@ import database.ClientMessage;
 import database.ClientStatus;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -16,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import realTimeTransportProtocol.Phone;
 import view.ChatTabPanel;
+import view.MainWindow;
 
 /*
  * To change this template, choose Tools | Templates
@@ -117,5 +119,39 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
 //      }
 //      System.out.println("I");
 //      return false;
+   }
+
+    @Override
+    public boolean contactRequest(database.Client user) throws RemoteException {
+        String requestText = "User \"" + user.getName() + "\" wants to add you to his contact list.";
+        int showConfirmDialog = JOptionPane.showConfirmDialog(loginWindow.getMainWindow(), requestText);
+        switch (showConfirmDialog) {
+           case JOptionPane.YES_OPTION:
+              sendContactRequestOK(user);
+              return true;
+
+           case JOptionPane.NO_OPTION:
+              this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().removeContactRequest(user.getUsername(), loginWindow.getMainWindow().getMe().getUsername());
+              return false;
+        }
+        return false;
+    }
+    
+    private void sendContactRequestOK(database.Client client) {
+      if (client.getAddress() != null && !client.getAddress().isEmpty()) {
+         try {
+            ClientRemoteMethodInvocation rmi;
+            Registry registry = LocateRegistry.getRegistry(client.getAddress(), 9000);
+            rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
+            rmi.changeStatus(loginWindow.getMainWindow().getMe());
+         } catch (NotBoundException exception) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, exception);
+         } catch (AccessException exception) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, exception);
+         } catch (RemoteException exception) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, exception);
+         }
+      }
+      loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(loginWindow.getMainWindow().getMe().getUsername(), client.getUsername());
    }
 }

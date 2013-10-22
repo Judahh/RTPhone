@@ -32,7 +32,7 @@ public class LoginWindow extends javax.swing.JFrame {
     public LoginWindow() {
         try {
             initComponents();
-            Registry registry = LocateRegistry.createRegistry(9001);
+            Registry registry = LocateRegistry.createRegistry(9000);
             remoteMethodInvocationClient = new Client(this);
             registry.rebind("RTPhoneClient", remoteMethodInvocationClient);
             System.out.println("start");

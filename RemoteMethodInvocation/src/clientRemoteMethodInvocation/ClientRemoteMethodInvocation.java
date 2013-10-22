@@ -4,6 +4,8 @@
  */
 package clientRemoteMethodInvocation;
 
+import database.Client;
+import database.ClientMessage;
 import database.ClientStatus;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -15,17 +17,11 @@ import javax.swing.JButton;
  * @author JH
  */
 public interface ClientRemoteMethodInvocation extends Remote {
-
-   public void register(String name, String username) throws RemoteException;
    
-   public void login(String name, String username) throws RemoteException;
+   public void changeStatus(Client client) throws RemoteException;
    
-   public void logoff(String name, String username) throws RemoteException;
+   public void sendMessage(ClientMessage message) throws RemoteException;
    
-   public void changeStatus(String name, String username, ClientStatus status) throws RemoteException;
-   
-   public void sendMessage(String name, String username, String message) throws RemoteException;
-   
-   public boolean call(String name, String username, String Address) throws RemoteException;
+   public boolean call(Client client) throws RemoteException;
 
 }

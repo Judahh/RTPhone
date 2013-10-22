@@ -264,6 +264,21 @@ public class Database {
       return clientMessage;
    }
 
+   public void makeMessage(ClientMessage message) {
+      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
+      try {
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(dbUrl);
+         statement = connection.createStatement();
+         "INSERT INTO userAuthenticationTable (`username`,`password`) VALUES ('" + username + "','" + password + "');";
+         String query = "INSERT INTO RTPhoneDatabase.messageTable WHERE `to`='" + to + "' and `from`='" + from + "';";//colocar para pegar os amigos logados
+         System.out.println(query);
+         resultSet = statement.executeQuery(query);
+      } catch (ClassNotFoundException | SQLException exception) {
+         System.out.println(exception);
+      }
+   }
+   
    public void removeMessageList(String from, String to) {
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {

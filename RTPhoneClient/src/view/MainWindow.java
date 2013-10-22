@@ -523,8 +523,9 @@ public class MainWindow extends javax.swing.JFrame {
            database.Client contact = loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getUser(showInputDialog);
            if(contact!=null){
                if(contact.getAddress()!=null && !contact.getAddress().isEmpty()){
-                   ContactRequestThread contactRequestThread = new ContactRequestThread(me, contact);
-                   contactRequestThread.start();
+                   System.out.println("aqui:"+contact.getAddress());
+//                   ContactRequestThread contactRequestThread = new ContactRequestThread(me, contact);
+//                   contactRequestThread.start();
                }else{
                    loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), contact.getUsername());
                }

@@ -16,6 +16,20 @@ public class ClientMessage implements Serializable{
    private String message;
    private int index;
 
+   public ClientMessage(Client from, String message) {
+      this.index = -1;
+      this.from = from;
+      this.to = null;
+      this.message = message;
+   }
+   
+   public ClientMessage(Client from, Client to, String message) {
+      this.index = -1;
+      this.from = from;
+      this.to = to;
+      this.message = message;
+   }
+   
    public ClientMessage(int index ,Client from, String message) {
       this.index = index;
       this.from = from;
@@ -43,6 +57,13 @@ public class ClientMessage implements Serializable{
    }
 
    public String getMessage() {
+      return message;
+   }
+
+   @Override
+   public String toString() {
+      String message=from.getName()+":\n";
+      message+=this.message+"\n\n";
       return message;
    }
 }

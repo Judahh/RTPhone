@@ -21,7 +21,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import realTimeTransportProtocol.Phone;
-import util.ContactRequestThread;
+import remoteMethodInvocation.util.CallRequestThread;
+import remoteMethodInvocation.util.ContactRequestThread;
 
 /*
  * To change this template, choose Tools | Templates
@@ -380,26 +381,28 @@ public class MainWindow extends javax.swing.JFrame {
 
    private void jButtonCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCallActionPerformed
       if (jButtonCall.getText().equals("Call")) {
-         try {
+//         try {
             database.Client selectedClient = (database.Client) jListContact.getSelectedValue();
             if (selectedClient.getAddress() == null || selectedClient.getAddress().isEmpty()) {
                JOptionPane.showMessageDialog(this, "User \"" + selectedClient.getName() + "\" is Offline!", "Information", JOptionPane.INFORMATION_MESSAGE);
             } else {
-               ClientRemoteMethodInvocation rmi;
-               Registry registry = LocateRegistry.getRegistry(selectedClient.getAddress(), 9000);
-               rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
-               boolean call = rmi.call(me);
-               if (call) {
-                  this.phone = new Phone(selectedClient.getAddress(), 16384, 32766);
-                  this.phone.start();
-                  jButtonCall.setText("Hang Up");
-               } else {
-                  JOptionPane.showMessageDialog(this, "Connection refused!");
-               }
+               //               ClientRemoteMethodInvocation rmi;
+               //               Registry registry = LocateRegistry.getRegistry(selectedClient.getAddress(), 9000);
+               //               rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
+               //               boolean call = rmi.call(me);
+               CallRequestThread callRequestThread = new CallRequestThread(this, selectedClient, me);
+               callRequestThread.start();
+//               if (call) {
+//                  this.phone = new Phone(selectedClient.getAddress(), 16384, 32766);
+//                  this.phone.start();
+//                  jButtonCall.setText("Hang Up");
+//               } else {
+//                  JOptionPane.showMessageDialog(this, "Connection refused!");
+//               }
             }
-         } catch (HeadlessException | RemoteException | NotBoundException exception) {
-            JOptionPane.showMessageDialog(this, "It was not possible to complete the call!");
-         }
+//         } catch (HeadlessException | RemoteException | NotBoundException exception) {
+//            JOptionPane.showMessageDialog(this, "It was not possible to complete the call!");
+//         }
       } else {
          this.phone.stop();
          this.phone = null;
@@ -524,7 +527,7 @@ public class MainWindow extends javax.swing.JFrame {
            if(contact!=null){
                if(contact.getAddress()!=null && !contact.getAddress().isEmpty()){
                    System.out.println("aqui:"+contact.getAddress());
-//                   ContactRequestThread contactRequestThread = new ContactRequestThread(me, contact);
+//                   ContactRequestThread contactRequestThread = new ContactRequestThread(this, contact, me);
 //                   contactRequestThread.start();
                }else{
                    loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), contact.getUsername());

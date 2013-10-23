@@ -1,16 +1,9 @@
 package view;
 
-import clientRemoteMethodInvocation.ClientRemoteMethodInvocation;
 import database.ClientMessage;
 import database.ClientStatus;
-import java.awt.HeadlessException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.rmi.AccessException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import realTimeTransportProtocol.Phone;
 import remoteMethodInvocation.util.CallRequestThread;
+import remoteMethodInvocation.util.ChangeStatusThread;
 import remoteMethodInvocation.util.ContactRequestThread;
 
 /*
@@ -100,18 +94,8 @@ public class MainWindow extends javax.swing.JFrame {
 
    private void sendContactRequestOK(database.Client client) {
       if (client.getAddress() != null && !client.getAddress().isEmpty()) {
-         try {
-            ClientRemoteMethodInvocation rmi;
-            Registry registry = LocateRegistry.getRegistry(client.getAddress(), 9000);
-            rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
-            rmi.changeStatus(me);
-         } catch (NotBoundException exception) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, exception);
-         } catch (AccessException exception) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, exception);
-         } catch (RemoteException exception) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, exception);
-         }
+         ChangeStatusThread changeStatusThread = new ChangeStatusThread(this, client);
+         changeStatusThread.start();
       }
       loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), client.getUsername());
    }
@@ -163,20 +147,10 @@ public class MainWindow extends javax.swing.JFrame {
       me = this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getUser(this.loginWindow.getjTextFieldUsername().getText());
       getStatus();
       for (int index = 0; index < contactListModel.size(); index++) {
-         try {
-            database.Client tempClient = (database.Client) contactListModel.get(index);
-            if (tempClient.getAddress() != null && !tempClient.getAddress().isEmpty()) {
-               ClientRemoteMethodInvocation rmi;
-               Registry registry = LocateRegistry.getRegistry(tempClient.getAddress(), 9000);
-               rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
-               rmi.changeStatus(me);
-            }
-         } catch (NotBoundException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (AccessException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (RemoteException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+         database.Client tempClient = (database.Client) contactListModel.get(index);
+         if (tempClient.getAddress() != null && !tempClient.getAddress().isEmpty()) {
+            ChangeStatusThread changeStatusThread = new ChangeStatusThread(this, tempClient);
+            changeStatusThread.start();
          }
       }
    }
@@ -377,32 +351,26 @@ public class MainWindow extends javax.swing.JFrame {
       } catch (Exception e) {
          System.out.println(e);
       }
+      me.setAddress(null);
+      for (int index = 0; index < contactListModel.size(); index++) {
+         database.Client tempClient = (database.Client) contactListModel.get(index);
+         if (tempClient.getAddress() != null && !tempClient.getAddress().isEmpty()) {
+            ChangeStatusThread changeStatusThread = new ChangeStatusThread(this, tempClient);
+            changeStatusThread.start();
+         }
+      }
    }//GEN-LAST:event_formWindowClosing
 
    private void jButtonCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCallActionPerformed
       if (jButtonCall.getText().equals("Call")) {
-//         try {
-            database.Client selectedClient = (database.Client) jListContact.getSelectedValue();
-            if (selectedClient.getAddress() == null || selectedClient.getAddress().isEmpty()) {
-               JOptionPane.showMessageDialog(this, "User \"" + selectedClient.getName() + "\" is Offline!", "Information", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-               //               ClientRemoteMethodInvocation rmi;
-               //               Registry registry = LocateRegistry.getRegistry(selectedClient.getAddress(), 9000);
-               //               rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
-               //               boolean call = rmi.call(me);
-               CallRequestThread callRequestThread = new CallRequestThread(this, selectedClient, me);
-               callRequestThread.start();
-//               if (call) {
-//                  this.phone = new Phone(selectedClient.getAddress(), 16384, 32766);
-//                  this.phone.start();
-//                  jButtonCall.setText("Hang Up");
-//               } else {
-//                  JOptionPane.showMessageDialog(this, "Connection refused!");
-//               }
-            }
-//         } catch (HeadlessException | RemoteException | NotBoundException exception) {
-//            JOptionPane.showMessageDialog(this, "It was not possible to complete the call!");
-//         }
+         database.Client selectedClient = (database.Client) jListContact.getSelectedValue();
+
+         if (selectedClient.getAddress() == null || selectedClient.getAddress().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "User \"" + selectedClient.getName() + "\" is Offline!", "Information", JOptionPane.INFORMATION_MESSAGE);
+         } else {
+            CallRequestThread callRequestThread = new CallRequestThread(this, selectedClient);
+            callRequestThread.start();
+         }
       } else {
          this.phone.stop();
          this.phone = null;
@@ -463,20 +431,10 @@ public class MainWindow extends javax.swing.JFrame {
          this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().updateStatus(me);
       }
       for (int index = 0; index < contactListModel.size(); index++) {
-         try {
-            database.Client tempClient = (database.Client) contactListModel.get(index);
-            if (tempClient.getAddress() != null && !tempClient.getAddress().isEmpty()) {
-               ClientRemoteMethodInvocation rmi;
-               Registry registry = LocateRegistry.getRegistry(tempClient.getAddress(), 9000);
-               rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
-               rmi.changeStatus(me);
-            }
-         } catch (NotBoundException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (AccessException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (RemoteException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+         database.Client tempClient = (database.Client) contactListModel.get(index);
+         if (tempClient.getAddress() != null && !tempClient.getAddress().isEmpty()) {
+            ChangeStatusThread changeStatusThread = new ChangeStatusThread(this, tempClient);
+            changeStatusThread.start();
          }
       }
    }
@@ -521,23 +479,22 @@ public class MainWindow extends javax.swing.JFrame {
    }//GEN-LAST:event_jButtonChatActionPerformed
 
    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
-       String showInputDialog = JOptionPane.showInputDialog(this, "Type the username of the user that you want to add:", "Add Contact", JOptionPane.INFORMATION_MESSAGE);
-       if(showInputDialog!=null && !showInputDialog.isEmpty()){
-           database.Client contact = loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getUser(showInputDialog);
-           if(contact!=null){
-               if(contact.getAddress()!=null && !contact.getAddress().isEmpty()){
-                   System.out.println("aqui:"+contact.getAddress());
-//                   ContactRequestThread contactRequestThread = new ContactRequestThread(this, contact, me);
-//                   contactRequestThread.start();
-               }else{
-                   loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), contact.getUsername());
-               }
-           }else{
-               JOptionPane.showMessageDialog(this, "The user \"" + showInputDialog + "\" doesnt exist!", "Information", JOptionPane.INFORMATION_MESSAGE);
-           }
-       }
+      String showInputDialog = JOptionPane.showInputDialog(this, "Type the username of the user that you want to add:", "Add Contact", JOptionPane.INFORMATION_MESSAGE);
+      if (showInputDialog != null && !showInputDialog.isEmpty()) {
+         database.Client contact = loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getUser(showInputDialog);
+         if (contact != null) {
+            if (contact.getAddress() != null && !contact.getAddress().isEmpty()) {
+               System.out.println("aqui:" + contact.getAddress());
+               ContactRequestThread contactRequestThread = new ContactRequestThread(this, contact);
+               contactRequestThread.start();
+            } else {
+               loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), contact.getUsername());
+            }
+         } else {
+            JOptionPane.showMessageDialog(this, "The user \"" + showInputDialog + "\" doesnt exist!", "Information", JOptionPane.INFORMATION_MESSAGE);
+         }
+      }
    }//GEN-LAST:event_jButtonAddActionPerformed
-
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.JButton jButtonAdd;
    private javax.swing.JButton jButtonCall;

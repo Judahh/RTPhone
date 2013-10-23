@@ -16,17 +16,14 @@ import view.MainWindow;
  */
 public class CallRequestThread extends RemoteMethodInvocationConnectThread {
 
-   private database.Client me;
-
-   public CallRequestThread(MainWindow mainWindow, Client client, database.Client me) {
+   public CallRequestThread(MainWindow mainWindow, Client client) {
       super(mainWindow, client);
-      this.me = me;
    }
 
    @Override
    protected void work() {
       try {
-         boolean call = clientRemoteMethodInvocation.call(me);
+         boolean call = clientRemoteMethodInvocation.call(getMainWindow().getMe());
          try {
             if (call) {
                setAnswer(Answer.yes);

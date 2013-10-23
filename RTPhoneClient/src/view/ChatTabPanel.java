@@ -15,6 +15,7 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import remoteMethodInvocation.util.SendMessageThread;
 
 /**
  *
@@ -30,7 +31,7 @@ public class ChatTabPanel extends javax.swing.JPanel {
     * Creates new form ChatTabPanel
     */
    public ChatTabPanel(MainWindow mainWindow, database.Client client) {
-      actualMessageList=new ArrayList<>();
+      actualMessageList = new ArrayList<>();
       this.client = client;
       this.mainWindow = mainWindow;
       initComponents();
@@ -47,9 +48,9 @@ public class ChatTabPanel extends javax.swing.JPanel {
    public void append(ClientMessage clientMessage) {
       if (clientMessage.getIndex() == -1) {
          jTextAreaChat.append(clientMessage.toString());
-      }else{
+      } else {
          for (int index = 0; index < actualMessageList.size(); index++) {
-            if(actualMessageList.get(index).getIndex()>clientMessage.getIndex()){
+            if (actualMessageList.get(index).getIndex() > clientMessage.getIndex()) {
                actualMessageList.add(index, clientMessage);
             }
          }
@@ -131,35 +132,22 @@ public class ChatTabPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-   private void sendMessage(){
-       ClientMessage clientMessage = new ClientMessage(mainWindow.getMe(), client, jTextAreaSend.getText());
-      if(client.getAddress()==null || client.getAddress().isEmpty()){
-         mainWindow.getLoginWindow().getDefaultServerConfigurationsWindow().getDatabase().makeMessage(clientMessage);
-      }else{
-          try {
-              ClientRemoteMethodInvocation rmi;
-              Registry registry = LocateRegistry.getRegistry(client.getAddress(), 9000);
-              rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
-              rmi.sendMessage(clientMessage);
-          } catch (RemoteException | NotBoundException exception) {
-              Logger.getLogger(ChatTabPanel.class.getName()).log(Level.SEVERE, null, exception);
-          }
-      }
-      jTextAreaSend.setText("");
+   private void sendMessage() {
+      SendMessageThread sendMessageThread = new SendMessageThread(mainWindow, client, jTextAreaSend);
+      sendMessageThread.start();
    }
-   
+
    private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
       sendMessage();
    }//GEN-LAST:event_jButtonSendActionPerformed
 
     private void jTextAreaSendKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextAreaSendKeyReleased
-      if(evt.getKeyCode()== KeyEvent.VK_ENTER){
-           if(jCheckBoxSend.isSelected()){
-               sendMessage();
-            }
-      }
+       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+          if (jCheckBoxSend.isSelected()) {
+             sendMessage();
+          }
+       }
     }//GEN-LAST:event_jTextAreaSendKeyReleased
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSend;
     private javax.swing.JCheckBox jCheckBoxSend;

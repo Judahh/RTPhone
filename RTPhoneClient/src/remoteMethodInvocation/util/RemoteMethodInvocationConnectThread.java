@@ -66,6 +66,7 @@ public class RemoteMethodInvocationConnectThread extends Thread {
    
    protected void commonError(Exception exception) {
       JOptionPane.showMessageDialog(mainWindow, "Ocurred an error:"+exception, "Error", JOptionPane.ERROR_MESSAGE);
+      mainWindow.getLoginWindow().getDefaultServerConfigurationsWindow().getDatabase().logoff(client.getUsername());
    }
 
    private void connect() {

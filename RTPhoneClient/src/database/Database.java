@@ -148,7 +148,7 @@ public class Database implements Serializable{
          String query = "select C.username, C.name, D.address, D.status, D.customStatus, E.number from "
                  + "(SELECT username "
                  + "FROM RTPhoneDatabase.userAuthenticationTable "
-                 + "where username = 'user0') G "
+                 + "where username = '"+username+"') G "
                  + "INNER JOIN RTPhoneDatabase.userInformationTable C "
                  + "ON G.username = C.username "
                  + "INNER JOIN RTPhoneDatabase.userStatusTable D "

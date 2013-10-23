@@ -390,7 +390,7 @@ public class MainWindow extends javax.swing.JFrame {
                rmi = (ClientRemoteMethodInvocation) registry.lookup("RTPhoneClient");
                boolean call = rmi.call(me);
                if (call) {
-                  this.phone = new Phone(selectedClient.getAddress(), 9001, 9002);
+                  this.phone = new Phone(selectedClient.getAddress(), 16384, 32766);
                   this.phone.start();
                   jButtonCall.setText("Hang Up");
                } else {

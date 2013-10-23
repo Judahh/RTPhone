@@ -97,7 +97,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
 //         if (ok) {
 //            System.out.println("G");
       if (loginWindow.getMainWindow().getjButtonCall().getText().equals("Call")) {
-         loginWindow.getMainWindow().setPhone(new Phone(caller.getAddress(), 9002, 9001));//tentar o contrario
+         loginWindow.getMainWindow().setPhone(new Phone(caller.getAddress(), 16384, 32766));//tentar o contrario
          loginWindow.getMainWindow().getPhone().start();
 //         Phone phone = new Phone(Address, 32766, 16384);
 //         phone.start();

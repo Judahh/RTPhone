@@ -12,6 +12,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import view.MainWindow;
 
@@ -31,7 +33,7 @@ public class RemoteMethodInvocationConnectThread extends Thread {
       this.client = client;
       this.mainWindow = mainWindow;
       this.answer = Answer.none;
-      this.semaphore=new Semaphore(1);
+      this.semaphore = new Semaphore(1);
    }
 
    protected MainWindow getMainWindow() {
@@ -41,7 +43,7 @@ public class RemoteMethodInvocationConnectThread extends Thread {
    protected Client getClient() {
       return client;
    }
-   
+
    @Override
    public void run() {
       connect();
@@ -50,7 +52,7 @@ public class RemoteMethodInvocationConnectThread extends Thread {
 
    public Answer getAnswer() throws InterruptedException {
       this.semaphore.acquire();
-      Answer tempAnswer=this.answer;
+      Answer tempAnswer = this.answer;
       this.semaphore.release();
       return tempAnswer;
    }
@@ -60,26 +62,48 @@ public class RemoteMethodInvocationConnectThread extends Thread {
       this.answer = answer;
       this.semaphore.release();
    }
-   
+
    protected void connectError(Exception exception) {
-      JOptionPane.showMessageDialog(mainWindow, "Ocurred an error while connecting to \""+client.getUsername()+"\":"+exception, "Error", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(mainWindow, "Ocurred an error while connecting to \"" + client.getUsername() + "\":" + exception, "Error", JOptionPane.ERROR_MESSAGE);
       updateLogoffStatus();
    }
-   
+
    protected void commonError(Exception exception) {
-      JOptionPane.showMessageDialog(mainWindow, "Ocurred an error:"+exception, "Error", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(mainWindow, "Ocurred an error:" + exception, "Error", JOptionPane.ERROR_MESSAGE);
       updateLogoffStatus();
    }
-   
-   private void updateLogoffStatus(){
+
+   private void updateLogoffStatus() {
       mainWindow.getLoginWindow().getDefaultServerConfigurationsWindow().getDatabase().logoff(client.getUsername());
+      client.setAddress(null);
       ArrayList<Client> contactList = mainWindow.getLoginWindow().getDefaultServerConfigurationsWindow().getDatabase().getContactList(client.getUsername());
       for (int index = 0; index < contactList.size(); index++) {
-         Client tempClient = contactList.get(index);
-         if(tempClient.getAddress()!=null && !tempClient.getAddress().isEmpty()){
-            ChangeContactStatusThread changeStatusThread = new ChangeContactStatusThread(mainWindow, client);
-            changeStatusThread.start();
+         System.out.println("ME:" + mainWindow.getMe().getAddress());
+         System.out.println("Contact:" + contactList.get(index).getAddress());
+         if (contactList.get(index).getAddress().equals(mainWindow.getMe().getAddress())) {
+            changeStatus(client);
+         } else {
+            Client tempClient = contactList.get(index);
+            if (tempClient.getAddress() != null && !tempClient.getAddress().isEmpty()) {
+               ChangeContactStatusThread changeStatusThread = new ChangeContactStatusThread(mainWindow, client);
+               changeStatusThread.start();
+            }
          }
+      }
+   }
+
+   public void changeStatus(database.Client client) {
+      boolean found = false;
+      for (int index = 0; index < mainWindow.getContactListModel().size(); index++) {
+         database.Client tempClient = (database.Client) mainWindow.getContactListModel().get(index);
+         if (tempClient.getUsername().equals(client.getUsername())) {
+            found = true;
+            mainWindow.getContactListModel().setElementAt(client, index);
+            break;
+         }
+      }
+      if (!found) {
+         mainWindow.getContactListModel().addElement(client);
       }
    }
 

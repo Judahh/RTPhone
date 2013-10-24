@@ -124,20 +124,6 @@ public class Database implements Serializable{
          System.out.println(exception);
       }
    }
-   
-   public void updateAddress(String username, String address){
-      String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
-      try {
-         Class.forName("com.mysql.jdbc.Driver");
-         connection = DriverManager.getConnection(dbUrl);
-         statement = connection.createStatement();
-         String query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`='"+address+"' WHERE `username`='" + username + "';";
-         System.out.println(query);
-         statement.executeUpdate(query);
-      } catch (ClassNotFoundException | SQLException exception) {
-         System.out.println(exception);
-      }
-   }
 
    public Client getUser(String username) {
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
@@ -442,19 +428,29 @@ public class Database implements Serializable{
    }
 
    public void logoff(String username) {
+      updateAddress(username, null);
+   }
+
+      
+   public void updateAddress(String username, String address){
       String dbUrl = "jdbc:mysql://" + this.url + ":" + this.port + "/" + this.name + "?user=" + this.user + "&password=" + this.password;
       try {
          Class.forName("com.mysql.jdbc.Driver");
          connection = DriverManager.getConnection(dbUrl);
          statement = connection.createStatement();
-         String query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`=null WHERE `username`='" + username + "';";
+         String query;
+         if(address==null || address.isEmpty()){
+            query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`=null WHERE `username`='" + username + "';";
+         }else{
+            query = "UPDATE `RTPhoneDatabase`.`userStatusTable` SET `address`='"+address+"' WHERE `username`='" + username + "';";
+         }
          System.out.println(query);
          statement.executeUpdate(query);
       } catch (ClassNotFoundException | SQLException exception) {
          System.out.println(exception);
       }
    }
-
+   
    private ClientStatus ClientStatus(int tempStatus) {
       switch (tempStatus) {
          case 1:

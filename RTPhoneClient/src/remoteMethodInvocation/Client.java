@@ -1,6 +1,5 @@
 package remoteMethodInvocation;
 
-import view.LoginWindow;
 import clientRemoteMethodInvocation.ClientRemoteMethodInvocation;
 import database.ClientMessage;
 import java.rmi.AccessException;
@@ -15,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import realTimeTransportProtocol.Phone;
 import view.ChatTabPanel;
+import view.LoginWindow;
 import view.MainWindow;
 
 /*

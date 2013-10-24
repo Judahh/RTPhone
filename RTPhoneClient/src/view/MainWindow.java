@@ -75,7 +75,7 @@ public class MainWindow extends javax.swing.JFrame {
       for (int index = 0; index < messageList.size(); index++) {
          boolean found = false;
          for (int index2 = 1; index2 < jTabbedPane.getTabCount(); index2++) {
-            ChatTabPanel tempChatTabPanel = (ChatTabPanel) jTabbedPane.getTabComponentAt(index2);
+            ChatTabPanel tempChatTabPanel = (ChatTabPanel) jTabbedPane.getComponentAt(index2);
             if (tempChatTabPanel.getClient().getUsername().equals(messageList.get(index).getFrom().getUsername())) {
                found = true;
                jTabbedPane.setSelectedIndex(index2);
@@ -86,7 +86,7 @@ public class MainWindow extends javax.swing.JFrame {
          if (!found) {
             jTabbedPane.addTab(messageList.get(index).getFrom().toString(), new ChatTabPanel(this, messageList.get(index).getFrom()));
             jTabbedPane.setSelectedIndex(jTabbedPane.getTabCount() - 1);
-            ChatTabPanel tempChatTabPanel = (ChatTabPanel) jTabbedPane.getTabComponentAt(jTabbedPane.getTabCount() - 1);
+            ChatTabPanel tempChatTabPanel = (ChatTabPanel) jTabbedPane.getComponentAt(jTabbedPane.getTabCount() - 1);
             tempChatTabPanel.append(messageList.get(index));
          }
       }

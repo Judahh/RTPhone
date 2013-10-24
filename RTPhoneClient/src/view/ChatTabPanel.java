@@ -37,7 +37,7 @@ public class ChatTabPanel extends javax.swing.JPanel {
    public MainWindow getMainWindow() {
       return mainWindow;
    }
-
+   
    public void append(ClientMessage clientMessage) {
       if (clientMessage.getIndex() == -1) {
          jTextAreaChat.append(clientMessage.toString());

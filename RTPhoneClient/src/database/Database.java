@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -233,7 +235,7 @@ public class Database implements Serializable{
             String tempAddress = resultSet.getString("address");
             int tempStatus = resultSet.getInt("status");
             String tempCustomStatus = resultSet.getString("customStatus");
-            int tempNumber = resultSet.getInt("number");
+//            int tempNumber = resultSet.getInt("number");
             Client tempClient;
             String tempMessage = resultSet.getString("message");
             int tempIdentificationMessageTable = resultSet.getInt("identificationMessageTable");
@@ -245,8 +247,8 @@ public class Database implements Serializable{
             }
             clientMessage.add(new ClientMessage(tempIdentificationMessageTable, tempClient, tempMessage));
          }
-      } catch (ClassNotFoundException | SQLException exception) {
-         System.err.println(exception);
+      } catch (ClassNotFoundException | SQLException | NullPointerException exception) {
+         Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, exception);
       }
       return clientMessage;
    }
@@ -257,9 +259,9 @@ public class Database implements Serializable{
          Class.forName("com.mysql.jdbc.Driver");
          connection = DriverManager.getConnection(dbUrl);
          statement = connection.createStatement();
-         String query = "INSERT INTO RTPhoneDatabase.messageTable WHERE(`from`,`to`,`message`) VALUES ('" + message.getFrom().getUsername() + "','" + message.getTo().getUsername() + "','" + message.getMessage() + "');";//colocar para pegar os amigos logados
+         String query = "INSERT INTO RTPhoneDatabase.messageTable (`from`,`to`,`message`) VALUES ('" + message.getFrom().getUsername() + "','" + message.getTo().getUsername() + "','" + message.getMessage() + "');";//colocar para pegar os amigos logados
          System.out.println(query);
-         resultSet = statement.executeQuery(query);
+         statement.executeUpdate(query);
       } catch (ClassNotFoundException | SQLException exception) {
          System.out.println(exception);
       }
@@ -348,7 +350,7 @@ public class Database implements Serializable{
              client.add(tempClient);
           }
       } catch (ClassNotFoundException | SQLException exception) {
-          System.out.println(exception);
+          Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, exception);
       }
       return client;
    }

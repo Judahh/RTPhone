@@ -12,8 +12,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import view.MainWindow;
 
@@ -78,8 +76,12 @@ public class RemoteMethodInvocationConnectThread extends Thread {
       client.setAddress(null);
       ArrayList<Client> contactList = mainWindow.getLoginWindow().getDefaultServerConfigurationsWindow().getDatabase().getContactList(client.getUsername());
       for (int index = 0; index < contactList.size(); index++) {
+         System.out.println("ME:" + mainWindow.getMe().getUsername());
          System.out.println("ME:" + mainWindow.getMe().getAddress());
+         System.out.println("ME:" + mainWindow.getMe().getClientStatus());
+         System.out.println("Contact:" + contactList.get(index).getUsername());
          System.out.println("Contact:" + contactList.get(index).getAddress());
+         System.out.println("Contact:" + contactList.get(index).getClientStatus());
          if (contactList.get(index).getAddress().equals(mainWindow.getMe().getAddress())) {
             changeStatus(client);
          } else {

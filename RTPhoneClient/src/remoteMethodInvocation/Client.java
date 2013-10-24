@@ -51,6 +51,12 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
       boolean found = false;
       for (int index = 0; index < loginWindow.getMainWindow().getContactListModel().size(); index++) {
          database.Client tempClient = (database.Client) loginWindow.getMainWindow().getContactListModel().get(index);
+         System.out.println("ME:" + loginWindow.getMainWindow().getMe().getUsername());
+         System.out.println("ME:" + loginWindow.getMainWindow().getMe().getAddress());
+         System.out.println("ME:" + loginWindow.getMainWindow().getMe().getClientStatus());
+         System.out.println("Contact:" + tempClient.getUsername());
+         System.out.println("Contact:" + tempClient.getAddress());
+         System.out.println("Contact:" + tempClient.getClientStatus());
          if (tempClient.getUsername().equals(client.getUsername())) {
             found = true;
             loginWindow.getMainWindow().getContactListModel().setElementAt(client, index);

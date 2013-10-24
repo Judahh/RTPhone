@@ -4,17 +4,10 @@
  */
 package view;
 
-import clientRemoteMethodInvocation.ClientRemoteMethodInvocation;
 import database.Client;
 import database.ClientMessage;
 import java.awt.event.KeyEvent;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import remoteMethodInvocation.util.SendMessageThread;
 
 /**

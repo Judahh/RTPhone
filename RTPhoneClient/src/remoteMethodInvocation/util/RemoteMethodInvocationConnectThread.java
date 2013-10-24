@@ -10,6 +10,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 import javax.swing.JOptionPane;
 import view.MainWindow;
@@ -62,11 +63,24 @@ public class RemoteMethodInvocationConnectThread extends Thread {
    
    protected void connectError(Exception exception) {
       JOptionPane.showMessageDialog(mainWindow, "Ocurred an error while connecting to \""+client.getUsername()+"\":"+exception, "Error", JOptionPane.ERROR_MESSAGE);
+      updateLogoffStatus();
    }
    
    protected void commonError(Exception exception) {
       JOptionPane.showMessageDialog(mainWindow, "Ocurred an error:"+exception, "Error", JOptionPane.ERROR_MESSAGE);
+      updateLogoffStatus();
+   }
+   
+   private void updateLogoffStatus(){
       mainWindow.getLoginWindow().getDefaultServerConfigurationsWindow().getDatabase().logoff(client.getUsername());
+      ArrayList<Client> contactList = mainWindow.getLoginWindow().getDefaultServerConfigurationsWindow().getDatabase().getContactList(client.getUsername());
+      for (int index = 0; index < contactList.size(); index++) {
+         Client tempClient = contactList.get(index);
+         if(tempClient.getAddress()!=null && !tempClient.getAddress().isEmpty()){
+            ChangeContactStatusThread changeStatusThread = new ChangeContactStatusThread(mainWindow, client);
+            changeStatusThread.start();
+         }
+      }
    }
 
    private void connect() {

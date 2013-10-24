@@ -122,7 +122,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
       return false;
    }
 
-   private void sendContactRequestOK(database.Client client) {
+   private void sendContactRequestOK(database.Client client) throws RemoteException {
       if (client.getAddress() != null && !client.getAddress().isEmpty()) {
          try {
             ClientRemoteMethodInvocation rmi;
@@ -138,5 +138,6 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
          }
       }
       loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(loginWindow.getMainWindow().getMe().getUsername(), client.getUsername());
+      changeStatus(client);
    }
 }

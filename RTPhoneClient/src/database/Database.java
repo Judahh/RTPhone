@@ -288,7 +288,7 @@ public class Database implements Serializable{
           System.out.println(username);
           String query = "DELETE FROM RTPhoneDatabase.contactTable WHERE `user`='" + username + "' and `contact`='" + contact + "';";//colocar para pegar os amigos logados
           System.out.println(query);
-          resultSet = statement.executeQuery(query);
+          statement.executeUpdate(query);
        } catch (ClassNotFoundException | SQLException exception) {
           System.out.println(exception);
        }
@@ -303,7 +303,7 @@ public class Database implements Serializable{
           System.out.println(username);
           String query = "INSERT INTO RTPhoneDatabase.contactTable (`user`,`contact`) VALUES ('" + username + "','" + contact + "');";//colocar para pegar os amigos logados
           System.out.println(query);
-          resultSet = statement.executeQuery(query);
+          statement.executeUpdate(query);
        } catch (ClassNotFoundException | SQLException exception) {
           System.out.println(exception);
        }

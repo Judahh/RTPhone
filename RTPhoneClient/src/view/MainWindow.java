@@ -91,6 +91,27 @@ public class MainWindow extends javax.swing.JFrame {
          }
       }
    }
+   
+   public void changeStatus(database.Client client){
+      boolean found = false;
+      for (int index = 0; index < getContactListModel().size(); index++) {
+         database.Client tempClient = (database.Client) getContactListModel().get(index);
+         System.out.println("ME:" + getMe().getUsername());
+         System.out.println("ME:" + getMe().getAddress());
+         System.out.println("ME:" + getMe().getClientStatus());
+         System.out.println("Contact:" + tempClient.getUsername());
+         System.out.println("Contact:" + tempClient.getAddress());
+         System.out.println("Contact:" + tempClient.getClientStatus());
+         if (tempClient.getUsername().equals(client.getUsername())) {
+            found = true;
+            getContactListModel().setElementAt(client, index);
+            break;
+         }
+      }
+      if (!found) {
+         getContactListModel().addElement(client);
+      }
+   }
 
    private void sendContactRequestOK(database.Client client) {
       if (client.getAddress() != null && !client.getAddress().isEmpty()) {
@@ -98,6 +119,7 @@ public class MainWindow extends javax.swing.JFrame {
          changeStatusThread.start();
       }
       loginWindow.getDefaultServerConfigurationsWindow().getDatabase().makeContactRequest(me.getUsername(), client.getUsername());
+      changeStatus(client);
    }
 
    private void getContactRequests() {

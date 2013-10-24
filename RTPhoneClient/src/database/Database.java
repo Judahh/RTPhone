@@ -275,7 +275,7 @@ public class Database implements Serializable{
          statement = connection.createStatement();
          String query = "DELETE FROM RTPhoneDatabase.messageTable WHERE `to`='" + to + "' and `from`='" + from + "';";//colocar para pegar os amigos logados
          System.out.println(query);
-         resultSet = statement.executeQuery(query);
+         statement.executeUpdate(query);
       } catch (ClassNotFoundException | SQLException exception) {
          System.out.println(exception);
       }

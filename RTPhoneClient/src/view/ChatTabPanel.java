@@ -24,7 +24,7 @@ public class ChatTabPanel extends javax.swing.JPanel {
     * Creates new form ChatTabPanel
     */
    public ChatTabPanel(MainWindow mainWindow, database.Client client) {
-      actualMessageList = new ArrayList<>();
+      this.actualMessageList = new ArrayList<>();
       this.client = client;
       this.mainWindow = mainWindow;
       initComponents();
@@ -37,20 +37,26 @@ public class ChatTabPanel extends javax.swing.JPanel {
    public MainWindow getMainWindow() {
       return mainWindow;
    }
-   
+
    public void append(ClientMessage clientMessage) {
       if (clientMessage.getIndex() == -1) {
-         jTextAreaChat.append(clientMessage.toString());
+         jTextAreaChat.setText(jTextAreaChat.getText() + clientMessage.toString());
       } else {
+         boolean ok = false;
          for (int index = 0; index < actualMessageList.size(); index++) {
             if (actualMessageList.get(index).getIndex() > clientMessage.getIndex()) {
                actualMessageList.add(index, clientMessage);
+               ok = true;
             }
          }
-         jTextAreaChat.setText("");
-         for (int index = 0; index < actualMessageList.size(); index++) {
-            jTextAreaChat.append(actualMessageList.get(index).toString());
+         if(!ok){
+            actualMessageList.add(clientMessage);
          }
+         String temp = "";
+         for (int index = 0; index < actualMessageList.size(); index++) {
+            temp += actualMessageList.get(index).toString();
+         }
+         jTextAreaChat.setText(temp);
       }
    }
 
@@ -128,6 +134,9 @@ public class ChatTabPanel extends javax.swing.JPanel {
    private void sendMessage() {
       SendMessageThread sendMessageThread = new SendMessageThread(mainWindow, client, jTextAreaSend);
       sendMessageThread.start();
+      this.mainWindow.getLoginWindow().getDefaultServerConfigurationsWindow().getDatabase().removeMessageList(client.getUsername(), this.mainWindow.getMe().getUsername());
+      ClientMessage clientMessage = new ClientMessage(getMainWindow().getMe(), getClient(), jTextAreaSend.getText());
+      jTextAreaChat.setText(jTextAreaChat.getText() + clientMessage.toString());
    }
 
    private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed

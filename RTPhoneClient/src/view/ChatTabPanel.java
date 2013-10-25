@@ -132,11 +132,12 @@ public class ChatTabPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
    private void sendMessage() {
+      ClientMessage clientMessage = new ClientMessage(getMainWindow().getMe(), getClient(), jTextAreaSend.getText());
       SendMessageThread sendMessageThread = new SendMessageThread(mainWindow, client, jTextAreaSend);
       sendMessageThread.start();
       this.mainWindow.getLoginWindow().getDefaultServerConfigurationsWindow().getDatabase().removeMessageList(client.getUsername(), this.mainWindow.getMe().getUsername());
-      ClientMessage clientMessage = new ClientMessage(getMainWindow().getMe(), getClient(), jTextAreaSend.getText());
       jTextAreaChat.setText(jTextAreaChat.getText() + clientMessage.toString());
+      System.out.println(jTextAreaChat.getText() + clientMessage.toString());
    }
 
    private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed

@@ -72,7 +72,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
    public void sendMessage(ClientMessage message) throws RemoteException {
       boolean found = false;
       for (int index = 1; index < loginWindow.getMainWindow().getjTabbedPane().getTabCount(); index++) {
-         ChatTabPanel tempChatTabPanel = (ChatTabPanel) loginWindow.getMainWindow().getjTabbedPane().getTabComponentAt(index);
+         ChatTabPanel tempChatTabPanel = (ChatTabPanel) loginWindow.getMainWindow().getjTabbedPane().getComponentAt(index);
          if (tempChatTabPanel.getClient().getUsername().equals(message.getFrom().getUsername())) {
             found = true;
             loginWindow.getMainWindow().getjTabbedPane().setSelectedIndex(index);
@@ -83,7 +83,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
       if (!found) {
          loginWindow.getMainWindow().getjTabbedPane().addTab(message.getFrom().toString(), new ChatTabPanel(loginWindow.getMainWindow(), message.getFrom()));
          loginWindow.getMainWindow().getjTabbedPane().setSelectedIndex(loginWindow.getMainWindow().getjTabbedPane().getTabCount() - 1);
-         ChatTabPanel tempChatTabPanel = (ChatTabPanel) loginWindow.getMainWindow().getjTabbedPane().getTabComponentAt(loginWindow.getMainWindow().getjTabbedPane().getTabCount() - 1);
+         ChatTabPanel tempChatTabPanel = (ChatTabPanel) loginWindow.getMainWindow().getjTabbedPane().getComponentAt(loginWindow.getMainWindow().getjTabbedPane().getTabCount() - 1);
          tempChatTabPanel.append(message);
       }
    }

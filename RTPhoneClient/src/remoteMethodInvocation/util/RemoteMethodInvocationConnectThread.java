@@ -82,7 +82,7 @@ public class RemoteMethodInvocationConnectThread extends Thread {
          System.out.println("Contact:" + contactList.get(index).getUsername());
          System.out.println("Contact:" + contactList.get(index).getAddress());
          System.out.println("Contact:" + contactList.get(index).getClientStatus());
-         if (contactList.get(index).getAddress().equals(mainWindow.getMe().getAddress())) {
+         if (contactList.get(index).getAddress().equals(mainWindow.getMe().getAddress())||contactList.get(index).getUsername().equals(mainWindow.getMe().getUsername())) {
             changeStatus(client);
          } else {
             Client tempClient = contactList.get(index);

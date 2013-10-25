@@ -91,8 +91,8 @@ public class MainWindow extends javax.swing.JFrame {
          }
       }
    }
-   
-   public void changeStatus(database.Client client){
+
+   public void changeStatus(database.Client client) {
       boolean found = false;
       for (int index = 0; index < getContactListModel().size(); index++) {
          database.Client tempClient = (database.Client) getContactListModel().get(index);
@@ -126,7 +126,7 @@ public class MainWindow extends javax.swing.JFrame {
       ArrayList<database.Client> contactRequestList = this.loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getContactRequestList(this.loginWindow.getjTextFieldUsername().getText());
       for (int index = 0; index < contactRequestList.size(); index++) {
          String requestText = "User \"" + contactRequestList.get(index).getName() + "\" wants to add you to his contact list.";
-         int showConfirmDialog = JOptionPane.showConfirmDialog(this, requestText);
+         int showConfirmDialog = JOptionPane.showConfirmDialog(this, requestText, "Information", JOptionPane.INFORMATION_MESSAGE);
          switch (showConfirmDialog) {
             case JOptionPane.YES_OPTION:
                sendContactRequestOK(contactRequestList.get(index));
@@ -502,7 +502,7 @@ public class MainWindow extends javax.swing.JFrame {
 
    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
       String showInputDialog = JOptionPane.showInputDialog(this, "Type the username of the user that you want to add:", "Add Contact", JOptionPane.INFORMATION_MESSAGE);
-      if (showInputDialog != null && !showInputDialog.isEmpty()) {
+      if (showInputDialog != null && !showInputDialog.isEmpty() && !showInputDialog.equals(me.getUsername())) {
          database.Client contact = loginWindow.getDefaultServerConfigurationsWindow().getDatabase().getUser(showInputDialog);
          if (contact != null) {
             if (contact.getAddress() != null && !contact.getAddress().isEmpty()) {
@@ -514,6 +514,12 @@ public class MainWindow extends javax.swing.JFrame {
             }
          } else {
             JOptionPane.showMessageDialog(this, "The user \"" + showInputDialog + "\" doesnt exist!", "Information", JOptionPane.INFORMATION_MESSAGE);
+         }
+      } else {
+         if (showInputDialog == null || showInputDialog.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "You need to write the username of the contact that you want to add!", "WARNING", JOptionPane.WARNING_MESSAGE);
+         } else if (showInputDialog.equals(me.getUsername())) {
+            JOptionPane.showMessageDialog(this, "You cant add yourself!", "WARNING", JOptionPane.WARNING_MESSAGE);
          }
       }
    }//GEN-LAST:event_jButtonAddActionPerformed

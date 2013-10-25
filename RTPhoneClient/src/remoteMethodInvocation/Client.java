@@ -47,7 +47,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
    }
 
    @Override
-   public void changeStatus(database.Client client) throws RemoteException {
+   public synchronized void changeStatus(database.Client client) throws RemoteException {
       boolean found = false;
       for (int index = 0; index < loginWindow.getMainWindow().getContactListModel().size(); index++) {
          database.Client tempClient = (database.Client) loginWindow.getMainWindow().getContactListModel().get(index);
@@ -69,7 +69,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
    }
 
    @Override
-   public void sendMessage(ClientMessage message) throws RemoteException {
+   public synchronized void sendMessage(ClientMessage message) throws RemoteException {
       boolean found = false;
       for (int index = 1; index < loginWindow.getMainWindow().getjTabbedPane().getTabCount(); index++) {
          ChatTabPanel tempChatTabPanel = (ChatTabPanel) loginWindow.getMainWindow().getjTabbedPane().getComponentAt(index);
@@ -89,7 +89,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
    }
 
    @Override
-   public boolean call(database.Client caller) throws RemoteException {
+   public synchronized boolean call(database.Client caller) throws RemoteException {
       if (loginWindow.getMainWindow().getjButtonCall().getText().equals("Call")) {
          String requestText = "User \"" + caller.getName() + "\" is calling.";
          int showConfirmDialog = JOptionPane.showConfirmDialog(this.loginWindow.getMainWindow(), requestText);
@@ -106,7 +106,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
    }
 
    @Override
-   public boolean contactRequest(database.Client user) throws RemoteException {
+   public synchronized boolean contactRequest(database.Client user) throws RemoteException {
       System.out.println("contactRequestThread!!!!!!!!!!");
       String requestText = "User \"" + user.getName() + "\" wants to add you to his contact list.";
       int showConfirmDialog = JOptionPane.showConfirmDialog(loginWindow.getMainWindow(), requestText);
@@ -122,7 +122,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
       return false;
    }
 
-   private void sendContactRequestOK(database.Client client) throws RemoteException {
+   private synchronized void sendContactRequestOK(database.Client client) throws RemoteException {
       if (client.getAddress() != null && !client.getAddress().isEmpty()) {
          try {
             ClientRemoteMethodInvocation rmi;

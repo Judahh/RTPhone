@@ -180,7 +180,9 @@ public class MainWindow extends javax.swing.JFrame {
          InetAddress addrs[] = InetAddress.getAllByName(hostName);
 
          for (InetAddress addr : addrs) {
+            System.out.println("Address:"+addr.getHostAddress());
             if (!addr.isLoopbackAddress() && addr.isSiteLocalAddress()) {
+                System.out.println("Address In:"+addr.getHostAddress());
                address = addr.getHostAddress();
             }
          }

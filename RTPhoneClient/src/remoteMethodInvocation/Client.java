@@ -106,7 +106,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
    }
 
    @Override
-   public void hangUp(database.Client client) throws RemoteException {
+   public synchronized void hangUp(database.Client client) throws RemoteException {
       if (loginWindow.getMainWindow().getjButtonCall().getText().equals("Hang Up")) {
          loginWindow.getMainWindow().getjButtonCall().setText("Call");
          String requestText = "User \"" + client.getName() + "\" hung up.";

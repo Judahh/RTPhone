@@ -32,6 +32,7 @@ public class CallRequestThread extends RemoteMethodInvocationConnectThread {
                getMainWindow().setPhone(new Phone(getClient().getAddress(), 16384, 32766));
                getMainWindow().getPhone().start();
                getMainWindow().getjButtonCall().setText("Hang Up");
+               getMainWindow().setContact(getClient());
             } else {
                setAnswer(Answer.no);
                JOptionPane.showMessageDialog(getMainWindow(), "Connection refused!", "", JOptionPane.INFORMATION_MESSAGE);

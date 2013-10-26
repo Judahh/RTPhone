@@ -1,5 +1,6 @@
 package view;
 
+import database.Client;
 import database.ClientMessage;
 import database.ClientStatus;
 import java.net.InetAddress;
@@ -17,6 +18,7 @@ import realTimeTransportProtocol.Phone;
 import remoteMethodInvocation.util.CallRequestThread;
 import remoteMethodInvocation.util.ChangeStatusThread;
 import remoteMethodInvocation.util.ContactRequestThread;
+import remoteMethodInvocation.util.HangUpThread;
 
 /*
  * To change this template, choose Tools | Templates
@@ -34,6 +36,7 @@ public class MainWindow extends javax.swing.JFrame {
    private DefaultListModel contactListModel;
    private DefaultComboBoxModel statusListModel;
    private database.Client me;
+   private database.Client contact;
 
    /**
     * Creates new form MainWindow
@@ -50,6 +53,14 @@ public class MainWindow extends javax.swing.JFrame {
       getOfflineMessages();
    }
 
+   public synchronized void setContact(Client contact) {
+      this.contact = contact;
+   }
+
+   public synchronized Client getContact() {
+      return contact;
+   }
+   
    public LoginWindow getLoginWindow() {
       return loginWindow;
    }
@@ -141,7 +152,29 @@ public class MainWindow extends javax.swing.JFrame {
 
    private String getAddress() {
       String address = "UNKNOWN";
-
+      
+//      Setup Java RMI Over the Internet
+//
+//      Nick Hatter — April 24, 2011 - 23:26
+//      Many of us are familiar with Java RMI but to get it working over the internet is a bit more involved, at least in my own experience of doing so. Please note that this post assumes a basic understanding of Java RMI. If you would like to start from scratch, see Oracle's official documentation.
+//
+//      The solution
+//
+//      Enable port forwarding for ports 1099 and 1100. Why? 1099 is the defacto-standard port for Java RMI. As for port 1100, we're going to use this for communicating with remote objects. This latter is arbitrary though and can be replaced by a different port if you prefer.
+//      Run rmiregistry in your codebase on any servers. Note that this is not required for clients to receive a response.
+//      In your server-side code do .rebind("//your-local-ip:1099/remoteObjectName"); This will bind the object to your local machine. However, because we are using port forwarding, we are telling our router to direct any packets to 1099 to our local IP address. Please note that you cannot use rebind on an external IP.
+//      IMPORTANT:Any objects which intend to receive any response, rather than extend UnicastRemoteObject, use the following code: UnicastRemoteObject.exportObject(yourObject, 1100) This will allow your object to listen for remote calls on port 1100 (which we have port forwarded). If you do not do this, then Java will use an anonymous port (which will probably get blocked remotely).
+//      In your client-side code do Naming.lookup("//the-remote-ip:1099/remoteObjectName")
+//      Don't forget to compile your remote classes with rmic!
+//      IMPORTANT:Finally, when running your java client/server make sure you pass -Djava.rmi.server.hostname=your-external-IP to Java. Eg: java -Djava.rmi.server.hostname=1.2.3.4 client This JVM argument when passed will set the address to be bound to exported remote objects. It can be set programmatically but doing so is left as an exercise for the reader.
+//      You may get the following error:
+//      java.rmi.ConnectException: Connection refused to host: 127.0.1.1 (or some remote IP); nested exception is:
+//      java.net.ConnectException: Connection refused
+//
+//      If so, this means you may have missed a step from earlier. Unfortunately, there are many causes for this error!
+//
+//      Finally, rather than use string literals for the IP addresses, you will probably want to use automated methods to keep track of them. This has been left out of the code above for simplicity.
+      
       try {
          String hostName = InetAddress.getLocalHost().getHostName();
          InetAddress addrs[] = InetAddress.getAllByName(hostName);
@@ -394,6 +427,8 @@ public class MainWindow extends javax.swing.JFrame {
             callRequestThread.start();
          }
       } else {
+         HangUpThread hangUpThread = new HangUpThread(this, getContact());
+         hangUpThread.start();
          this.phone.stop();
          this.phone = null;
          jButtonCall.setText("Call");

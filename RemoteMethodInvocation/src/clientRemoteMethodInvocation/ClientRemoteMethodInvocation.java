@@ -23,4 +23,5 @@ public interface ClientRemoteMethodInvocation extends Remote {
    
    public boolean call(Client client) throws RemoteException;
 
+   public void hangUp(Client client) throws RemoteException;
 }

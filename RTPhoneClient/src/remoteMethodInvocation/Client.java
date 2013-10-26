@@ -92,7 +92,7 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
    public synchronized boolean call(database.Client caller) throws RemoteException {
       if (loginWindow.getMainWindow().getjButtonCall().getText().equals("Call")) {
          String requestText = "User \"" + caller.getName() + "\" is calling.";
-         int showConfirmDialog = JOptionPane.showConfirmDialog(this.loginWindow.getMainWindow(), requestText);
+         int showConfirmDialog = JOptionPane.showConfirmDialog(this.loginWindow.getMainWindow(), requestText, "Information", JOptionPane.INFORMATION_MESSAGE);
          switch (showConfirmDialog) {
             case JOptionPane.YES_OPTION:
                loginWindow.getMainWindow().setPhone(new Phone(caller.getAddress(), 32766, 16384));//tentar o contrario
@@ -106,10 +106,19 @@ public class Client extends UnicastRemoteObject implements ClientRemoteMethodInv
    }
 
    @Override
+   public void hangUp(database.Client client) throws RemoteException {
+      if (loginWindow.getMainWindow().getjButtonCall().getText().equals("Hang Up")) {
+         loginWindow.getMainWindow().getjButtonCall().setText("Call");
+         String requestText = "User \"" + client.getName() + "\" hung up.";
+         JOptionPane.showMessageDialog(this.loginWindow.getMainWindow(), requestText, "Information", JOptionPane.INFORMATION_MESSAGE);
+      }
+   }
+   
+   @Override
    public synchronized boolean contactRequest(database.Client user) throws RemoteException {
       System.out.println("contactRequestThread!!!!!!!!!!");
       String requestText = "User \"" + user.getName() + "\" wants to add you to his contact list.";
-      int showConfirmDialog = JOptionPane.showConfirmDialog(loginWindow.getMainWindow(), requestText);
+      int showConfirmDialog = JOptionPane.showConfirmDialog(loginWindow.getMainWindow(), requestText, "Information", JOptionPane.INFORMATION_MESSAGE);
       switch (showConfirmDialog) {
          case JOptionPane.YES_OPTION:
             sendContactRequestOK(user);

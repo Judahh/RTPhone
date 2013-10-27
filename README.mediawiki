@@ -217,6 +217,9 @@ Caso não esteja basta clicar no executável:
 ==== Conexões ====
 [[File:Images/Monitor.png]]
 
+==== Hierarquia ====
+[[File:Images/Monitor2.png]]
+
 === Queue ===
 É uma fila de atendimento, que possui Clients e Agents, Onde os Agents atendem os Clients da fila.
 

@@ -9,7 +9,7 @@
 | ultima_data         = [[26 de Outubro]] de [[2013]]
 | sistema_operacional = Todos compatíveis com Java 7
 | genero              = PABX IP/Softphone
-| licen�a             = [[OpenSource]] e [[GNU]]
+| licença             = [[OpenSource]] e [[GNU]]
 | website             = 
 }}
 
@@ -36,17 +36,17 @@ Este Documento tem como objetivo explicar o funcionamento do RTPhone em sua vers
 === Atual ===
 ==== Geral ====
 ==== Banco de Dados ====
-O novo Banco de Dados possui tr�s tabelas. Uma tabela possui o username que funciona como chave prim�ria de tabela, uma senha e o IP que se diferente de nulo significa que o usu�rio est� logado e uma unique key com o ID do Facebook do usu�rio (para integra��o com o Facebook). Outra ter� um conjunto de Banco de Dados que o usu�rio poder� se logar (a fim de deixar alguns usu�rios privados de um determinado sistema que tenha esse banco de dados com usu�rios). E outra que ter� um conjunto de usu�rios e senhas para acessos a estes Bancos de Dados.
+O novo Banco de Dados possui três tabelas. Uma tabela possui o username que funciona como chave primária de tabela, uma senha e o IP que se diferente de nulo significa que o usuário está logado e uma unique key com o ID do Facebook do usuário (para integração com o Facebook). Outra terá um conjunto de Banco de Dados que o usuário poderá se logar (a fim de deixar alguns usuários privados de um determinado sistema que tenha esse banco de dados com usuários). E outra que terá um conjunto de usuários e senhas para acessos a estes Bancos de Dados.
 
 ==== Protocolos ====
 ===== Registro =====
-Nesta configura��o o pr�prio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e caso n�o exista ele se registra no Banco. Ap�s isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se registrar, para que possam atualizar suas tabelas. 
+Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e caso não exista ele se registra no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se registrar, para que possam atualizar suas tabelas. 
 
 ===== Login =====
-Nesta configura��o o pr�prio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se n�o est� logado e se loga no Banco. Ap�s isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se logar, para que possam atualizar suas tabelas. 
+Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se não está logado e se loga no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se logar, para que possam atualizar suas tabelas. 
 
 ===== Logoff =====
-Nesta configura��o o pr�prio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se est� logado e se desloga no Banco. Ap�s isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se deslogar, para que possam atualizar suas tabelas. Ele � acionado ao fechar a aplica��o.
+Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se está logado e se desloga no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se deslogar, para que possam atualizar suas tabelas. Ele é acionado ao fechar a aplicação.
 
 ===== Refresh =====
 A cada 10 segundo o cliente faz uma requisi��o pedindo todos os usu�rios logados e registrados e atualiza a lista, o mesmo acontece com o servidor, mas apenas quando inicia.

@@ -36,28 +36,35 @@ Este Documento tem como objetivo explicar o funcionamento do RTPhone em sua vers
 ==== Geral ====
 ==== Banco de Dados ====
 [[File:Images/Database.png]]
+
 O novo Banco de Dados possui três tabelas. Uma tabela possui o username que funciona como chave primária de tabela, uma senha e o IP que se diferente de nulo significa que o usuário está logado e uma unique key com o ID do Facebook do usuário (para integração com o Facebook). Outra terá um conjunto de Banco de Dados que o usuário poderá se logar (a fim de deixar alguns usuários privados de um determinado sistema que tenha esse banco de dados com usuários). E outra que terá um conjunto de usuários e senhas para acessos a estes Bancos de Dados.
 
 ==== Protocolos ====
 ===== Registro =====
 [[File:Images/Register.png]]
+
 Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e caso não exista ele se registra no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se registrar, para que possam atualizar suas tabelas. 
 
 ===== Login =====
 [[File:Images/Login.png]]
+
 Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se não está logado e se loga no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se logar, para que possam atualizar suas tabelas. 
 
 ===== Logoff =====
 [[File:Images/Logoff.png]]
+
 Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se está logado e se desloga no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se deslogar, para que possam atualizar suas tabelas. Ele é acionado ao fechar a aplicação.
 
 ===== Refresh =====
 [[File:Images/Refresh.png]]
+
 A cada 10 segundo o cliente faz uma requisição pedindo todos os usuários logados e registrados e atualiza a lista, o mesmo acontece com o servidor, mas apenas quando inicia.
 
 ===== Chamada =====
 [[File:Images/Call.png]]
+
 [[File:Images/Call2.png]]
+
 Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e resgatar o endereço do usuário o qual ele deseja se conectar e então chama a função no cliente o qual ele deseja conectar enviando seu username endereço e portas livres para conexão (que nada mais é que uma lista de portas livres para transmissão e recepção), esta função retorna uma classe Call que possui o endereço o qual ele vai se conectar, um áudio de espera (caso haja transferência de chamada), as portas de transmissão e recepção e outros dados de conexão. 
 
 == Implementação ==
@@ -75,23 +82,31 @@ A plataforma (SO's e Arquiteturas (x86, x64, alguns Arms com Java convencional))
 
 === Bibliotecas e Recursos Utilizados ===
 Para comunicação Servidor/Cliente foi utilizado a biblioteca padrão do Java para RMI (Remote Method Invocation). A qual permite uma invocação de métodos remotamente e assincronamente algo que o TCP não permitia facilmente.
+
 Para a conexão RTP foi feita uma pesquisa onde foi encontrado um programa com uma conexão simples de áudio RTP. Então foi extraído o core RTP (que estava fortemente acoplado ao código).
 
 === Padrão de Projeto ===
 Para facilitar a leitura do código algumas regras devem ser seguidas:
+
 	1)O código deve ser feito todo em inglês, com exceção dos comentários que podem ser feitos em português por exemplo.
+	
 	2)Não podem haver siglas em métodos, variáveis e classes, devem ser escritos por extenso.
+	
 	3)Não pode existir caracteres especiais em métodos, variáveis e classes, como: _.
+	
 	4)Deve seguir o notação "camelo" na declaração e instancia de métodos, variáveis e classes.(Classes devem começar com letra maiúscula e instancias de objetos e variáveis com letra minúscula e o resto das letras minúsculas, mas para cada nova palavra na variável deve-se começar com maiúscula)
+	
 	5)Deve-se seguir a identação padrão do NetBeans.
 
 === Uso do Repositório ===
 ==== Edição do README ====
 Para alterar o texto deste arquivo basta entrar aqui:[https://github.com/Judahh/RTPhone/edit/master/README.mediawiki], ao terminar existe um bloco abaixo com o título do commit e sua descrição, e claro o botão para enviar o commit, "Commit Changes". Caso deseje enviar as alterações clique neste botão. Caso queira apenas ver as alterações acima do bloco de edição existe um botão "Preview" que mostra como as alterações vão ficar.
+
 Para alterar as Imagens deste arquivo deve-se alterar apartir de uma ferramenta GIT.
 
 ==== Edição do Código ====
 Para alterar o código deve-se alterar apartir de uma ferramenta GIT.
+
 Caso altere um arquivo já existente adicione seu nome e e-mail como subAuthor, caso crie um novo arquivo copie as linhas que existem de copyright e licença que existem na maioria dos aquivos e adicione meu nome e e-mail como subAuthor (devido a criação do repositório, Nome: Judah Holanda Correia Lima, E-mail: judahholanda7@gmail.com). Caso copie um arquivo, coloque o copyright e credidos do autor.
 
 ==== Edição do Banco de Dados ====
@@ -99,6 +114,7 @@ Para se alterar o Banco de dados deve-se apenas conectá-lo a partir de uma ferr
 
 ==== Ferramenta GIT ====
 Para conectar com o repositório git recomendo utilizar a do github para Mac e Windows. Baixe-a, e conecte a sua conta do git (para ter acesso ao repositório me mande um e-mail).
+
 Clone o repositório (basta clicar duas vezes no repositório desejado, caso já o tenha clonado ele irá para página de sincronização). Nesta página existe um botão para sincronizar com o repositório do github com o seu que foi clonado, recomenda-se que antes de sincronizar as alterações do seu repositório, sincronize as alterações que existem no github, depois commite suas alterações no seu repositório (caso não tenha sido commitadas) e depois sincronize.
 
 ==== Repositório do github ====

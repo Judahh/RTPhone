@@ -13,49 +13,20 @@
 | website             = 
 }}
 
-<p class=MsoNormal align=center style='text-align:center'><span
-style='font-size:20.0pt;mso-bidi-font-size:11.0pt;line-height:115%;color:#376092;
-mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:#376092;
-mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:100.0%;
-mso-style-textfill-fill-colortransforms:lumm=75000'><span style='color:windowtext'>FUNDAÇÃO
-EDSON QUEIROZ</span></span><span style='color:#376092;mso-themecolor:accent1;
-mso-themeshade:191;mso-style-textfill-fill-color:#376092;mso-style-textfill-fill-themecolor:
-accent1;mso-style-textfill-fill-alpha:100.0%;mso-style-textfill-fill-colortransforms:
-lumm=75000'></span></p>
+FUNDAÇÃO
+EDSON QUEIROZ
 
-<p class=MsoNormal align=center style='text-align:center'><span
-style='font-size:20.0pt;mso-bidi-font-size:11.0pt;line-height:115%;color:#376092;
-mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:#376092;
-mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:100.0%;
-mso-style-textfill-fill-colortransforms:lumm=75000'><span style='color:windowtext'>UNIVERSIDADE
-DE FORTALEZA</span></span><span style='color:#376092;mso-themecolor:accent1;
-mso-themeshade:191;mso-style-textfill-fill-color:#376092;mso-style-textfill-fill-themecolor:
-accent1;mso-style-textfill-fill-alpha:100.0%;mso-style-textfill-fill-colortransforms:
-lumm=75000'></span></p>
+UNIVERSIDADE
+DE FORTALEZA
 
-<p class=MsoNormal align=center style='text-align:center'><span
-style='font-size:20.0pt;mso-bidi-font-size:11.0pt;line-height:115%;color:#376092;
-mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:#376092;
-mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:100.0%;
-mso-style-textfill-fill-colortransforms:lumm=75000'><span style='color:windowtext'>UNIFOR</span></span><span
-style='color:#376092;mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:
-#376092;mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:
-100.0%;mso-style-textfill-fill-colortransforms:lumm=75000'></span></p>
+UNIFOR
 
 
 
-<p class=MsoNormal align=right style='text-align:right'><span style='color:
-#376092;mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:
-#376092;mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:
-100.0%;mso-style-textfill-fill-colortransforms:lumm=75000'><span
-style='color:windowtext'>Relatório da versão 1.0 beta do <span class=SpellE><span
-class=GramE>RTPhone</span></span></span></span></p>
+Relatório da versão 1.0 beta do
+RTPhone
 
-<p class=MsoNormal align=right style='text-align:right'><span style='color:
-#376092;mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:
-#376092;mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:
-100.0%;mso-style-textfill-fill-colortransforms:lumm=75000'><span
-style='color:windowtext'>Aluno: Judah Holanda Correia Lima</span></span></p>
+Aluno: Judah Holanda Correia Lima
 
 == Introdução ==
 Este Documento tem como objetivo explicar o funcionamento do RTPhone em sua versão 1.0, mostrar propostas de melhoria e introduzir o padrão de projeto que deve ser utilizado. Além de compor a nota.
@@ -147,7 +118,7 @@ Caso não esteja basta clicar no executável:
 
 == Limitações e Correções ==
 
-== {{Bibliografia}} ==
+== Bibliografia ==
 * Disponível em [http://bcook.cs.georgiasouthern.edu/cs523/2taj/index.htm] 
   Acesso em 10/2013
 * Disponível em [http://restfb.com/]

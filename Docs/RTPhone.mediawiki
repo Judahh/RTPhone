@@ -89,16 +89,16 @@ Existem varias maneiras de usar iniciar depois de dado o build no projeto:
 		Digite: cd diretório do projeto/dist
 		Digite: java -jar projeto.jar
 4)Run:
-	Entre no diret�rio e basta clicar no jar do projeto
+	Entre no diretório e basta clicar no jar do projeto
 
 ==== Client: ====
-1)Digite Nome, Usu�rio e Senha.
-2)Caso o usu�rio ainda n�o esteja registrado: Clique em Register.
+1)Digite Nome, Usuário e Senha.
+2)Caso o usuário ainda não esteja registrado: Clique em Register.
 3)Clique em Login.
-4)Caso queira ligar para outro usu�rio selecione a aba Logged Users e selecione o usu�rio o qual deseja fazer a liga��o, depois de selecionado clique em Call.
+4)Caso queira ligar para outro usuário selecione a aba Logged Users e selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Call.
 5)Para desligar clique em Hung Up.
 
-Release: O programa jar execut�vel vai estar na pasta dist ent�o passe apendas ara o usu�rio o conte�do desta pasta.
+Release: O programa jar executável vai estar na pasta dist então passe apenas para o usuário o conteúdo desta pasta.
 
 == Instalação e Uso ==
 === Requisitos: ===

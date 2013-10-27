@@ -41,7 +41,7 @@ Este Documento tem como objetivo explicar o funcionamento do RTPhone em sua vers
 ==== Banco de Dados ====
 [[File:Images/Database.png]]
 
-O novo Banco de Dados possui três tabelas. Uma tabela possui o username que funciona como chave primária de tabela, uma senha e o IP que se diferente de nulo significa que o usuário está logado e uma unique key com o ID do Facebook do usuário (para integração com o Facebook). Outra terá um conjunto de Banco de Dados que o usuário poderá se logar (a fim de deixar alguns usuários privados de um determinado sistema que tenha esse banco de dados com usuários). E outra que terá um conjunto de usuários e senhas para acessos a estes Bancos de Dados.
+O Banco de Dados possui nove tabelas. Uma tabela possui o username que funciona como chave primária de tabela, uma senha e o IP que se diferente de nulo significa que o usuário está logado e uma unique key com o ID do Facebook do usuário (para integração com o Facebook). Outra terá um conjunto de Banco de Dados que o usuário poderá se logar (a fim de deixar alguns usuários privados de um determinado sistema que tenha esse banco de dados com usuários). E outra que terá um conjunto de usuários e senhas para acessos a estes Bancos de Dados.
 
 ==== Protocolos ====
 ===== Registro =====

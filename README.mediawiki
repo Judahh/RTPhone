@@ -200,11 +200,25 @@ Caso não esteja basta clicar no executável:
 
 == Definições ==
 === Client ===
+É o usuário com as permissões mais básicas.
+
 === Agent ===
+É um Client que tem a possibilidade de ser atribuido para atender uma Queue, e com a possibilidade de transferir uma ligação para outra Queue.
+
 === Monitor ===
+É um Client que tem a possibilidade de supervisionar outros Clients, mesmo que um não seja contato do outro.
+
 === Queue ===
+É uma fila de atendimento, que possui Clients e Agents, Onde os Agents atendem os Clients da fila.
+
 === Extension ===
+É uma conexão com alinha telefônica, ou outro ponto de convergencia.
+
 === Conference ===
+É uma conferencia de Clients, que pode ser de Texto, Áudio ou Vídeo.
+
+=== Trunk ===
+É uma conexão com um banco de dados secundário, mas que tenha as mesmas tabelas do primário.
 
 == Limitações e Correções ==
 Basta clicar aqui:[https://github.com/Judahh/RTPhone/issues?state=open].

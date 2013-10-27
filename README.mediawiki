@@ -101,6 +101,15 @@ Para se alterar o Banco de dados deve-se apenas conectá-lo a partir de uma ferr
 Para conectar com o repositório git recomendo utilizar a do github para Mac e Windows. Baixe-a, e conecte a sua conta do git (para ter acesso ao repositório me mande um e-mail).
 Clone o repositório (basta clicar duas vezes no repositório desejado, caso já o tenha clonado ele irá para página de sincronização). Nesta página existe um botão para sincronizar com o repositório do github com o seu que foi clonado, recomenda-se que antes de sincronizar as alterações do seu repositório, sincronize as alterações que existem no github, depois commite suas alterações no seu repositório (caso não tenha sido commitadas) e depois sincronize.
 
+==== Repositório do github ====
+Na página web do repositório do github, são oferecidas muitas ferramentas para gerencia de progresso do projeto e de seus participantes que podem ser vistas aqui:[https://github.com/Judahh/RTPhone/graphs].
+Existe também para gerencia de erros, correções e upgrades:[https://github.com/Judahh/RTPhone/issues?state=open].
+Para adicionar uma nova basta clicar em "New Issue" ou [https://github.com/Judahh/RTPhone/issues/new]. Nesta página coloca-se o título do problema, ou upgrade (em Inglês), e abaixo sua descrição que pode ser feita em português. Ao lado existe Labels que identificam o tipo do problema (basta clicar nos desejados).Ao terminar basta clicar no botão "Subimit new issue".
+Caso o problema tenha sido resolvido, selecione o problema e clique em "Close".
+Caso um problema que já tenha sido resovido volte clique na aba "Closed", selecione o problema e clique em "Reopen".
+Caso queira adicionar uma Label, selecione o problema e clique em "Label", selecione uma Label e clique em "Apply" ou "Remove", caso queira apenas remover uma Label.
+Caso querira atribuir o problema para um integrante resolver clique em "Assignee" e selecione o integrane ou clique no "x" para removê-lo.
+
 === Uso ===
 Existem varias maneiras de usar iniciar depois de dado o build no projeto:
 

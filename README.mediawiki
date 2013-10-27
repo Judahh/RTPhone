@@ -218,8 +218,12 @@ Além de poder remover e deslogar usuários.
 ==== Conexões ====
 [[File:Images/Monitor.png]]
 
+Estas conecções indicam a comunicação entre monitores e monitores/usuários, onde se envia dados sobre os monitorados.
+
 ==== Hierarquia ====
 [[File:Images/Monitor2.png]]
+
+Esta hierarquia indica os monitores que tem o poder de deslogar e remover os outros monitores.
 
 ==== Dados ====
 -receiveMonitorList: É um boolean que indica se ele deve receber a lista dos monitores, dos monitores que monitora.

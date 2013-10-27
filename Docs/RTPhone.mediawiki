@@ -57,33 +57,40 @@ Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e
 == Implementação ==
 === IDE ===
 A IDE utilizada foi o NetBeans. Devido á facilidade de se implementar RMI e devido aos plug-ins que já vem por padrão. Como plug-in para criação e edição de interface gráfica, JDBC e etc.
+
 === Linguagem ===
 A linguagem utilizada foi o Java 7. Devido a sua grande comunidade e documentação além, é claro, das facilidades.
+
 === Plataforma ===
 A plataforma (SO's e Arquiteturas (x86, x64, alguns Arms com Java convencional)) escolhida foram todas as que o Java dá suporte. Embora se tenha encontrado problemas com o firewall no Windows 8 (Não permite nenhuma conexão nem RMI) e no Linux (Não aceita conexão RTP, mas estabelece quando ele quem a requisita). Nos Sistemas Operacionais Mountain Lion e Windows 7 não houveram problemas. O modelo de interface gráfica escolhido foi a padrão do sistema que utilizará o programa.
+
 === Bibliotecas e Recursos Utilizados ===
 Para comunicação Servidor/Cliente foi utilizado a biblioteca padrão do Java para RMI (Remote Method Invocation). A qual permite uma invocação de métodos remotamente e assincronamente algo que o TCP não permitia facilmente.
 Para a conexão RTP foi feita uma pesquisa onde foi encontrado um programa com uma conexão simples de áudio RTP. Então foi extraído o core RTP (que estava fortemente acoplado ao código).
+
 === Padrão de Projeto ===
 Para facilitar a leitura do código algumas regras devem ser seguidas:
-	1)O código deve ser feito todo em inglês, com exceção dos comentários que podem ser feitos em portugu�s por exemplo.
-	2)N�o podem haver siglas em m�todos, vari�veis e classes, devem ser escritos por extenso.
-	3)N�o pode existir caracteres especiais em m�todos, vari�veis e classes, como: _.
-	4)Deve seguir o nota��o �camelo� na declara��o e instancia de m�todos, vari�veis e classes.(Classes devem come�ar com letra mai�scula e objetos e vari�veis com letra min�scula e o resto das letras min�scula, mas para cada nova palavra na vari�vel deve-se come�ar com mai�scula)
-	5)Deve-se seguir a identa��o padr�o do NetBeans. (Caso v� utilizar o eclipse no reposit�rio tem o XML para identa��o).
+	1)O código deve ser feito todo em inglês, com exceção dos comentários que podem ser feitos em português por exemplo.
+	2)Não podem haver siglas em métodos, variáveis e classes, devem ser escritos por extenso.
+	3)Não pode existir caracteres especiais em métodos, variáveis e classes, como: _.
+	4)Deve seguir o notação "camelo" na declaração e instancia de métodos, variáveis e classes.(Classes devem começar com letra maiúscula e instancias de objetos e variáveis com letra minúscula e o resto das letras minúsculas, mas para cada nova palavra na variável deve-se começar com maiúscula)
+	5)Deve-se seguir a identação padrão do NetBeans.
+
 === Uso ===
 Existem varias maneiras de usar iniciar depois de dado o build no projeto:
+
 ==== Iniciar: ====
 1)IDE Debug:
-	Basca clicar no �cone do inseto no NetBeans (ou IDE utilizada)
+	Basca clicar no ícone do inseto no NetBeans (ou IDE utilizada)
 2)IDE Run:
-	Basca clicar no �cone do �play� no NetBeans (ou IDE utilizada).
+	Basca clicar no ícone do "play" no NetBeans (ou IDE utilizada).
 3)Debug:
 	Entre no terminal:
-		Digite: cd diret�rio do projeto/dist
+		Digite: cd diretório do projeto/dist
 		Digite: java -jar projeto.jar
 4)Run:
 	Entre no diret�rio e basta clicar no jar do projeto
+
 ==== Client: ====
 1)Digite Nome, Usu�rio e Senha.
 2)Caso o usu�rio ainda n�o esteja registrado: Clique em Register.
@@ -93,8 +100,7 @@ Existem varias maneiras de usar iniciar depois de dado o build no projeto:
 
 Release: O programa jar execut�vel vai estar na pasta dist ent�o passe apendas ara o usu�rio o conte�do desta pasta.
 
-	
-== Instala��o e Uso ==
+== Instalação e Uso ==
 === Requisitos: ===
 -Internet
 -Windows 7 ou Mac (Ou Linux (e com IP configurado no arquivo hosts) e Windows 8 com firewall configurados)

@@ -134,7 +134,6 @@ Caso queira adicionar uma Label, selecione o problema e clique em "Label", selec
 Caso querira atribuir o problema para um integrante resolver clique em "Assignee" e selecione o integrane ou clique no "x" para removê-lo.
 
 ===== Wiki do github =====
-
 Existe tabém um wiki para descrição do projeto:[https://github.com/Judahh/RTPhone/wiki].
 
 === Uso ===
@@ -214,11 +213,28 @@ Caso não esteja basta clicar no executável:
 === Monitor ===
 É um Client que tem a possibilidade de supervisionar outros Clients, mesmo que um não seja contato do outro.
 
+Além de poder remover e deslogar usuários.
+
 ==== Conexões ====
 [[File:Images/Monitor.png]]
 
 ==== Hierarquia ====
 [[File:Images/Monitor2.png]]
+
+==== Dados ====
+-receiveMonitorList: É um boolean que indica se ele deve receber a lista dos monitores, dos monitores que monitora.
+
+-receiveUserList: É um boolean que indica se ele deve receber a lista dos usuários, dos monitores que monitora.
+
+-receiveUserStatus: É um boolean que indica se ele deve receber os status dos usuários que monitora.
+
+-receiveMonitorStatus: É um boolean que indica se ele deve receber os status dos monitores que monitora.
+
+-areaType: É o Tipo de área que o monitor monitora (Country, State, City...).
+
+-area: É a chave estrangeira da tabela área (que possui: identification, name, type).
+
+-type: É o tipo de monitor (na Hierarquia).
 
 === Queue ===
 É uma fila de atendimento, que possui Clients e Agents, Onde os Agents atendem os Clients da fila.

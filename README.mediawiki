@@ -102,7 +102,9 @@ Para facilitar a leitura do código algumas regras devem ser seguidas:
 ==== Edição do README ====
 Para alterar o texto deste arquivo basta entrar aqui:[https://github.com/Judahh/RTPhone/edit/master/README.mediawiki], ao terminar existe um bloco abaixo com o título do commit e sua descrição, e claro o botão para enviar o commit, "Commit Changes". Caso deseje enviar as alterações clique neste botão. Caso queira apenas ver as alterações acima do bloco de edição existe um botão "Preview" que mostra como as alterações vão ficar.
 
-Para alterar as Imagens deste arquivo deve-se alterar apartir de uma ferramenta GIT.
+Para alterar as Imagens deste arquivo deve-se alterar apartir de uma ferramenta GIT. As imagens estão na pasta "Images".
+
+Para adicionar Imagens neste arquivo deve-se colocar "[[File:Images/"nome da imagem".png]]" no local desejado. A imagem deve estar na pasta "Images".
 
 ==== Edição do Código ====
 Para alterar o código deve-se alterar apartir de uma ferramenta GIT.

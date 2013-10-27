@@ -90,6 +90,17 @@ Para facilitar a leitura do código algumas regras devem ser seguidas:
 Para alterar o texto deste arquivo basta entrar aqui:[https://github.com/Judahh/RTPhone/edit/master/README.mediawiki], ao terminar existe um bloco abaixo com o título do commit e sua descrição, e claro o botão para enviar o commit, "Commit Changes". Caso deseje enviar as alterações clique neste botão. Caso queira apenas ver as alterações acima do bloco de edição existe um botão "Preview" que mostra como as alterações vão ficar.
 Para alterar as Imagens deste arquivo deve-se alterar apartir de uma ferramenta GIT.
 
+==== Edição do Código ====
+Para alterar o código deve-se alterar apartir de uma ferramenta GIT.
+Caso altere um arquivo já existente adicione seu nome e e-mail como subAuthor, caso crie um novo arquivo copie as linhas que existem de copyright e licença que existem na maioria dos aquivos e adicione meu nome e e-mail como subAuthor (devido a criação do repositório, Nome: Judah Holanda Correia Lima, E-mail: judahholanda7@gmail.com). Caso copie um arquivo, coloque o copyright e credidos do autor.
+
+==== Edição do Banco de Dados ====
+Para se alterar o Banco de dados deve-se apenas conectá-lo a partir de uma ferramenta, recomendo o MySQL Workbench. Os dados para conexão estão no código de conexão do Banco de Dados do RTPhone.
+
+==== Ferramenta GIT ====
+Para conectar com o repositório git recomendo utilizar a do github para Mac e Windows. Baixe-a, e conecte a sua conta do git (para ter acesso ao repositório me mande um e-mail).
+Clone o repositório (basta clicar duas vezes no repositório desejado, caso já o tenha clonado ele irá para página de sincronização). Nesta página existe um botão para sincronizar com o repositório do github com o seu que foi clonado, recomenda-se que antes de sincronizar as alterações do seu repositório, sincronize as alterações que existem no github, depois commite suas alterações no seu repositório (caso não tenha sido commitadas) e depois sincronize.
+
 === Uso ===
 Existem varias maneiras de usar iniciar depois de dado o build no projeto:
 

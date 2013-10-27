@@ -91,7 +91,7 @@ Existem varias maneiras de usar iniciar depois de dado o build no projeto:
 4)Caso queira ligar para outro usu�rio selecione a aba Logged Users e selecione o usu�rio o qual deseja fazer a liga��o, depois de selecionado clique em Call.
 5)Para desligar clique em Hung Up.
 
-Release: O programa jar execut�vel vai estar na pasta dist ent�o passe apendas para o usu�rio o conte�do desta pasta.
+Release: O programa jar execut�vel vai estar na pasta dist ent�o passe apendas ara o usu�rio o conte�do desta pasta.
 
 	
 == Instala��o e Uso ==
@@ -99,8 +99,8 @@ Release: O programa jar execut�vel vai estar na pasta dist ent�o passe apend
 -Internet
 -Windows 7 ou Mac (Ou Linux (e com IP configurado no arquivo hosts) e Windows 8 com firewall configurados)
 
-=== Instala��o: ===
-N�o tem, basta baixar o programa aqui: [https://github.com/Judahh/RTPhone/releases/tag/1.0-beta], o execut�vel est� na pasta com a extens�o .jar .
+=== Instalação: ===
+Não tem, basta baixar o programa aqui: [https://github.com/Judahh/RTPhone/releases/tag/1.0-beta], o executável está na pasta, com a extensão .jar .
 
 === Uso: ===
 ==== Cliente: ====

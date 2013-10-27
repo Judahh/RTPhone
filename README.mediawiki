@@ -118,6 +118,7 @@ Para conectar com o repositório git recomendo utilizar a do github para Mac e W
 Clone o repositório (basta clicar duas vezes no repositório desejado, caso já o tenha clonado ele irá para página de sincronização). Nesta página existe um botão para sincronizar com o repositório do github com o seu que foi clonado, recomenda-se que antes de sincronizar as alterações do seu repositório, sincronize as alterações que existem no github, depois commite suas alterações no seu repositório (caso não tenha sido commitadas) e depois sincronize.
 
 ==== Repositório do github ====
+===== Gerência do github =====
 Na página web do repositório do github, são oferecidas muitas ferramentas para gerencia de progresso do projeto e de seus participantes que podem ser vistas aqui:[https://github.com/Judahh/RTPhone/graphs].
 
 Existe também para gerencia de erros, correções e upgrades:[https://github.com/Judahh/RTPhone/issues?state=open].
@@ -131,6 +132,10 @@ Caso um problema que já tenha sido resovido volte clique na aba "Closed", selec
 Caso queira adicionar uma Label, selecione o problema e clique em "Label", selecione uma Label e clique em "Apply" ou "Remove", caso queira apenas remover uma Label.
 
 Caso querira atribuir o problema para um integrante resolver clique em "Assignee" e selecione o integrane ou clique no "x" para removê-lo.
+
+===== Wiki do github =====
+
+Existe tabém um wiki para descrição do projeto:[https://github.com/Judahh/RTPhone/wiki].
 
 === Uso ===
 Existem varias maneiras de usar iniciar depois de dado o build no projeto:

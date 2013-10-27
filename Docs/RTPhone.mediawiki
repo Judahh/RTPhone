@@ -13,13 +13,14 @@
 | website             = 
 }}
 
-FUNDAÇÃO
-EDSON QUEIROZ
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;">FUNDAÇÃO</div>
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;">EDSON QUEIROZ</div>
 
-UNIVERSIDADE
-DE FORTALEZA
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;">UNIVERSIDADE</div>
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;">DE FORTALEZA</div>
 
-UNIFOR
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;">UNIFOR</div>
+
 
 
 

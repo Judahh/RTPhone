@@ -202,23 +202,44 @@ Caso não esteja basta clicar no executável:
 === Client ===
 É o usuário com as permissões mais básicas.
 
+==== Conexões ====
+[[File:Images/Client.png]]
+
 === Agent ===
 É um Client que tem a possibilidade de ser atribuido para atender uma Queue, e com a possibilidade de transferir uma ligação para outra Queue.
+
+==== Conexões ====
+[[File:Images/Agent.png]]
 
 === Monitor ===
 É um Client que tem a possibilidade de supervisionar outros Clients, mesmo que um não seja contato do outro.
 
+==== Conexões ====
+[[File:Images/Monitor.png]]
+
 === Queue ===
 É uma fila de atendimento, que possui Clients e Agents, Onde os Agents atendem os Clients da fila.
+
+==== Conexões ====
+[[File:Images/Queue.png]]
 
 === Extension ===
 É uma conexão com a linha telefônica, ou outro ponto de convergencia.
 
+==== Conexões ====
+[[File:Images/Extension.png]]
+
 === Conference ===
 É uma conferencia de Clients, que pode ser de Texto, Áudio ou Vídeo.
 
+==== Conexões ====
+[[File:Images/Conference.png]]
+
 === Trunk ===
 É uma conexão com um banco de dados secundário, mas que tenha as mesmas tabelas do primário.
+
+==== Conexões ====
+[[File:Images/Trunk.png]]
 
 == Limitações e Correções ==
 Basta clicar aqui:[https://github.com/Judahh/RTPhone/issues?state=open].

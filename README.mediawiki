@@ -104,7 +104,7 @@ Para alterar o texto deste arquivo basta entrar aqui:[https://github.com/Judahh/
 
 Para alterar as Imagens deste arquivo deve-se alterar apartir de uma ferramenta GIT. As imagens estão na pasta "Images".
 
-Para adicionar Imagens neste arquivo deve-se colocar "[[File:Images/"nome da imagem".png]]" no local desejado. A imagem deve estar na pasta "Images".
+Para adicionar Imagens neste arquivo deve-se colocar <code>[[File:Images/"nome da imagem".png]]</code> no local desejado. A imagem deve estar na pasta "Images".
 
 ==== Edição do Código ====
 Para alterar o código deve-se alterar apartir de uma ferramenta GIT.

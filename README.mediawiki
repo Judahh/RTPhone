@@ -122,20 +122,27 @@ Existem varias maneiras de usar iniciar depois de dado o build no projeto:
 ==== Iniciar: ====
 1)IDE Debug:
 	Basca clicar no ícone do inseto no NetBeans (ou IDE utilizada)
+
 2)IDE Run:
 	Basca clicar no ícone do "play" no NetBeans (ou IDE utilizada).
+
 3)Debug:
 	Entre no terminal:
 		Digite: cd diretório do projeto/dist
 		Digite: java -jar projeto.jar
+
 4)Run:
 	Entre no diretório e basta clicar no jar do projeto
 
 ==== Client: ====
 1)Digite Nome, Usuário e Senha.
+
 2)Caso o usuário ainda não esteja registrado: Clique em Register.
+
 3)Clique em Login.
+
 4)Caso queira ligar para outro usuário selecione a aba Logged Users e selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Call.
+
 5)Para desligar clique em Hung Up.
 
 Release: O programa jar executável vai estar na pasta dist então passe apenas para o usuário o conteúdo desta pasta.
@@ -143,6 +150,7 @@ Release: O programa jar executável vai estar na pasta dist então passe apenas 
 == Instalação e Uso ==
 === Requisitos: ===
 -Internet
+
 -Windows 7 ou Mac (Ou Linux (e com IP configurado no arquivo hosts) e Windows 8 com firewall configurados)
 
 === Instalação: ===
@@ -154,13 +162,19 @@ Não tem, basta baixar o programa aqui: [https://github.com/Judahh/RTPhone/relea
 		Entre no terminal:
 		Digite: cd diretório do projeto/dist
 		Digite: java -jar RTPhoneClient.jar:
- 
+
 Caso não esteja basta clicar no executável:
+
 [[File:Images/Executable.png]]
+
 2)Digite Nome, Usuário e Senha.
+
 3)Caso o usuário ainda não esteja registrado: Clique em Register.
+
 4)Clique em Login.
+
 5)Caso queira ligar para outro usuário selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Call.
+
 6)Para desligar clique em Hung Up.
 
 == Limitações e Correções ==
@@ -169,6 +183,7 @@ Basta clicar aqui:[https://github.com/Judahh/RTPhone/issues?state=open].
 == Bibliografia ==
 * Disponível em [http://bcook.cs.georgiasouthern.edu/cs523/2taj/index.htm] 
   Acesso em 10/2013
+
 * Disponível em [http://restfb.com/]
   Acesso em 10/2013
 

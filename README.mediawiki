@@ -67,6 +67,9 @@ A IDE utilizada foi o NetBeans. Devido á facilidade de se implementar RMI e dev
 === Linguagem ===
 A linguagem utilizada foi o Java 7. Devido a sua grande comunidade e documentação além, é claro, das facilidades.
 
+=== Banco de Dados ===
+O Banco de Dados utilizado foi o MySQL, devido as facilidades oferecidas pela ferrramenta MySQL Workbench.
+
 === Plataforma ===
 A plataforma (SO's e Arquiteturas (x86, x64, alguns Arms com Java convencional)) escolhida foram todas as que o Java dá suporte. Embora se tenha encontrado problemas com o firewall no Windows 8 (Não permite nenhuma conexão nem RMI) e no Linux (Não aceita conexão RTP, mas estabelece quando ele quem a requisita). Nos Sistemas Operacionais Mountain Lion e Windows 7 não houveram problemas. O modelo de interface gráfica escolhido foi a padrão do sistema que utilizará o programa.
 
@@ -81,6 +84,11 @@ Para facilitar a leitura do código algumas regras devem ser seguidas:
 	3)Não pode existir caracteres especiais em métodos, variáveis e classes, como: _.
 	4)Deve seguir o notação "camelo" na declaração e instancia de métodos, variáveis e classes.(Classes devem começar com letra maiúscula e instancias de objetos e variáveis com letra minúscula e o resto das letras minúsculas, mas para cada nova palavra na variável deve-se começar com maiúscula)
 	5)Deve-se seguir a identação padrão do NetBeans.
+
+=== Uso do Repositório ===
+==== Edição do README ====
+Para alterar o texto deste arquivo basta entrar aqui:[https://github.com/Judahh/RTPhone/edit/master/README.mediawiki], ao terminar existe um bloco abaixo com o título do commit e sua descrição, e claro o botão para enviar o commit, "Commit Changes". Caso deseje enviar as alterações clique neste botão. Caso queira apenas ver as alterações acima do bloco de edição existe um botão "Preview" que mostra como as alterações vão ficar.
+Para alterar as Imagens deste arquivo deve-se alterar apartir de uma ferramenta GIT.
 
 === Uso ===
 Existem varias maneiras de usar iniciar depois de dado o build no projeto:
@@ -130,6 +138,7 @@ Caso não esteja basta clicar no executável:
 6)Para desligar clique em Hung Up.
 
 == Limitações e Correções ==
+Basta clicar aqui:[https://github.com/Judahh/RTPhone/issues?state=open].
 
 == Bibliografia ==
 * Disponível em [http://bcook.cs.georgiasouthern.edu/cs523/2taj/index.htm] 

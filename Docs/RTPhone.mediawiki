@@ -1,0 +1,156 @@
+{{Info/Software
+| nome                = Asterisk
+| logo                = 
+| imagem              = 
+| legenda             = 
+| desenvolvedor       = [[Digium]] e Comunidade
+| data_lancamento     = 
+| ultima_versao       = 1.0
+| ultima_data         = [[26 de Outubro]] de [[2013]]
+| sistema_operacional = Todos compatíveis com Java 7
+| genero              = PABX IP/Softphone
+| licença             = [[OpenSource]] e [[GNU]]
+| website             = 
+}}
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:20.0pt;mso-bidi-font-size:11.0pt;line-height:115%;color:#376092;
+mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:#376092;
+mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:100.0%;
+mso-style-textfill-fill-colortransforms:lumm=75000'><span style='color:windowtext'>FUNDAÇÃO
+EDSON QUEIROZ</span></span><span style='color:#376092;mso-themecolor:accent1;
+mso-themeshade:191;mso-style-textfill-fill-color:#376092;mso-style-textfill-fill-themecolor:
+accent1;mso-style-textfill-fill-alpha:100.0%;mso-style-textfill-fill-colortransforms:
+lumm=75000'></span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:20.0pt;mso-bidi-font-size:11.0pt;line-height:115%;color:#376092;
+mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:#376092;
+mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:100.0%;
+mso-style-textfill-fill-colortransforms:lumm=75000'><span style='color:windowtext'>UNIVERSIDADE
+DE FORTALEZA</span></span><span style='color:#376092;mso-themecolor:accent1;
+mso-themeshade:191;mso-style-textfill-fill-color:#376092;mso-style-textfill-fill-themecolor:
+accent1;mso-style-textfill-fill-alpha:100.0%;mso-style-textfill-fill-colortransforms:
+lumm=75000'></span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:20.0pt;mso-bidi-font-size:11.0pt;line-height:115%;color:#376092;
+mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:#376092;
+mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:100.0%;
+mso-style-textfill-fill-colortransforms:lumm=75000'><span style='color:windowtext'>UNIFOR</span></span><span
+style='color:#376092;mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:
+#376092;mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:
+100.0%;mso-style-textfill-fill-colortransforms:lumm=75000'></span></p>
+
+
+
+<p class=MsoNormal align=right style='text-align:right'><span style='color:
+#376092;mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:
+#376092;mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:
+100.0%;mso-style-textfill-fill-colortransforms:lumm=75000'><span
+style='color:windowtext'>Relatório da versão 1.0 beta do <span class=SpellE><span
+class=GramE>RTPhone</span></span></span></span></p>
+
+<p class=MsoNormal align=right style='text-align:right'><span style='color:
+#376092;mso-themecolor:accent1;mso-themeshade:191;mso-style-textfill-fill-color:
+#376092;mso-style-textfill-fill-themecolor:accent1;mso-style-textfill-fill-alpha:
+100.0%;mso-style-textfill-fill-colortransforms:lumm=75000'><span
+style='color:windowtext'>Aluno: Judah Holanda Correia Lima</span></span></p>
+
+== Introdução ==
+Este Documento tem como objetivo explicar o funcionamento do RTPhone em sua versão 1.0, mostrar propostas de melhoria e introduzir o padrão de projeto que deve ser utilizado. Além de compor a nota.
+
+== Arquitetura do Sistema ==
+=== Atual ===
+==== Geral ====
+==== Banco de Dados ====
+O novo Banco de Dados possuirá três tabelas. Uma tabela possui o username que funciona como chave primária de tabela, uma senha e o IP que se diferente de nulo significa que o usuário está logado e uma unique key com o ID do Facebook do usuário (para integração com o Facebook). Outra terá um conjunto de Banco de Dados que o usuário poderá se logar (a fim de deixar alguns usuários privados de um determinado sistema que tenha esse banco de dados com usuários). E outra que terá um conjunto de usuários e senhas para acessos a estes Bancos de Dados.
+
+==== Protocolos ====
+===== Registro =====
+Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e caso não exista ele se registra no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se registrar, para que possam atualizar suas tabelas. 
+
+===== Login =====
+Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se não está logado e se loga no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se logar, para que possam atualizar suas tabelas. 
+
+===== Logoff =====
+Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se está logado e se desloga no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se deslogar, para que possam atualizar suas tabelas. Ele é acionado ao fechar a aplicação.
+
+===== Refresh =====
+A cada 10 segundo o cliente faz uma requisição pedindo todos os usuários logados e registrados e atualiza a lista, o mesmo acontece com o servidor, mas apenas quando inicia.
+
+===== Chamada =====
+Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e resgatar o endereço do usuário o qual ele deseja se conectar e então chama a função no cliente o qual ele deseja conectar enviando seu username endereço e portas livres para conexão (que nada mais é que uma lista de portas livres para transmissão e recepção), esta função retorna uma classe Call que possui o endereço o qual ele vai se conectar, um áudio de espera (caso haja transferência de chamada), as portas de transmissão e recepção e outros dados de conexão. 
+
+== Implementação ==
+=== IDE ===
+A IDE utilizada foi o NetBeans. Devido à facilidade de se implementar RMI e devido aos plug-ins que já vem por padrão. Como plug-in para criação e edição de interface gráfica, JDBC e etc.
+=== Linguagem ===
+A linguagem utilizada foi o Java 7. Devido a sua grande comunidade e documentação além, é claro, das facilidades.
+=== Plataforma ===
+A plataforma (SO’s e Arquiteturas (x86, x64, alguns Arms com Java convencional)) escolhida foram todas as que o Java dá suporte. Embora se tenha encontrado problemas com o firewall no Windows 8 (Não permite nenhuma conexão nem RMI) e no Linux (Não aceita conexão RTP, mas estabelece quando ele quem a requisita). Nos Sistemas Operacionais Mountain Lion e Windows 7 não houveram problemas. O modelo de interface gráfica escolhido foi a padrão do sistema que utilizará o programa.
+=== Bibliotecas e Recursos Utilizados ===
+Para comunicação Servidor/Cliente foi utilizado à biblioteca padrão do Java para RMI (Remote Method Invocation). A qual permite uma invocação de métodos remotamente e assincronamente algo que o TCP não permitia facilmente.
+Para a conexão RTP foi feita uma pesquisa onde foi encontrado um programa com uma conexão simples de áudio RTP. Então foi extraído o core RTP (que estava fortemente acoplado ao código).
+=== Padrão de Projeto ===
+Para facilitar a leitura do código algumas regras devem ser seguidas:
+	1)O código deve ser feito todo em inglês, com exceção dos comentários que podem ser feitos em português por exemplo.
+	2)Não podem haver siglas em métodos, variáveis e classes, devem ser escritos por extenso.
+	3)Não pode existir caracteres especiais em métodos, variáveis e classes, como: _.
+	4)Deve seguir o notação ”camelo” na declaração e instancia de métodos, variáveis e classes.(Classes devem começar com letra maiúscula e objetos e variáveis com letra minúscula e o resto das letras minúscula, mas para cada nova palavra na variável deve-se começar com maiúscula)
+	5)Deve-se seguir a identação padrão do NetBeans. (Caso vá utilizar o eclipse no repositório tem o XML para identação).
+=== Uso ===
+Existem varias maneiras de usar iniciar depois de dado o build no projeto:
+==== Iniciar: ====
+1)IDE Debug:
+	Basca clicar no ícone do inseto no NetBeans (ou IDE utilizada)
+2)IDE Run:
+	Basca clicar no ícone do “play” no NetBeans (ou IDE utilizada).
+3)Debug:
+	Entre no terminal:
+		Digite: cd diretório do projeto/dist
+		Digite: java -jar projeto.jar
+4)Run:
+	Entre no diretório e basta clicar no jar do projeto
+==== Client: ====
+1)Digite Nome, Usuário e Senha.
+2)Caso o usuário ainda não esteja registrado: Clique em Register.
+3)Clique em Login.
+4)Caso queira ligar para outro usuário selecione a aba Logged Users e selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Call.
+5)Para desligar clique em Hung Up.
+
+Release: O programa jar executável vai estar na pasta dist então passe apendas para o usuário o conteúdo desta pasta.
+
+	
+== Instalação e Uso ==
+=== Requisitos: ===
+-Internet
+-Windows 7 ou Mac (Ou Linux (e com IP configurado no arquivo hosts) e Windows 8 com firewall configurados)
+
+=== Instalação: ===
+Não tem, basta baixar o programa aqui: [https://github.com/Judahh/RTPhone/releases/tag/1.0-beta], o executável está na pasta com a extensão .jar .
+
+=== Uso: ===
+==== Cliente: ====
+1)Caso esteja no sistema Linux:
+		Entre no terminal:
+		Digite: cd diretório do projeto/dist
+		Digite: java -jar RTPhoneClient.jar:
+ 
+Caso não esteja basta clicar no executável:
+ 
+2)Digite Nome, Usuário e Senha.
+3)Caso o usuário ainda não esteja registrado: Clique em Register.
+4)Clique em Login.
+5)Caso queira ligar para outro usuário selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Call.
+6)Para desligar clique em Hung Up.
+
+== Limitações e Correções ==
+
+== {{Bibliografia}} ==
+* Disponível em [http://bcook.cs.georgiasouthern.edu/cs523/2taj/index.htm] 
+  Acesso em 10/2013
+* Disponível em [http://restfb.com/]
+  Acesso em 10/2013
+
+[[Categoria:Software livre]]

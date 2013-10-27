@@ -54,19 +54,19 @@ A cada 10 segundo o cliente faz uma requisição pedindo todos os usuários loga
 ===== Chamada =====
 Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e resgatar o endereço do usuário o qual ele deseja se conectar e então chama a função no cliente o qual ele deseja conectar enviando seu username endereço e portas livres para conexão (que nada mais é que uma lista de portas livres para transmissão e recepção), esta função retorna uma classe Call que possui o endereço o qual ele vai se conectar, um áudio de espera (caso haja transferência de chamada), as portas de transmissão e recepção e outros dados de conexão. 
 
-== Implementa��o ==
+== Implementação ==
 === IDE ===
-A IDE utilizada foi o NetBeans. Devido � facilidade de se implementar RMI e devido aos plug-ins que j� vem por padr�o. Como plug-in para cria��o e edi��o de interface gr�fica, JDBC e etc.
+A IDE utilizada foi o NetBeans. Devido á facilidade de se implementar RMI e devido aos plug-ins que já vem por padrão. Como plug-in para criação e edição de interface gráfica, JDBC e etc.
 === Linguagem ===
-A linguagem utilizada foi o Java 7. Devido a sua grande comunidade e documenta��o al�m, � claro, das facilidades.
+A linguagem utilizada foi o Java 7. Devido a sua grande comunidade e documentação além, é claro, das facilidades.
 === Plataforma ===
-A plataforma (SO�s e Arquiteturas (x86, x64, alguns Arms com Java convencional)) escolhida foram todas as que o Java d� suporte. Embora se tenha encontrado problemas com o firewall no Windows 8 (N�o permite nenhuma conex�o nem RMI) e no Linux (N�o aceita conex�o RTP, mas estabelece quando ele quem a requisita). Nos Sistemas Operacionais Mountain Lion e Windows 7 n�o houveram problemas. O modelo de interface gr�fica escolhido foi a padr�o do sistema que utilizar� o programa.
+A plataforma (SO's e Arquiteturas (x86, x64, alguns Arms com Java convencional)) escolhida foram todas as que o Java dá suporte. Embora se tenha encontrado problemas com o firewall no Windows 8 (Não permite nenhuma conexão nem RMI) e no Linux (Não aceita conexão RTP, mas estabelece quando ele quem a requisita). Nos Sistemas Operacionais Mountain Lion e Windows 7 não houveram problemas. O modelo de interface gráfica escolhido foi a padrão do sistema que utilizará o programa.
 === Bibliotecas e Recursos Utilizados ===
-Para comunica��o Servidor/Cliente foi utilizado � biblioteca padr�o do Java para RMI (Remote Method Invocation). A qual permite uma invoca��o de m�todos remotamente e assincronamente algo que o TCP n�o permitia facilmente.
-Para a conex�o RTP foi feita uma pesquisa onde foi encontrado um programa com uma conex�o simples de �udio RTP. Ent�o foi extra�do o core RTP (que estava fortemente acoplado ao c�digo).
-=== Padr�o de Projeto ===
-Para facilitar a leitura do c�digo algumas regras devem ser seguidas:
-	1)O c�digo deve ser feito todo em ingl�s, com exce��o dos coment�rios que podem ser feitos em portugu�s por exemplo.
+Para comunicação Servidor/Cliente foi utilizado a biblioteca padrão do Java para RMI (Remote Method Invocation). A qual permite uma invocação de métodos remotamente e assincronamente algo que o TCP não permitia facilmente.
+Para a conexão RTP foi feita uma pesquisa onde foi encontrado um programa com uma conexão simples de áudio RTP. Então foi extraído o core RTP (que estava fortemente acoplado ao código).
+=== Padrão de Projeto ===
+Para facilitar a leitura do código algumas regras devem ser seguidas:
+	1)O código deve ser feito todo em inglês, com exceção dos comentários que podem ser feitos em portugu�s por exemplo.
 	2)N�o podem haver siglas em m�todos, vari�veis e classes, devem ser escritos por extenso.
 	3)N�o pode existir caracteres especiais em m�todos, vari�veis e classes, como: _.
 	4)Deve seguir o nota��o �camelo� na declara��o e instancia de m�todos, vari�veis e classes.(Classes devem come�ar com letra mai�scula e objetos e vari�veis com letra min�scula e o resto das letras min�scula, mas para cada nova palavra na vari�vel deve-se come�ar com mai�scula)
@@ -106,23 +106,23 @@ N�o tem, basta baixar o programa aqui: [https://github.com/Judahh/RTPhone/rele
 ==== Cliente: ====
 1)Caso esteja no sistema Linux:
 		Entre no terminal:
-		Digite: cd diret�rio do projeto/dist
+		Digite: cd diretório do projeto/dist
 		Digite: java -jar RTPhoneClient.jar:
  
-Caso n�o esteja basta clicar no execut�vel:
+Caso não esteja basta clicar no executável:
  
-2)Digite Nome, Usu�rio e Senha.
-3)Caso o usu�rio ainda n�o esteja registrado: Clique em Register.
+2)Digite Nome, Usuário e Senha.
+3)Caso o usuário ainda não esteja registrado: Clique em Register.
 4)Clique em Login.
-5)Caso queira ligar para outro usu�rio selecione o usu�rio o qual deseja fazer a liga��o, depois de selecionado clique em Call.
+5)Caso queira ligar para outro usuário selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Call.
 6)Para desligar clique em Hung Up.
 
-== Limita��es e Corre��es ==
+== Limitações e Correções ==
 
 == Bibliografia ==
-* Dispon�vel em [http://bcook.cs.georgiasouthern.edu/cs523/2taj/index.htm] 
+* Disponível em [http://bcook.cs.georgiasouthern.edu/cs523/2taj/index.htm] 
   Acesso em 10/2013
-* Dispon�vel em [http://restfb.com/]
+* Disponível em [http://restfb.com/]
   Acesso em 10/2013
 
 [[Categoria:Software livre]]

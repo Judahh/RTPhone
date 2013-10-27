@@ -212,7 +212,7 @@ Caso não esteja basta clicar no executável:
 É uma fila de atendimento, que possui Clients e Agents, Onde os Agents atendem os Clients da fila.
 
 === Extension ===
-É uma conexão com alinha telefônica, ou outro ponto de convergencia.
+É uma conexão com a linha telefônica, ou outro ponto de convergencia.
 
 === Conference ===
 É uma conferencia de Clients, que pode ser de Texto, Áudio ou Vídeo.

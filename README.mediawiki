@@ -218,7 +218,7 @@ Além de poder remover e deslogar usuários.
 ==== Conexões ====
 [[File:Images/Monitor.png]]
 
-Estas conecções indicam a comunicação entre monitores e monitores/usuários, onde se envia dados sobre os monitorados.
+Estas conexões indicam a comunicação entre monitores e monitores/usuários, onde se envia dados sobre os monitorados.
 
 ==== Hierarquia ====
 [[File:Images/Monitor2.png]]

@@ -12,10 +12,9 @@
 | licença             = [[OpenSource]] e [[GNU]]
 | website             = 
 }}
-
 <div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">FUNDAÇÃO</div>
 <div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">EDSON QUEIROZ</div>
-
+[[File:Images/Unifor.png]]
 <div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">UNIVERSIDADE</div>
 <div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">DE FORTALEZA</div>
 
@@ -36,22 +35,29 @@ Este Documento tem como objetivo explicar o funcionamento do RTPhone em sua vers
 === Atual ===
 ==== Geral ====
 ==== Banco de Dados ====
+[[File:Images/Database.png]]
 O novo Banco de Dados possui três tabelas. Uma tabela possui o username que funciona como chave primária de tabela, uma senha e o IP que se diferente de nulo significa que o usuário está logado e uma unique key com o ID do Facebook do usuário (para integração com o Facebook). Outra terá um conjunto de Banco de Dados que o usuário poderá se logar (a fim de deixar alguns usuários privados de um determinado sistema que tenha esse banco de dados com usuários). E outra que terá um conjunto de usuários e senhas para acessos a estes Bancos de Dados.
 
 ==== Protocolos ====
 ===== Registro =====
+[[File:Images/Register.png]]
 Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e caso não exista ele se registra no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se registrar, para que possam atualizar suas tabelas. 
 
 ===== Login =====
+[[File:Images/Login.png]]
 Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se não está logado e se loga no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se logar, para que possam atualizar suas tabelas. 
 
 ===== Logoff =====
+[[File:Images/Logoff.png]]
 Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se está logado e se desloga no Banco. Após isto ele faz um broadcast a todos os clientes logados informando que ele acaba de se deslogar, para que possam atualizar suas tabelas. Ele é acionado ao fechar a aplicação.
 
 ===== Refresh =====
+[[File:Images/Refresh.png]]
 A cada 10 segundo o cliente faz uma requisição pedindo todos os usuários logados e registrados e atualiza a lista, o mesmo acontece com o servidor, mas apenas quando inicia.
 
 ===== Chamada =====
+[[File:Images/Call.png]]
+[[File:Images/Call2.png]]
 Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e resgatar o endereço do usuário o qual ele deseja se conectar e então chama a função no cliente o qual ele deseja conectar enviando seu username endereço e portas livres para conexão (que nada mais é que uma lista de portas livres para transmissão e recepção), esta função retorna uma classe Call que possui o endereço o qual ele vai se conectar, um áudio de espera (caso haja transferência de chamada), as portas de transmissão e recepção e outros dados de conexão. 
 
 == Implementação ==
@@ -116,7 +122,7 @@ Não tem, basta baixar o programa aqui: [https://github.com/Judahh/RTPhone/relea
 		Digite: java -jar RTPhoneClient.jar:
  
 Caso não esteja basta clicar no executável:
- 
+[[File:Images/Executable.png]]
 2)Digite Nome, Usuário e Senha.
 3)Caso o usuário ainda não esteja registrado: Clique em Register.
 4)Clique em Login.

@@ -198,6 +198,14 @@ Caso não esteja basta clicar no executável:
 
 6)Para desligar clique em Hung Up.
 
+== Definições ==
+=== Client ===
+=== Agent ===
+=== Monitor ===
+=== Queue ===
+=== Extension ===
+=== Conference ===
+
 == Limitações e Correções ==
 Basta clicar aqui:[https://github.com/Judahh/RTPhone/issues?state=open].
 

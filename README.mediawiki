@@ -12,21 +12,25 @@
 | licença             = [[OpenSource]] e [[GNU]]
 | website             = 
 }}
-<div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">FUNDAÇÃO</div>
-<div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">EDSON QUEIROZ</div>
-[[File:Images/Unifor.png]]
-<div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">UNIVERSIDADE</div>
-<div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">DE FORTALEZA</div>
+FUNDAÇÃO
+EDSON QUEIROZ
 
-<div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">UNIFOR</div>
+[[File:Images/Unifor.png|center|34x37px|caption]]
+
+UNIVERSIDADE
+DE FORTALEZA
+
+UNIFOR
 
 
 
 
-<div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">Relatório da versão 1.0 beta do</div>
-<div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">RTPhone</div>
+Relatório da versão 1.0 beta do
+RTPhone
 
-<div class="center" style="font color="002bb8"; width: auto; margin-left: auto; margin-right: auto;">Aluno: Judah Holanda Correia Lima</div>
+Aluno: Judah Holanda Correia Lima
+
+= RTPhone =
 
 == Introdução ==
 Este Documento tem como objetivo explicar o funcionamento do RTPhone em sua versão 1.0, mostrar propostas de melhoria e introduzir o padrão de projeto que deve ser utilizado. Além de compor a nota.

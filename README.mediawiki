@@ -25,7 +25,7 @@ UNIFOR
 
 
 
-Relatório da versão 1.0 beta do
+README da versão 1.0 beta do
 RTPhone
 
 Aluno: Judah Holanda Correia Lima

@@ -62,7 +62,7 @@ O cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se 
 ===== Refresh =====
 [[File:Images/Refresh.png]]
 
-A cada 10 segundo o cliente faz uma requisição pedindo todos os usuários logados e registrados e atualiza a lista, o mesmo acontece com o servidor, mas apenas quando inicia.
+O cliente ao atualizar seu status ele atualiza o servidor e em seguida envia esta mudan
 
 ===== Chamada =====
 [[File:Images/Call.png]]

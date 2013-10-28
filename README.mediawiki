@@ -66,10 +66,14 @@ Como o cliente possui todos os status de seus contatos como o endereço (IP ou u
 
 Como o cliente possui todos os status de seus contatos como o endereço (IP ou url), caso o usuário o qual ele enviou a mensagem esteja online ele envia a mensagem via RMI, caso não ele envia a mensagem para o banco de dados.
 
+[[File:Images/Chat2.png]]
+
 ===== Requisição de adição a lista de contatos =====
 [[File:Images/ContactRequest.png]]
 
 O cliente faz uma requisição ao banco verificando se o contato existe, se existir ele verifica se está online, se estiver ele envia uma requisição via RMI, se não ele coloca a requisição no Banco de Dados.
+
+[[File:Images/ContactRequest2.png]]
 
 == Implementação ==
 === IDE ===

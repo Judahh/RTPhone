@@ -52,7 +52,7 @@ O cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e cas
 ===== Refresh =====
 [[File:Images/Refresh.png]]
 
-O cliente ao atualizar seu status (assim como login e logoff) ele atualiza o servidor e em seguida envia esta mudança a todos seus contatos (e monitores logados).
+O cliente ao atualizar seu status (assim como login e logoff, embora no login exista uma autenticação) ele atualiza o servidor e em seguida envia esta mudança a todos seus contatos (e monitores logados).
 
 ===== Chamada =====
 [[File:Images/Call.png]]

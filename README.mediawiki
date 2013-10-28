@@ -49,20 +49,10 @@ O Banco de Dados possui nove tabelas. Uma tabela possui o username que funciona 
 
 O cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e caso não exista ele se registra no Banco. 
 
-===== Login =====
-[[File:Images/Login.png]]
-
-O cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se não está logado e se loga no Banco. Após isto ele faz um broadcast a todos os seus contatos (e monitores) logados informando que ele acaba de se logar, para que possam atualizar suas tabelas. 
-
-===== Logoff =====
-[[File:Images/Logoff.png]]
-
-O cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e se está logado e se desloga no Banco. Após isto ele faz um broadcast a todos os seus contatos (e monitores) logados informando que ele acaba de se deslogar, para que possam atualizar suas tabelas. Ele é acionado ao fechar a aplicação.
-
 ===== Refresh =====
 [[File:Images/Refresh.png]]
 
-O cliente ao atualizar seu status ele atualiza o servidor e em seguida envia esta mudan
+O cliente ao atualizar seu status (assim como login e logoff) ele atualiza o servidor e em seguida envia esta mudança a todos seus contatos (e monitores logados).
 
 ===== Chamada =====
 [[File:Images/Call.png]]

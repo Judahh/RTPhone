@@ -52,14 +52,24 @@ O cliente vai fazer a consulta no Banco de Dados e verificar se ele existe e cas
 ===== Refresh =====
 [[File:Images/Refresh.png]]
 
-O cliente ao atualizar seu status (assim como login e logoff, embora no login exista uma autenticação) ele atualiza o servidor e em seguida envia esta mudança a todos seus contatos (e monitores logados).
+O cliente ao atualizar seu status (assim como login e logoff, embora no login exista uma autenticação e ao se logar ele faz uma checagem de todas as requisições de adição a lista de contatos e de mensagem que foram enviadas enquanto estava offline) ele atualiza o servidor e em seguida envia esta mudança a todos seus contatos (e monitores logados).
 
 ===== Chamada =====
 [[File:Images/Call.png]]
 
+Como o cliente possui todos os status de seus contatos como o endereço (IP ou url). Ele faz uma requisição de ligação para o contato o qual ele deseja ligar, e caso seja aceita ele faz uma conexão RTP.
+
 [[File:Images/Call2.png]]
 
-Nesta configuração o próprio cliente vai fazer a consulta no Banco de Dados e resgatar o endereço do usuário o qual ele deseja se conectar e então chama a função no cliente o qual ele deseja conectar enviando seu username endereço e portas livres para conexão (que nada mais é que uma lista de portas livres para transmissão e recepção), esta função retorna uma classe Call que possui o endereço o qual ele vai se conectar, um áudio de espera (caso haja transferência de chamada), as portas de transmissão e recepção e outros dados de conexão. 
+===== Chat =====
+[[File:Images/Chat.png]]
+
+Como o cliente possui todos os status de seus contatos como o endereço (IP ou url), caso o usuário o qual ele enviou a mensagem esteja online ele envia a mensagem via RMI, caso não ele envia a mensagem para o banco de dados.
+
+===== Requisição de adição a lista de contatos =====
+[[File:Images/ContactRequest.png]]
+
+O cliente faz uma requisição ao banco verificando se o contato existe, se existir ele verifica se está online, se estiver ele envia uma requisição via RMI, se não ele coloca a requisição no Banco de Dados.
 
 == Implementação ==
 === IDE ===

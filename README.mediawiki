@@ -177,7 +177,7 @@ Existem varias maneiras de usar iniciar depois de dado o build no projeto:
 
 6)Para desligar clique em Hung Up.
 
-Release: O programa jar executável vai estar na pasta dist então passe apenas para o usuário o conteúdo desta pasta.
+Release: O programa jar executável vai estar na pasta dist, então passe apenas para o usuário o conteúdo desta pasta.
 
 == Instalação e Uso ==
 === Requisitos: ===

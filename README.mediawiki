@@ -257,9 +257,6 @@ Esta hierarquia indica os monitores que tem o poder de deslogar e remover os out
 === Queue ===
 É uma fila de atendimento, que possui Clients e Agents, Onde os Agents atendem os Clients da fila.
 
-==== Conexões ====
-[[File:Images/Queue.png]]
-
 === Extension ===
 É uma conexão com a linha telefônica, ou outro ponto de convergencia.
 

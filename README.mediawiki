@@ -173,9 +173,11 @@ Existem varias maneiras de usar iniciar depois de dado o build no projeto:
 
 4)Caso queira adicionar um contato clique em Add, digite no username do contato e depois aperte Ok (Para o usuário aparecer na sua lista de contatos ele tem que aceitar a requisição).
 
-5)Caso queira ligar para outro usuário selecione a aba Logged Users e selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Call.
+5)Caso queira ligar para outro usuário, selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Call.
 
 6)Para desligar clique em Hung Up.
+
+7)Caso queira começar uma conversa de texto, selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Chat.
 
 Release: O programa jar executável vai estar na pasta dist, então passe apenas para o usuário o conteúdo desta pasta.
 
@@ -201,15 +203,32 @@ Caso não esteja basta clicar no executável:
 
 2)Digite Nome, Usuário e Senha.
 
+[[File:Images/1.png]]
+
 3)Caso o usuário ainda não esteja registrado: Clique em Register.
+
+[[File:Images/1.1.png]]
 
 4)Clique em Login.
 
+[[File:Images/1.2.png]]
+
 5)Caso queira adicionar um contato clique em Add, digite no username do contato e depois aperte Ok (Para o usuário aparecer na sua lista de contatos ele tem que aceitar a requisição).
+
+[[File:Images/2.1.png]]
 
 6)Caso queira ligar para outro usuário selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Call.
 
+[[File:Images/3.png]]
+[[File:Images/3.1.png]]
+
 7)Para desligar clique em Hung Up.
+
+[[File:Images/3.3.png]]
+
+8)Caso queira começar uma conversa de texto, selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Chat.
+
+[[File:Images/3.2.png]]
 
 == Definições ==
 === Client ===

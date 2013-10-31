@@ -207,28 +207,28 @@ Caso não esteja basta clicar no executável:
 
 3)Caso o usuário ainda não esteja registrado: Clique em Register.
 
-[[File:Images/2.png]]
+[[File:Images/1.1.png]]
 
 4)Clique em Login.
 
-[[File:Images/3.png]]
+[[File:Images/1.2.png]]
 
 5)Caso queira adicionar um contato clique em Add, digite no username do contato e depois aperte Ok (Para o usuário aparecer na sua lista de contatos ele tem que aceitar a requisição).
 
-[[File:Images/4.png]]
+[[File:Images/2.png]]
 
 6)Caso queira ligar para outro usuário selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Call.
 
-[[File:Images/5.png]]
-[[File:Images/5.1.png]]
+[[File:Images/2.1.png]]
+[[File:Images/2.2.png]]
 
 7)Para desligar clique em Hung Up.
 
-[[File:Images/6.png]]
+[[File:Images/3.png]]
 
 8)Caso queira começar uma conversa de texto, selecione o usuário o qual deseja fazer a ligação, depois de selecionado clique em Chat.
 
-[[File:Images/7.png]]
+[[File:Images/4.png]]
 
 == Definições ==
 === Client ===

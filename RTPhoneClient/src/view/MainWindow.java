@@ -92,7 +92,7 @@ public class MainWindow extends javax.swing.JFrame {
    public synchronized Client getContact() {
       return contact;
    }
-   
+
    public LoginWindow getLoginWindow() {
       return loginWindow;
    }
@@ -122,17 +122,30 @@ public class MainWindow extends javax.swing.JFrame {
             if (tempChatTabPanel.getClient().getUsername().equals(messageList.get(index).getFrom().getUsername())) {
                found = true;
                jTabbedPane.setSelectedIndex(index2);
+               System.out.println("Index Pane:" + index2);
+               System.out.println("Index:" + index);
+               System.out.println("Message:" + messageList.get(index));
                tempChatTabPanel.append(messageList.get(index));
                break;
+            } else {
+               System.out.println("Nao Index Pane:" + index2);
+               System.out.println("Nao Index:" + index);
+               System.out.println("Nao Message:" + messageList.get(index));
             }
          }
          if (!found) {
             jTabbedPane.addTab(messageList.get(index).getFrom().toString(), new ChatTabPanel(this, messageList.get(index).getFrom()));
             jTabbedPane.setSelectedIndex(jTabbedPane.getTabCount() - 1);
             ChatTabPanel tempChatTabPanel = (ChatTabPanel) jTabbedPane.getComponentAt(jTabbedPane.getTabCount() - 1);
+            System.out.println("Index:" + index);
+            System.out.println("Message:" + messageList.get(index));
             tempChatTabPanel.append(messageList.get(index));
+         } else {
+            System.out.println("Nao Index:" + index);
+            System.out.println("Nao Message:" + messageList.get(index));
          }
       }
+      System.out.println("FIM");
    }
 
    public void changeStatus(database.Client client) {
@@ -184,7 +197,7 @@ public class MainWindow extends javax.swing.JFrame {
 
    private String getAddress() {
       String address = "UNKNOWN";
-      
+
 //      Setup Java RMI Over the Internet
 //
 //      Nick Hatter — April 24, 2011 - 23:26
@@ -206,15 +219,15 @@ public class MainWindow extends javax.swing.JFrame {
 //      If so, this means you may have missed a step from earlier. Unfortunately, there are many causes for this error!
 //
 //      Finally, rather than use string literals for the IP addresses, you will probably want to use automated methods to keep track of them. This has been left out of the code above for simplicity.
-      
+
       try {
          String hostName = InetAddress.getLocalHost().getHostName();
          InetAddress addrs[] = InetAddress.getAllByName(hostName);
 
          for (InetAddress addr : addrs) {
-            System.out.println("Address:"+addr.getHostAddress());
+            System.out.println("Address:" + addr.getHostAddress());
             if (!addr.isLoopbackAddress() && addr.isSiteLocalAddress()) {
-                System.out.println("Address In:"+addr.getHostAddress());
+               System.out.println("Address In:" + addr.getHostAddress());
                address = addr.getHostAddress();
             }
          }

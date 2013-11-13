@@ -79,6 +79,7 @@ public class ChatTabPanel extends javax.swing.JPanel {
             if (actualMessageList.get(index).getIndex() > clientMessage.getIndex()) {
                actualMessageList.add(index, clientMessage);
                ok = true;
+               break;
             }
          }
          if(!ok){

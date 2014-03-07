@@ -82,15 +82,9 @@ Para a conexão RTP foi feita uma pesquisa onde foi encontrado um programa com u
 === Padrão de Projeto ===
 Para facilitar a leitura do código algumas regras devem ser seguidas:
 
-	1)O código deve ser feito todo em inglês, com exceção dos comentários que podem ser feitos em português por exemplo.
+	1)O código deve ser feito seguindo: [https://github.com/Judahh/Pattern].
 	
-	2)Não podem haver siglas em métodos, variáveis e classes, devem ser escritos por extenso.
-	
-	3)Não pode existir caracteres especiais em métodos, variáveis e classes, como: _.
-	
-	4)Deve seguir o notação "camelo" na declaração e instancia de métodos, variáveis e classes.(Classes devem começar com letra maiúscula e instancias de objetos e variáveis com letra minúscula e o resto das letras minúsculas, mas para cada nova palavra na variável deve-se começar com maiúscula)
-	
-	5)Deve-se seguir a identação padrão do NetBeans.
+	2)Não pode existir caracteres especiais em métodos, variáveis e classes, como: _.
 
 === Uso do Repositório ===
 ==== Edição do README ====

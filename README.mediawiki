@@ -83,8 +83,6 @@ Para a conexão RTP foi feita uma pesquisa onde foi encontrado um programa com u
 Para facilitar a leitura do código algumas regras devem ser seguidas:
 
 	1)O código deve ser feito seguindo: [https://github.com/Judahh/Pattern].
-	
-	2)Não pode existir caracteres especiais em métodos, variáveis e classes, como: _.
 
 === Uso do Repositório ===
 ==== Edição do README ====

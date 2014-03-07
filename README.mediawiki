@@ -12,28 +12,14 @@
 | licença             = [[OpenSource]] e [[GNU]]
 | website             = 
 }}
-FUNDAÇÃO
-EDSON QUEIROZ
-
-[[File:Images/Unifor.png|center|34x37px|caption]]
-
-UNIVERSIDADE
-DE FORTALEZA
-
-UNIFOR
-
-
-
-
 README da versão 1.0 beta do
 RTPhone
-
-Aluno: Judah Holanda Correia Lima
+Judah Holanda Correia Lima
 
 = RTPhone =
 
 == Introdução ==
-Este documento tem como objetivo explicar o funcionamento do RTPhone em sua versão 1.0, mostrar propostas de melhoria e introduzir o padrão de projeto que deve ser utilizado. Além de compor a nota.
+Este documento tem como objetivo explicar o funcionamento do RTPhone em sua versão 1.0, mostrar propostas de melhoria e introduzir o padrão de projeto que deve ser utilizado.
 
 == Arquitetura do Sistema ==
 === Atual ===
